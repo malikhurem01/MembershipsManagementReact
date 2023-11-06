@@ -46,7 +46,7 @@ const ArchiveSpreadsheets = () => {
         setTimeout(() => {
           setWaitingResponse(false);
           handleFetchSpreadsheets();
-        }, 5000);
+        }, 2500);
       })
       .catch((err) => {
         console.log(err);
@@ -56,7 +56,7 @@ const ArchiveSpreadsheets = () => {
           setMessage("Arhiviraj");
           setWaitingResponse(false);
           setError(false);
-        }, 5000);
+        }, 2500);
       });
   };
 

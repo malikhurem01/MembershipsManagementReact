@@ -18,7 +18,6 @@ const RegularMemberships = () => {
           <div className={classes.gridItem}>
             <NavLink to="/clanarine/kreiraj-bazu">
               <div>
-                {" "}
                 <img src={createDatabase} alt="kreiraj bazu" />
                 <p className={classes.menuOptionText}>Kreiraj bazu</p>
               </div>
@@ -27,7 +26,6 @@ const RegularMemberships = () => {
           <div className={classes.gridItem}>
             <NavLink to="/clanarine/aktivna-baza">
               <div>
-                {" "}
                 <img src={activeDatabase} alt="redovne članarine" />
                 <p className={classes.menuOptionText}>Aktivna baza</p>
               </div>
@@ -36,7 +34,6 @@ const RegularMemberships = () => {
           <div className={classes.gridItem}>
             <NavLink to="/clanarine/arhiva-baza">
               <div>
-                {" "}
                 <img
                   src={archivedDatabases}
                   alt="stanje budžeta ostali prihodi"
@@ -50,7 +47,6 @@ const RegularMemberships = () => {
           <div className={classes.gridItem}>
             <NavLink to="/logout">
               <div>
-                {" "}
                 <img src={debtWarning} alt="Odjava" />
                 <p className={classes.menuOptionText}>Opomena za dug</p>
               </div>
@@ -59,7 +55,6 @@ const RegularMemberships = () => {
           <div className={classes.gridItem}>
             <NavLink to="/logout">
               <div>
-                {" "}
                 <img src={reportLogo} alt="Odjava" />
                 <p className={classes.menuOptionText}>Izradi izvještaj</p>
               </div>

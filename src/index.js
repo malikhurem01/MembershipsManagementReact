@@ -1,12 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import { AuthContextProvider } from "./Store/auth-context-api";
 
 import userService from "./Services/userService";
 
-import LoginDzematPage from "./Components/Pages/LoginDzemat/LoginDzematPage";
+import LoginDzematPage, {
+  loader as dzematLoginLoader,
+} from "./Components/Pages/LoginDzemat/LoginDzematPage";
 import LoginUserPage from "./Components/Pages/LoginUser/LoginUserPage";
 import MainPage from "./Components/Pages/Main/MainPage";
 import EmailPage from "./Components/Pages/Email/EmailPage";
@@ -19,11 +21,35 @@ import DeviceQuestionPage from "./Components/Pages/DeviceQuestionPage/DeviceQues
 
 import "bootstrap/dist/css/bootstrap.css";
 import "./index.css";
+import ErrorElement from "./Components/Pages/ErrorPage/ErrorElement";
 
 const router = createBrowserRouter([
-  { path: "/", element: <DeviceQuestionPage /> },
-  { path: "/login/dzemat", element: <LoginDzematPage /> },
-  { path: "/login/korisnik", element: <LoginUserPage /> },
+  {
+    path: "/",
+    element: <DeviceQuestionPage />,
+    errorElement: <ErrorElement />,
+  },
+  {
+    path: "/login",
+    element: (
+      <div>
+        <Outlet />
+      </div>
+    ),
+    errorElement: <ErrorElement />,
+    children: [
+      {
+        path: "dzemat",
+        loader: dzematLoginLoader,
+        element: <LoginDzematPage />,
+      },
+      {
+        path: "korisnik",
+        element: <LoginUserPage />,
+      },
+    ],
+  },
+
   { path: "/logout", element: <LogoutPage /> },
   { path: "/email", element: <EmailPage /> },
   { path: "/naslovna", element: <MainPage /> },

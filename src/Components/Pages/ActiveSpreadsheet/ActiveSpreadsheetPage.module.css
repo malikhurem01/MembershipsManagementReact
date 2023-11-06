@@ -1,0 +1,25 @@
+.mainContainer {
+  padding-top: 15px;
+  background-color: #f7f3f3e5;
+  min-height: 89.5vh;
+}
+
+.optionButtons {
+  margin-bottom: 15px;
+}
+
+.optionButtons button {
+  min-width: 216px;
+}
+
+.optionButtons button:first-child {
+  margin-right: 15px;
+}
+
+.inputs {
+  margin-bottom: 10px;
+}
+
+.inputs input {
+  margin-bottom: 10px;
+}

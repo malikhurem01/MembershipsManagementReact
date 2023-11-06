@@ -5,7 +5,12 @@ import userService from "../../../Services/userService";
 
 import LoginFormComponent from "../LoginFormComponent/LoginFormComponent";
 
-const LoginDzematPage = () => {
+export const loader = () => {
+  localStorage.removeItem("dzemat_id");
+  return null;
+};
+
+export default function LoginDzematPage() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
@@ -16,21 +21,19 @@ const LoginDzematPage = () => {
       .dzematLogin({ username, password })
       .then((res) => {
         localStorage.setItem("dzemat_id", JSON.stringify(res.data.data.id));
-        setSuccess(true);
+        navigate("/login/korisnik");
       })
       .catch((err) => {
-        console.log(err);
-        setError(true);
+        if (err.code === "ERR_NETWORK") {
+          throw new Error(err);
+        } else {
+          setError(true);
+        }
       });
   };
 
   useEffect(() => {
-    localStorage.removeItem("dzemat_id");
-  }, []);
-
-  useEffect(() => {
     if (success) {
-      navigate("/login/korisnik");
     }
   }, [navigate, success]);
 
@@ -41,6 +44,4 @@ const LoginDzematPage = () => {
       loginStage={"first"}
     />
   );
-};
-
-export default LoginDzematPage;
+}

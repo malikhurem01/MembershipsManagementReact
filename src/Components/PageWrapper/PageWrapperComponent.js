@@ -12,26 +12,31 @@ const PageWrapperComponent = ({ returnArrow, children }) => {
   const navigate = useNavigate();
   const ctx = useContext(AuthContext);
 
-  useEffect(() => {
+  /*useEffect(() => {
     userService
       .currentUser(JSON.parse(localStorage.getItem("user_jwt")))
       .catch(() => {
         navigate("/login/dzemat");
       });
-  }, [navigate]);
+  }, [navigate]); */
 
   const handleSetDzematInfo = (title) => {
-    if (title === "medzlis") {
-      return ctx.userDataState.dzemat.medzlis.name;
-    } else if (title === "dzemat") {
-      return ctx.userDataState.dzemat.name;
+    return "undefined";
+    if (!ctx.userDataState.dzemat) {
+      return navigate("/login/dzemat");
+    } else {
+      if (title === "medzlis") {
+        return ctx.userDataState.dzemat.medzlis.name;
+      } else if (title === "dzemat") {
+        return ctx.userDataState.dzemat.name;
+      }
     }
   };
-  /**          
-   * {returnArrow && (
-            <div className={classes.backArrow}>
-              <NavLink to="/naslovna">
-                <img src={leftArrow} alt="strelica nazad" />
+  /*
+  {returnArrow && (
+      <div className={classes.backArrow}>
+        <NavLink to="/naslovna">
+           <img src={leftArrow} alt="strelica nazad" />
               </NavLink>
             </div>
           )} */

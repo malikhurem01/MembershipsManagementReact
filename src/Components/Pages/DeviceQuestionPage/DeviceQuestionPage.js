@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 import InWorkModal from "./InWorkModal";
 
@@ -45,6 +45,9 @@ const DeviceQuestionPage = () => {
               <h5>Računar/laptop</h5>
               <img src={laptopIcon} alt="računar" width={100} height={100} />
             </div>
+          </div>
+          <div>
+            <Outlet />
           </div>
         </React.Fragment>
       )}
