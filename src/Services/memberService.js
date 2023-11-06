@@ -1,8 +1,10 @@
-const addMember = (data) => {
-  const clanovi = JSON.parse(localStorage.getItem("clanovi"));
-  clanovi.push(data);
-  localStorage.setItem("clanovi", JSON.stringify(clanovi));
-  console.log(clanovi);
+import axios from "axios";
+import { routes, serverURL } from "../Data/serverRoutes";
+
+const addMember = (token, data) => {
+  return axios.post(`${serverURL}${routes.addNewMember}`, data, {
+    headers: { Authorization: "Bearer " + token },
+  });
 };
 
 const getMembers = () => {

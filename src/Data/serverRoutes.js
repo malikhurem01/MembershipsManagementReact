@@ -6,6 +6,7 @@ const routes = {
   createSpreadsheet: "Spreadsheet/create",
   getAllSpreadsheets: "Spreadsheet/get/all",
   archiveSpreadsheet: "Spreadsheet/archive",
+  addNewMember: "Member/add",
 };
 
 module.exports = { serverURL, routes };

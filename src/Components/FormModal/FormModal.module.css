@@ -31,6 +31,11 @@
     overflow-y: scroll;
     height: 90vh;
   }
+
+  .noExtraHeight {
+    height: 37vh;
+    overflow-y: hidden;
+  }
 }
 @media (max-width: 480px) {
   .modal {

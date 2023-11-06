@@ -12,16 +12,15 @@ const PageWrapperComponent = ({ returnArrow, children }) => {
   const navigate = useNavigate();
   const ctx = useContext(AuthContext);
 
-  /*useEffect(() => {
+  useEffect(() => {
     userService
       .currentUser(JSON.parse(localStorage.getItem("user_jwt")))
       .catch(() => {
         navigate("/login/dzemat");
       });
-  }, [navigate]); */
+  }, [navigate]);
 
   const handleSetDzematInfo = (title) => {
-    return "undefined";
     if (!ctx.userDataState.dzemat) {
       return navigate("/login/dzemat");
     } else {

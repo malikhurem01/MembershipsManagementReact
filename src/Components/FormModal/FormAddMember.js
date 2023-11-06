@@ -7,26 +7,28 @@ import FamilyMember from "./FamilyMember";
 
 const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
   const [evNumber, setEvNumber] = useState("");
+  const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [fathersName, setFathersName] = useState("");
-  const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
   const [membershipFee, setMembershipFee] = useState("");
   const [status, setStatus] = useState("");
-  const [debt, setDebt] = useState("");
+  const [debt, setDebt] = useState(0);
   const [paymentMade, setPaymentMade] = useState("");
   const [familyMembers, setFamilyMembers] = useState([]);
+  const [active, setActive] = useState(true);
+  const [addToSpreadsheet, setAddToSpreadsheet] = useState(true);
 
   const [showFamilyMembersForm, setShowFamilyMembersForm] = useState(false);
 
   const handleSubmit = () => {
     const data = {
       evNumber,
+      firstName,
       lastName,
       fathersName,
-      name,
       phoneNumber,
       address,
       email,
@@ -35,9 +37,12 @@ const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
       debt,
       paymentMade,
       familyMembers,
+      active,
+      addToSpreadsheet,
+      dzematId: JSON.parse(localStorage.getItem("dzemat_id")),
     };
-
-    /*handleFormSubmit(data);*/
+    const token = JSON.parse(localStorage.getItem("user_jwt"));
+    handleFormSubmit(token, data);
   };
 
   const handleShowFamilyMemberForm = () => {
@@ -49,6 +54,15 @@ const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
       <div className={classes.backdrop}></div>
       {!showFamilyMembersForm && (
         <div className={classes.modal}>
+          <h4
+            style={{
+              borderBottom: "1px solid #cecece",
+              marginBottom: "15px",
+              paddingBottom: "5px",
+            }}
+          >
+            Novi član
+          </h4>
           <div className={classes.scrollable}>
             <Form>
               <h4>Osnovni podaci</h4>
@@ -102,8 +116,8 @@ const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
                     className="mb-3"
                   >
                     <Form.Control
-                      value={name}
-                      onChange={(ev) => setName(ev.target.value)}
+                      value={firstName}
+                      onChange={(ev) => setFirstName(ev.target.value)}
                       type="text"
                       placeholder="Ime člana"
                     />

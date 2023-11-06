@@ -11,6 +11,7 @@ import {
   FloatingLabel,
 } from "react-bootstrap";
 import FormAddMember from "../../FormModal/FormAddMember";
+import memberService from "../../../Services/memberService";
 
 const ActiveSpreadsheetPage = () => {
   const [searchName, setSearchName] = useState();
@@ -34,10 +35,24 @@ const ActiveSpreadsheetPage = () => {
     setShowAddMember((prevState) => !prevState);
   };
 
+  const handleFormSubmit = (token, data) => {
+    memberService
+      .addMember(token, data)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <PageWrapperComponent>
       {showAddMember && (
-        <FormAddMember handleAddMemberClick={handleAddMemberClick} />
+        <FormAddMember
+          handleFormSubmit={handleFormSubmit}
+          handleAddMemberClick={handleAddMemberClick}
+        />
       )}
       <div className={classes.mainContainer}>
         <Container fluid="md">
