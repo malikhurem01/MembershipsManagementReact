@@ -6,6 +6,7 @@ const routes = {
   createSpreadsheet: "Spreadsheet/create",
   getAllSpreadsheets: "Spreadsheet/get/all",
   archiveSpreadsheet: "Spreadsheet/archive",
+  getActiveSpreadsheet: "Spreadsheet/get/active",
   addNewMember: "Member/add",
 };
 

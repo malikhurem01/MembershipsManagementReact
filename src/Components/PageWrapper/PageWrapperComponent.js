@@ -21,7 +21,7 @@ const PageWrapperComponent = ({ returnArrow, children }) => {
   }, [navigate]);
 
   const handleSetDzematInfo = (title) => {
-    if (!ctx.userDataState.dzemat) {
+    if (!ctx.userDataState) {
       return navigate("/login/dzemat");
     } else {
       if (title === "medzlis") {

@@ -4,8 +4,19 @@ import { FloatingLabel, Form, Button, Row, Col } from "react-bootstrap";
 
 import classes from "./FormModal.module.css";
 import FamilyMember from "./FamilyMember";
+import { useNavigate } from "react-router-dom";
 
-const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
+import loadingSvg from "../../Assets/Pictures/loadingSvg.svg";
+import creationFailed from "../../Assets/Pictures/creationFailed.svg";
+import creationSuccess from "../../Assets/Pictures/creationSuccess.svg";
+
+const FormAddMember = ({
+  handleFormSubmit,
+  handleAddMemberClick,
+  response,
+  waitingResponse,
+  clearSubmit,
+}) => {
   const [evNumber, setEvNumber] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -23,9 +34,13 @@ const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
 
   const [showFamilyMembersForm, setShowFamilyMembersForm] = useState(false);
 
-  const handleSubmit = () => {
-    const data = {
-      evNumber,
+  const navigate = useNavigate();
+
+  const handleSubmit = (ev) => {
+    ev.preventDefault();
+
+    const member = {
+      evNumber: +evNumber,
       firstName,
       lastName,
       fathersName,
@@ -33,26 +48,66 @@ const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
       address,
       email,
       membershipFee,
-      status,
+      status: +status,
       debt,
-      paymentMade,
+      paymentMade: Boolean(paymentMade),
       familyMembers,
       active,
       addToSpreadsheet,
       dzematId: JSON.parse(localStorage.getItem("dzemat_id")),
     };
     const token = JSON.parse(localStorage.getItem("user_jwt"));
-    handleFormSubmit(token, data);
+    handleFormSubmit(token, member);
   };
 
   const handleShowFamilyMemberForm = () => {
     setShowFamilyMembersForm((prevState) => !prevState);
   };
 
+  const handleClearSubmit = () => {
+    handleAddMemberClick();
+    clearSubmit();
+  };
+
   return (
     <React.Fragment>
       <div className={classes.backdrop}></div>
-      {!showFamilyMembersForm && (
+      {waitingResponse && (
+        <div className={classes.responseModalAbsolute}>
+          {response.statusCode == null && (
+            <img src={loadingSvg} alt="učitavam kreiranje baze" />
+          )}
+          {response.statusCode === 200 && (
+            <img src={creationSuccess} alt="baza uspješno kreirana" />
+          )}
+          {response.statusCode >= 400 && (
+            <img src={creationFailed} alt="greška pri kreiranju baze" />
+          )}
+          <p>{response.message}</p>
+          {waitingResponse && response?.statusCode >= 400 && (
+            <Button
+              className={classes.responseButton}
+              onClick={handleClearSubmit}
+              variant="danger"
+            >
+              Poništi
+            </Button>
+          )}
+          {waitingResponse &&
+            response?.statusCode >= 200 &&
+            response?.statusCode < 300 && (
+              <Button
+                className={classes.responseButton}
+                onClick={handleClearSubmit}
+                variant="success"
+              >
+                Nazad
+              </Button>
+            )}
+        </div>
+      )}
+
+      {!showFamilyMembersForm && !waitingResponse && (
         <div className={classes.modal}>
           <h4
             style={{
@@ -64,7 +119,7 @@ const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
             Novi član
           </h4>
           <div className={classes.scrollable}>
-            <Form>
+            <Form onSubmit={handleSubmit}>
               <h4>Osnovni podaci</h4>
               <Row className="g-2">
                 <Col lg={2} md="auto" sm={8}>
@@ -78,6 +133,7 @@ const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
                       onChange={(ev) => setEvNumber(ev.target.value)}
                       type="number"
                       placeholder="Ev. broj"
+                      required
                     />
                   </FloatingLabel>
                 </Col>
@@ -92,6 +148,7 @@ const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
                       onChange={(ev) => setLastName(ev.target.value)}
                       type="text"
                       placeholder="Prezime"
+                      required
                     />
                   </FloatingLabel>
                 </Col>
@@ -106,6 +163,7 @@ const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
                       onChange={(ev) => setFathersName(ev.target.value)}
                       type="text"
                       placeholder="Ime oca"
+                      required
                     />
                   </FloatingLabel>
                 </Col>
@@ -120,6 +178,7 @@ const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
                       onChange={(ev) => setFirstName(ev.target.value)}
                       type="text"
                       placeholder="Ime člana"
+                      required
                     />
                   </FloatingLabel>
                 </Col>
@@ -136,8 +195,9 @@ const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
                     <Form.Control
                       value={phoneNumber}
                       onChange={(ev) => setPhoneNumber(ev.target.value)}
-                      type="number"
+                      type="text"
                       placeholder="Broj telefona"
+                      required
                     />
                   </FloatingLabel>
                 </Col>
@@ -152,6 +212,7 @@ const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
                       onChange={(ev) => setAddress(ev.target.value)}
                       type="text"
                       placeholder="Adresa Stanovanja"
+                      required
                     />
                   </FloatingLabel>
                 </Col>
@@ -166,6 +227,7 @@ const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
                       onChange={(ev) => setEmail(ev.target.value)}
                       type="email"
                       placeholder="Email adresa"
+                      required
                     />
                   </FloatingLabel>
                 </Col>
@@ -183,6 +245,7 @@ const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
                       onChange={(ev) => setMembershipFee(ev.target.value)}
                       type="number"
                       placeholder="Članarina"
+                      required
                     />
                   </FloatingLabel>
                 </Col>
@@ -193,6 +256,7 @@ const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
                       onChange={(ev) => setDebt(ev.target.value)}
                       type="number"
                       placeholder="Dug"
+                      required
                     />
                   </FloatingLabel>
                 </Col>
@@ -205,10 +269,11 @@ const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
                     <Form.Select
                       onChange={(ev) => setPaymentMade(ev.target.value)}
                       aria-label="MemberStatus"
+                      required
+                      defaultValue={"0"}
                     >
-                      <option>Uplaćeno?</option>
-                      <option value="1">Da</option>
-                      <option value="2">Ne</option>
+                      <option value="0">Da</option>
+                      <option value="1">Ne</option>
                     </Form.Select>
                   </FloatingLabel>{" "}
                 </Col>
@@ -221,11 +286,13 @@ const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
                     <Form.Select
                       onChange={(ev) => setStatus(ev.target.value)}
                       aria-label="MemberStatus"
+                      required
+                      defaultValue={"0"}
                     >
                       <option>Status člana</option>
-                      <option value="1">Brak</option>
-                      <option value="2">Udovac/Udovica</option>
-                      <option value="3">Granična dob</option>
+                      <option value="0">Brak</option>
+                      <option value="1">Udovac/Udovica</option>
+                      <option value="2">Granična dob</option>
                     </Form.Select>
                   </FloatingLabel>
                 </Col>
@@ -237,7 +304,7 @@ const FormAddMember = ({ handleFormSubmit, handleAddMemberClick }) => {
                 </Button>
               </div>
               <Button
-                onClick={handleSubmit}
+                type="submit"
                 style={{ marginRight: "20px" }}
                 variant="primary"
               >

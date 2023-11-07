@@ -1,8 +1,8 @@
 import axios from "axios";
 import { routes, serverURL } from "../Data/serverRoutes";
 
-const addMember = (token, data) => {
-  return axios.post(`${serverURL}${routes.addNewMember}`, data, {
+const addMember = (token, member) => {
+  return axios.post(`${serverURL}${routes.addNewMember}`, member, {
     headers: { Authorization: "Bearer " + token },
   });
 };

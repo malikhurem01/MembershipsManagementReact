@@ -16,6 +16,12 @@ const getAllSpreadsheets = (token, dzematId) => {
   );
 };
 
+const getActiveSpreadsheet = (token) => {
+  return axios.get(`${serverURL}${routes.getActiveSpreadsheet}`, {
+    headers: { Authorization: "Bearer " + token },
+  });
+};
+
 const archiveSpreadsheet = (token, data) => {
   return axios.patch(`${serverURL}${routes.archiveSpreadsheet}`, data, {
     headers: { Authorization: "Bearer " + token },
@@ -26,6 +32,7 @@ const spreadsheetService = {
   createSpreadsheet,
   getAllSpreadsheets,
   archiveSpreadsheet,
+  getActiveSpreadsheet,
 };
 
 export default spreadsheetService;

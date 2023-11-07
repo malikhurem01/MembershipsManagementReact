@@ -23,6 +23,12 @@
   .modal {
     width: 80%;
   }
+
+  .responseModal {
+  }
+
+  .responseModalAbsolute {
+  }
 }
 
 @media (max-width: 815px) {
@@ -36,7 +42,16 @@
     height: 37vh;
     overflow-y: hidden;
   }
+
+  .responseModal {
+    width: 80%;
+  }
+
+  .responseModalAbsolute {
+    width: 80%;
+  }
 }
+
 @media (max-width: 480px) {
   .modal {
     width: 95%;
@@ -44,12 +59,31 @@
     height: 95vh;
     padding: 10px;
   }
+  .responseModal {
+    width: 95%;
+  }
+  .responseModalAbsolute {
+    width: 95%;
+  }
 }
 
 .responseModal {
   padding-top: 20px;
   border-radius: 10px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+.responseModalAbsolute {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 25px;
+  border-radius: 10px;
+  background-color: rgb(253, 253, 253);
   z-index: 100;
   display: flex;
   flex-direction: column;
@@ -61,7 +95,17 @@
   margin-bottom: 25px;
 }
 
+.responseModalAbsolute img {
+  width: 90px;
+  margin-bottom: 25px;
+}
+
 .responseModal p {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.responseModalAbsolute p {
   font-weight: 600;
   font-size: 20px;
 }

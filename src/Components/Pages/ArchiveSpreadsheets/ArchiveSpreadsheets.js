@@ -8,6 +8,7 @@ import spreadsheetService from "../../../Services/spreadsheetService";
 import PageWrapperComponent from "../../PageWrapper/PageWrapperComponent";
 
 import classes from "./ArchiveSpreadsheet.module.css";
+import styles from "../../FormModal/FormModal.module.css";
 
 const ArchiveSpreadsheets = () => {
   const [spreadsheets, setSpreadsheets] = useState([]);
@@ -65,8 +66,9 @@ const ArchiveSpreadsheets = () => {
   };
   return (
     <PageWrapperComponent>
-      <div className={classes.modal}>
+      <div className={styles.modal}>
         <h5>Lista baza</h5>
+        {spreadsheets.length < 1 && <h5>Nema kreiranih baza</h5>}
         <ul className={classes.spreadsheetList}>
           {spreadsheets.map((s, i) => {
             return (
