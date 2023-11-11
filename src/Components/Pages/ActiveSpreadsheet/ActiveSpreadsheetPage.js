@@ -20,6 +20,7 @@ import FormAddMember from "../../FormModal/FormAddMember";
 import memberService from "../../../Services/memberService";
 import spreadsheetService from "../../../Services/spreadsheetService";
 import { useNavigate } from "react-router-dom";
+import FormAddPayment from "../../FormModal/FormAddPayment";
 
 const ActiveSpreadsheetPage = () => {
   const [activeSpreadsheet, setActiveSpreadsheet] = useState();
@@ -30,6 +31,10 @@ const ActiveSpreadsheetPage = () => {
   const [response, setResponse] = useState();
   const [waitingResponse, setWaitingResponse] = useState(false);
   const [sureArchiveSpreadsheet, setSureArchiveSpreadsheet] = useState(false);
+  const [showAddPayment, setShowAddPayment] = useState(false);
+  const [showViewMember, setShowViewMember] = useState(false);
+  const [memberToView, setMemberToView] = useState(null);
+  const [selectedMember, setSelectedMember] = useState(null);
 
   const navigate = useNavigate();
 
@@ -43,7 +48,7 @@ const ActiveSpreadsheetPage = () => {
     "Članarina",
     "Uplaćeno",
     "Dug",
-    "Datum uplate",
+    "Posljednja uplata",
     "Postavke",
   ];
 
@@ -53,8 +58,9 @@ const ActiveSpreadsheetPage = () => {
       .getActiveSpreadsheet(token)
       .then((res) => {
         const responseParsed = JSON.parse(res.data.data);
+        console.log(responseParsed);
         setActiveSpreadsheet(responseParsed.spreadsheet);
-        setMembersInfo(responseParsed.rawMembersInfo["$values"]);
+        setMembersInfo(responseParsed.rawMembersInfo);
       })
       .catch((err) => {
         setActiveSpreadsheet(null);
@@ -140,8 +146,42 @@ const ActiveSpreadsheetPage = () => {
     navigate("/clanarine");
   };
 
+  const handleShowAddPayment = (ev, id) => {
+    if (!showAddPayment) {
+      setSelectedMember(id);
+      console.log(id);
+    }
+    setShowAddPayment((prevState) => !prevState);
+  };
+
+  const handleSetViewMember = (ev) => {
+    setMemberToView(() => {
+      const memberToView = membersInfo.filter(
+        (mi) => mi.member.Id === +ev.target.name
+      );
+      return memberToView[0];
+    });
+    setShowViewMember((prevState) => !prevState);
+  };
+
   return (
     <PageWrapperComponent>
+      {showViewMember && (
+        <FormAddMember
+          viewMode={true}
+          memberInfo={memberToView}
+          handleAddMemberClick={handleSetViewMember}
+          waitingResponse={waitingResponse}
+        />
+      )}
+      {!waitingResponse && showAddPayment && (
+        <FormAddPayment
+          memberId={selectedMember}
+          activeSpreadsheet={activeSpreadsheet}
+          handleShowAddPayment={handleShowAddPayment}
+          handleFetchActiveSpreadsheet={handleFetchActiveSpreadsheet}
+        />
+      )}
       {waitingResponse && (
         <React.Fragment>
           <div className={styles.backdrop}></div>
@@ -301,36 +341,131 @@ const ActiveSpreadsheetPage = () => {
                 {membersInfo.map((m, index) => {
                   return (
                     <tr>
+                      {" "}
                       <td>{index}</td>
-                      <td>{m.member.EvNumber}</td>
-                      <td>{m.member.FirstName}</td>
-                      <td>{m.member.LastName}</td>
-                      <td>{m.member.FathersName}</td>
                       <td>
-                        {m.member.Status === 0
-                          ? "Brak"
-                          : m.member.Status === 1
-                          ? "Udovac/Udovica"
-                          : m.member.Status === 2
-                          ? "Granična dob"
-                          : ""}
+                        <Button
+                          style={{ width: "80%" }}
+                          variant="dark"
+                          disabled
+                          size="sm"
+                        >
+                          <strong> {m.member.EvNumber}</strong>
+                        </Button>
                       </td>
-                      <td>{m.member.MembershipFee}</td>
                       <td>
-                        {m.member.MembershipFee === m.totalAmountPayed ? (
-                          "Da"
+                        <Button
+                          style={{ width: "80%" }}
+                          variant="outline-dark"
+                          disabled
+                          size="sm"
+                        >
+                          <strong> {m.member.FirstName}</strong>
+                        </Button>
+                      </td>
+                      <td>
+                        <Button
+                          style={{ width: "80%" }}
+                          variant="outline-dark"
+                          disabled
+                          size="sm"
+                        >
+                          <strong> {m.member.LastName}</strong>
+                        </Button>
+                      </td>
+                      <td>
+                        <Button
+                          style={{ width: "80%" }}
+                          variant="outline-dark"
+                          disabled
+                          size="sm"
+                        >
+                          <strong> {m.member.FathersName}</strong>
+                        </Button>
+                      </td>
+                      <td>
+                        <Button
+                          style={{ width: "80%" }}
+                          variant="outline-dark"
+                          disabled
+                          size="sm"
+                        >
+                          <strong>
+                            {m.member.Status === 0
+                              ? "Brak"
+                              : m.member.Status === 1
+                              ? "Udovac/Udovica"
+                              : m.member.Status === 2
+                              ? "Granična dob"
+                              : ""}
+                          </strong>
+                        </Button>
+                      </td>
+                      <td>
+                        {" "}
+                        <Button
+                          style={{ width: "80%" }}
+                          variant="primary"
+                          disabled
+                          size="sm"
+                        >
+                          <strong>{m.membershipFee}KM</strong>
+                        </Button>
+                      </td>
+                      <td>
+                        {m.membershipFee === m.totalAmountPayed ? (
+                          <Button
+                            style={{ width: "80%" }}
+                            variant="success"
+                            disabled
+                            size="sm"
+                          >
+                            <strong>Da</strong>
+                          </Button>
+                        ) : m.totalAmountPayed > m.membershipFee ? (
+                          <Button
+                            style={{ width: "80%" }}
+                            size="sm"
+                            variant="warning"
+                            disabled
+                          >
+                            <strong>{m.totalAmountPayed}KM</strong>
+                          </Button>
                         ) : (
-                          <React.Fragment>
-                            <Button size="sm" variant="warning">
-                              Dodaj uplatu
-                            </Button>
-                          </React.Fragment>
+                          <Button
+                            style={{ width: "80%" }}
+                            onClick={(ev) => {
+                              handleShowAddPayment(ev, m.member.Id);
+                            }}
+                            size="sm"
+                            variant="warning"
+                          >
+                            <strong>{m.totalAmountPayed}KM | Uplati</strong>
+                          </Button>
                         )}
                       </td>
-                      <td>{m.debt}</td>
-                      <td>Moram napraviti</td>
+                      <td>Napraviti</td>
                       <td>
-                        <Button size="sm" variant="primary">
+                        <Button
+                          style={{ width: "80%" }}
+                          variant="success"
+                          disabled
+                          size="sm"
+                        >
+                          <strong>
+                            {m.latestPayment
+                              ? m.latestPayment.DateOfPayment.split("T")[0]
+                              : "Nema uplata"}
+                          </strong>
+                        </Button>
+                      </td>
+                      <td>
+                        <Button
+                          name={m.member.Id}
+                          onClick={handleSetViewMember}
+                          size="sm"
+                          variant="primary"
+                        >
                           Informacije
                         </Button>
                       </td>

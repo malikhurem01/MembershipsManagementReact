@@ -1,13 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Button } from "react-bootstrap";
+import { Button, Row, Col } from "react-bootstrap";
 
 import spreadsheetService from "../../../Services/spreadsheetService";
 
 import PageWrapperComponent from "../../PageWrapper/PageWrapperComponent";
 
-import classes from "./ArchiveSpreadsheet.module.css";
 import styles from "../../FormModal/FormModal.module.css";
 
 const ArchiveSpreadsheets = () => {
@@ -66,17 +65,35 @@ const ArchiveSpreadsheets = () => {
   };
   return (
     <PageWrapperComponent>
-      <div className={styles.modal}>
-        <h5>Lista baza</h5>
-        {spreadsheets.length < 1 && <h5>Nema kreiranih baza</h5>}
-        <ul className={classes.spreadsheetList}>
-          {spreadsheets.map((s, i) => {
-            return (
-              <li key={i}>
-                <p>
-                  {s.year}. god {s.archived && <strong> | Arhiva</strong>}{" "}
-                  {!s.archived && <strong> | Aktivna</strong>}
-                </p>
+      <div className={styles.backdrop}></div>
+      <div className={styles.modal} style={{ minWidth: "20%" }}>
+        <h4
+          style={{
+            borderBottom: "1px solid #cecece",
+            marginBottom: "15px",
+            paddingBottom: "5px",
+          }}
+        >
+          {spreadsheets.length < 1 ? "Nema kreiranih baza" : "Lista baza"}
+        </h4>
+        {spreadsheets.map((s, i) => {
+          return (
+            <Row
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Col>
+                <div>
+                  <p>
+                    {s.year}. god {s.archived && <strong> | Arhiva</strong>}
+                    {!s.archived && <strong> | Aktivna</strong>}
+                  </p>
+                </div>
+              </Col>
+              <Col>
                 {s.archived && (
                   <Button name={s.id} variant="success">
                     Pregled
@@ -97,10 +114,10 @@ const ArchiveSpreadsheets = () => {
                     {message}
                   </Button>
                 )}
-              </li>
-            );
-          })}
-        </ul>{" "}
+              </Col>
+            </Row>
+          );
+        })}
         <Button
           onClick={handleNavigateToMain}
           style={{ margin: "15px 0", width: "100%" }}

@@ -8,6 +8,8 @@ const routes = {
   archiveSpreadsheet: "Spreadsheet/archive",
   getActiveSpreadsheet: "Spreadsheet/get/active",
   addNewMember: "Member/add",
+  addPayment: "Payment/add",
+  deletePayment: "Payment/delete",
 };
 
 module.exports = { serverURL, routes };
