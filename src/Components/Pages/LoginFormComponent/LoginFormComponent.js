@@ -23,12 +23,17 @@ const LoginFormComponent = ({ onFormSubmit, errorOccured, loginStage }) => {
             <img src={logoIZ} alt="Islamska zajednica u Bosni i Hercegovini" />
           </div>
           <div className={classes.loginContainerHeaderTitleContainer}>
-            <p className={classes.loginContainerHeaderTitleBold}>
-              Program za vođenje troškova
-            </p>
-            <p className={classes.loginContainerHeaderTitle}>
-              Medžlis islamske zajednice Gračanica
-            </p>
+            <div>
+              <p className={classes.loginContainerHeaderTitleBold}>
+                Program za praćenje i upravljanje budžetom
+              </p>
+            </div>
+            <div>
+              <p className={classes.loginContainerHeaderTitle}>
+                Medžlis Islamske zajednice Gračanica
+              </p>
+            </div>
+
             <p className={classes.loginContainerHeaderTitle}>Džemat Golaći</p>
           </div>
         </div>

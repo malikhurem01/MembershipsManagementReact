@@ -1,5 +1,5 @@
 .loginContainer {
-  width: 430px;
+  width: 450px;
   background-color: #fafafa;
   border-radius: 10px;
   position: absolute;
@@ -10,7 +10,7 @@
 
 @media only screen and (max-width: 600px) {
   .loginContainer {
-    width: 90%;
+    width: 100%;
   }
   .loginContainerHeaderFirstLoginStage h4 {
     font-size: 20px;
@@ -35,7 +35,7 @@
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   text-align: center;
-  padding: 20px;
+  padding: 15px;
 }
 
 .loginContainerHeaderFirstLoginStage h4 {
