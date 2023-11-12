@@ -23,18 +23,13 @@ const LoginFormComponent = ({ onFormSubmit, errorOccured, loginStage }) => {
             <img src={logoIZ} alt="Islamska zajednica u Bosni i Hercegovini" />
           </div>
           <div className={classes.loginContainerHeaderTitleContainer}>
-            <div>
-              <p className={classes.loginContainerHeaderTitleBold}>
-                Program za praćenje i upravljanje budžetom
-              </p>
+            <div className={classes.loginContainerHeaderTitleBold}>
+              Program za praćenje i upravljanje budžetom
             </div>
-            <div>
-              <p className={classes.loginContainerHeaderTitle}>
-                Medžlis Islamske zajednice Gračanica
-              </p>
-            </div>
-
-            <p className={classes.loginContainerHeaderTitle}>Džemat Golaći</p>
+            <p>
+              Medžlis islamske zajednice Gračanica&nbsp;|&nbsp;
+              <strong>Džemat Golaći</strong>
+            </p>
           </div>
         </div>
       )}
@@ -52,7 +47,7 @@ const LoginFormComponent = ({ onFormSubmit, errorOccured, loginStage }) => {
           className="mb-3"
         >
           <Form.Control
-            size="sm"
+            size="md"
             value={username}
             onChange={(ev) => setUsername(ev.target.value)}
             type="text"
@@ -65,6 +60,7 @@ const LoginFormComponent = ({ onFormSubmit, errorOccured, loginStage }) => {
           label="Lozinka"
         >
           <Form.Control
+            size="md"
             value={password}
             onChange={(ev) => setPassword(ev.target.value)}
             type="password"
