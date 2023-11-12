@@ -70,6 +70,7 @@
   }
   .gridItem {
     flex-basis: 50%;
+    width: 90%;
   }
   .menuOptionText {
     font-size: 18px;
