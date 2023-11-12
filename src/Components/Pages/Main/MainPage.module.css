@@ -65,6 +65,9 @@
   }
 }
 @media (max-width: 815px) {
+  .container {
+    width: 90%;
+  }
   .gridItem {
     flex-basis: 50%;
   }
