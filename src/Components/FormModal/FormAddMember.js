@@ -4,7 +4,6 @@ import { FloatingLabel, Form, Button, Row, Col, Table } from "react-bootstrap";
 
 import classes from "./FormModal.module.css";
 import FamilyMember from "./FamilyMember";
-import { useNavigate } from "react-router-dom";
 
 import loadingSvg from "../../Assets/Pictures/loadingSvg.svg";
 import creationFailed from "../../Assets/Pictures/creationFailed.svg";
@@ -28,10 +27,6 @@ const FormAddMember = ({
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
   const [debt, setDebt] = useState(0);
-  const [paymentMade, setPaymentMade] = useState("");
-  const [familyMembers, setFamilyMembers] = useState([]);
-  const [active, setActive] = useState(true);
-  const [addToSpreadsheet, setAddToSpreadsheet] = useState(true);
   const [editMode, setEditMode] = useState(false);
 
   const handeEnterEditMode = () => {
@@ -63,10 +58,8 @@ const FormAddMember = ({
       email,
       status: +status,
       debt,
-      paymentMade: Boolean(paymentMade),
-      familyMembers,
-      active,
-      addToSpreadsheet,
+      active: true,
+      addToSpreadsheet: true,
       dzematId: JSON.parse(localStorage.getItem("dzemat_id")),
     };
     const token = JSON.parse(localStorage.getItem("user_jwt"));

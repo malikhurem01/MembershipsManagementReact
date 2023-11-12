@@ -2,9 +2,7 @@ import React, { useState } from "react";
 
 import styles from "./FormModal.module.css";
 import { Form, Row, Col, FloatingLabel, Button } from "react-bootstrap";
-import { getParam } from "../../Services/utils";
 import paymentService from "../../Services/paymentService";
-import { useNavigate } from "react-router-dom";
 
 import loadingSvg from "../../Assets/Pictures/loadingSvg.svg";
 import creationFailed from "../../Assets/Pictures/creationFailed.svg";

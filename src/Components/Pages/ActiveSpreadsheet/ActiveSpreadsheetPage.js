@@ -91,7 +91,7 @@ const ActiveSpreadsheetPage = () => {
       .catch((err) => {
         console.log(memberFilter);
       });
-  }, [memberFilter]);
+  }, [memberFilter, activeSpreadsheet]);
 
   const handleAddMemberClick = () => {
     setShowAddMember((prevState) => !prevState);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import userService from "../../../Services/userService";
@@ -11,7 +11,6 @@ export const loader = () => {
 };
 
 export default function LoginDzematPage() {
-  const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
   const navigate = useNavigate();
@@ -31,11 +30,6 @@ export default function LoginDzematPage() {
         }
       });
   };
-
-  useEffect(() => {
-    if (success) {
-    }
-  }, [navigate, success]);
 
   return (
     <LoginFormComponent
