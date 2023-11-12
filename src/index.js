@@ -17,16 +17,16 @@ import CreateSpreadsheetPage from "./Components/Pages/CreateSpreadsheet/CreateSp
 import ActiveSpreadsheetPage from "./Components/Pages/ActiveSpreadsheet/ActiveSpreadsheetPage";
 import ArchiveSpreadsheets from "./Components/Pages/ArchiveSpreadsheets/ArchiveSpreadsheets";
 import RegularMemberships from "./Components/Pages/RegularMemberships/RegularMemberships";
-import DeviceQuestionPage from "./Components/Pages/DeviceQuestionPage/DeviceQuestionPage";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "./index.css";
 import ErrorElement from "./Components/Pages/ErrorPage/ErrorElement";
+import IndexPage from "./Components/Pages/IndexPage/IndexPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <DeviceQuestionPage />,
+    element: <IndexPage />,
     errorElement: <ErrorElement />,
   },
   {
