@@ -25,8 +25,6 @@ import FormAddPayment from "../../FormModal/FormAddPayment";
 const ActiveSpreadsheetPage = () => {
   const [activeSpreadsheet, setActiveSpreadsheet] = useState();
   const [membersInfo, setMembersInfo] = useState([]);
-  const [searchName, setSearchName] = useState();
-  const [searchLastName, setSearchLastName] = useState();
   const [showAddMember, setShowAddMember] = useState(false);
   const [response, setResponse] = useState();
   const [waitingResponse, setWaitingResponse] = useState(false);
