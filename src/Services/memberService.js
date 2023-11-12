@@ -7,10 +7,21 @@ const addMember = (token, member) => {
   });
 };
 
-const getMembers = () => {
-  return JSON.parse(localStorage.getItem("clanovi"));
+const modifyMember = (token, member) => {
+  return axios.patch(`${serverURL}${routes.modifyMember}`, member, {
+    headers: { Authorization: "Bearer " + token },
+  });
 };
 
-const memberService = { addMember, getMembers };
+const filterMembers = (token, name, lastName, spreadsheetId) => {
+  return axios.get(
+    `${serverURL}${routes.filterMembers}?spreadsheetId=${spreadsheetId}&name=${name}&lastName=${lastName}`,
+    {
+      headers: { Authorization: "Bearer " + token },
+    }
+  );
+};
+
+const memberService = { addMember, modifyMember, filterMembers };
 
 export default memberService;

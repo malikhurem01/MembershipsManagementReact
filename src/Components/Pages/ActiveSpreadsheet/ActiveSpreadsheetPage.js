@@ -35,6 +35,10 @@ const ActiveSpreadsheetPage = () => {
   const [showViewMember, setShowViewMember] = useState(false);
   const [memberToView, setMemberToView] = useState(null);
   const [selectedMember, setSelectedMember] = useState(null);
+  const [memberFilter, setMemberFilter] = useState({
+    firstName: "",
+    lastName: "",
+  });
 
   const navigate = useNavigate();
 
@@ -61,6 +65,7 @@ const ActiveSpreadsheetPage = () => {
         console.log(responseParsed);
         setActiveSpreadsheet(responseParsed.spreadsheet);
         setMembersInfo(responseParsed.rawMembersInfo);
+        setMemberFilter({ firstName: "", lastName: "" });
       })
       .catch((err) => {
         setActiveSpreadsheet(null);
@@ -72,6 +77,24 @@ const ActiveSpreadsheetPage = () => {
     handleFetchActiveSpreadsheet();
   }, [handleFetchActiveSpreadsheet]);
 
+  useEffect(() => {
+    const token = JSON.parse(localStorage.getItem("user_jwt"));
+    memberService
+      .filterMembers(
+        token,
+        memberFilter.firstName,
+        memberFilter.lastName,
+        activeSpreadsheet?.id
+      )
+      .then((res) => {
+        const responseParsed = JSON.parse(res.data.data);
+        setMembersInfo(responseParsed.membersList);
+      })
+      .catch((err) => {
+        console.log(memberFilter);
+      });
+  }, [memberFilter]);
+
   const handleAddMemberClick = () => {
     setShowAddMember((prevState) => !prevState);
   };
@@ -81,6 +104,26 @@ const ActiveSpreadsheetPage = () => {
     setWaitingResponse(true);
     memberService
       .addMember(token, data)
+      .then((res) => {
+        handleFetchActiveSpreadsheet();
+        setResponse({
+          message: res.data.message,
+          statusCode: res.status,
+        });
+      })
+      .catch((err) => {
+        setResponse({
+          message: err.response.data.message,
+          statusCode: err.response.data.statusCode,
+        });
+      });
+  };
+
+  const handleModifyMember = (token, data) => {
+    setResponse({ message: "Uređujem...", statusCode: null });
+    setWaitingResponse(true);
+    memberService
+      .modifyMember(token, data)
       .then((res) => {
         handleFetchActiveSpreadsheet();
         setResponse({
@@ -149,19 +192,36 @@ const ActiveSpreadsheetPage = () => {
   const handleShowAddPayment = (ev, id) => {
     if (!showAddPayment) {
       setSelectedMember(id);
-      console.log(id);
     }
     setShowAddPayment((prevState) => !prevState);
   };
 
   const handleSetViewMember = (ev) => {
-    setMemberToView(() => {
-      const memberToView = membersInfo.filter(
-        (mi) => mi.member.Id === +ev.target.name
-      );
-      return memberToView[0];
-    });
+    if (!showViewMember) {
+      setMemberToView(() => {
+        const memberToView = membersInfo.filter(
+          (mi) => mi.member.Id === +ev.target.name
+        );
+        return memberToView[0];
+      });
+    }
+
     setShowViewMember((prevState) => !prevState);
+  };
+
+  const handleFilterInput = (ev) => {
+    if (ev.target.name === "firstName") {
+      setMemberFilter((prevState) => {
+        return {
+          firstName: ev.target.value,
+          lastName: prevState.lastName,
+        };
+      });
+    } else if (ev.target.name === "lastName") {
+      setMemberFilter((prevState) => {
+        return { firstName: prevState.firstName, lastName: ev.target.value };
+      });
+    }
   };
 
   return (
@@ -171,7 +231,12 @@ const ActiveSpreadsheetPage = () => {
           viewMode={true}
           memberInfo={memberToView}
           handleAddMemberClick={handleSetViewMember}
+          response={response}
           waitingResponse={waitingResponse}
+          handleFormSubmit={handleModifyMember}
+          clearSubmit={() => {
+            setWaitingResponse(false);
+          }}
         />
       )}
       {!waitingResponse && showAddPayment && (
@@ -182,7 +247,7 @@ const ActiveSpreadsheetPage = () => {
           handleFetchActiveSpreadsheet={handleFetchActiveSpreadsheet}
         />
       )}
-      {waitingResponse && (
+      {waitingResponse && !showViewMember && (
         <React.Fragment>
           <div className={styles.backdrop}></div>
           <div className={styles.responseModalAbsolute}>
@@ -310,8 +375,8 @@ const ActiveSpreadsheetPage = () => {
               <Col lg="auto" md="auto" sm="auto">
                 <FloatingLabel controlId="floatingName" label="Ime">
                   <Form.Control
-                    value={searchName}
-                    onChange={(ev) => setSearchName(ev.target.value)}
+                    name="firstName"
+                    onChange={handleFilterInput}
                     type="text"
                     placeholder="Ime člana"
                   />
@@ -320,8 +385,8 @@ const ActiveSpreadsheetPage = () => {
               <Col lg="auto" md={4} sm="auto">
                 <FloatingLabel controlId="floatingLastName" label="Prezime">
                   <Form.Control
-                    value={searchLastName}
-                    onChange={(ev) => setSearchLastName(ev.target.value)}
+                    name="lastName"
+                    onChange={handleFilterInput}
                     type="text"
                     placeholder="Prezime"
                   />
@@ -394,7 +459,7 @@ const ActiveSpreadsheetPage = () => {
                             {m.member.Status === 0
                               ? "Brak"
                               : m.member.Status === 1
-                              ? "Udovac/Udovica"
+                              ? "Udovac"
                               : m.member.Status === 2
                               ? "Granična dob"
                               : ""}
@@ -413,23 +478,14 @@ const ActiveSpreadsheetPage = () => {
                         </Button>
                       </td>
                       <td>
-                        {m.membershipFee === m.totalAmountPayed ? (
+                        {m.member.Debt === 0 ? (
                           <Button
                             style={{ width: "80%" }}
                             variant="success"
                             disabled
                             size="sm"
                           >
-                            <strong>Da</strong>
-                          </Button>
-                        ) : m.totalAmountPayed > m.membershipFee ? (
-                          <Button
-                            style={{ width: "80%" }}
-                            size="sm"
-                            variant="warning"
-                            disabled
-                          >
-                            <strong>{m.totalAmountPayed}KM</strong>
+                            <strong>{m.totalAmountPayed}KM | Da</strong>
                           </Button>
                         ) : (
                           <Button
@@ -444,7 +500,15 @@ const ActiveSpreadsheetPage = () => {
                           </Button>
                         )}
                       </td>
-                      <td>Napraviti</td>
+                      <td>
+                        <Button
+                          size="sm"
+                          variant={m.member.Debt === 0 ? "success" : "danger"}
+                          disabled
+                        >
+                          {m.member.Debt}KM
+                        </Button>
+                      </td>
                       <td>
                         <Button
                           style={{ width: "80%" }}

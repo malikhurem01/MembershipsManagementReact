@@ -26,7 +26,6 @@ const FormAddMember = ({
   const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
-  const [membershipFee, setMembershipFee] = useState("");
   const [status, setStatus] = useState("");
   const [debt, setDebt] = useState(0);
   const [paymentMade, setPaymentMade] = useState("");
@@ -35,16 +34,26 @@ const FormAddMember = ({
   const [addToSpreadsheet, setAddToSpreadsheet] = useState(true);
   const [editMode, setEditMode] = useState(false);
 
+  const handeEnterEditMode = () => {
+    setEvNumber(memberInfo.member.EvNumber);
+    setFirstName(memberInfo.member.FirstName);
+    setLastName(memberInfo.member.LastName);
+    setFathersName(memberInfo.member.FathersName);
+    setPhoneNumber(memberInfo.member.PhoneNumber);
+    setAddress(memberInfo.member.Address);
+    setEmail(memberInfo.member.Email);
+    setStatus(memberInfo.member.Status);
+  };
+
   const [showFamilyMembersForm, setShowFamilyMembersForm] = useState(false);
 
-  const navigate = useNavigate();
-
-  const tableColumns = ["#", "Datum", "Iznos", "Nadležni", "Postavke"];
+  const tableColumns = ["#", "Datum", "Iznos", "Nadležni"];
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
 
     const member = {
+      id: editMode ? memberInfo.member.Id : null,
       evNumber: +evNumber,
       firstName,
       lastName,
@@ -52,7 +61,6 @@ const FormAddMember = ({
       phoneNumber,
       address,
       email,
-      membershipFee,
       status: +status,
       debt,
       paymentMade: Boolean(paymentMade),
@@ -70,18 +78,25 @@ const FormAddMember = ({
   };
 
   const handleClearSubmit = () => {
-    handleAddMemberClick();
+    if (editMode) {
+      setEditMode(false);
+    } else {
+      handleAddMemberClick();
+    }
     clearSubmit();
   };
 
   const handleEditMode = () => {
+    if (!editMode) {
+      handeEnterEditMode();
+    }
     setEditMode((prevState) => !prevState);
   };
 
   return (
     <React.Fragment>
       <div className={classes.backdrop}></div>
-      {waitingResponse && !viewMode && (
+      {waitingResponse && (!viewMode || editMode) && (
         <div className={classes.responseModalAbsolute}>
           {response.statusCode == null && (
             <img src={loadingSvg} alt="učitavam kreiranje baze" />
@@ -124,7 +139,11 @@ const FormAddMember = ({
               paddingBottom: "5px",
             }}
           >
-            {!viewMode ? "Novi član" : "Pregled člana"}
+            {!viewMode
+              ? "Novi član"
+              : viewMode && editMode
+              ? "Uredi člana"
+              : "Pregled člana"}
           </h4>
           <div className={classes.scrollable}>
             <Form onSubmit={handleSubmit}>
@@ -137,12 +156,16 @@ const FormAddMember = ({
                     className="mb-3"
                   >
                     <Form.Control
-                      value={!viewMode ? evNumber : memberInfo.member.EvNumber}
+                      value={
+                        !viewMode || editMode
+                          ? evNumber
+                          : memberInfo.member.EvNumber
+                      }
                       onChange={(ev) => setEvNumber(ev.target.value)}
                       type="number"
                       placeholder="Ev. broj"
                       required
-                      disabled={viewMode}
+                      disabled={viewMode && !editMode}
                     />
                   </FloatingLabel>
                 </Col>
@@ -153,12 +176,16 @@ const FormAddMember = ({
                     className="mb-3"
                   >
                     <Form.Control
-                      value={!viewMode ? lastName : memberInfo.member.LastName}
+                      value={
+                        !viewMode || editMode
+                          ? lastName
+                          : memberInfo.member.LastName
+                      }
                       onChange={(ev) => setLastName(ev.target.value)}
                       type="text"
                       placeholder="Prezime"
                       required
-                      disabled={viewMode}
+                      disabled={viewMode && !editMode}
                     />
                   </FloatingLabel>
                 </Col>
@@ -170,13 +197,15 @@ const FormAddMember = ({
                   >
                     <Form.Control
                       value={
-                        !viewMode ? fathersName : memberInfo.member.FathersName
+                        !viewMode || editMode
+                          ? fathersName
+                          : memberInfo.member.FathersName
                       }
                       onChange={(ev) => setFathersName(ev.target.value)}
                       type="text"
                       placeholder="Ime oca"
                       required
-                      disabled={viewMode}
+                      disabled={viewMode && !editMode}
                     />
                   </FloatingLabel>
                 </Col>
@@ -188,13 +217,15 @@ const FormAddMember = ({
                   >
                     <Form.Control
                       value={
-                        !viewMode ? firstName : memberInfo.member.FirstName
+                        !viewMode || editMode
+                          ? firstName
+                          : memberInfo.member.FirstName
                       }
                       onChange={(ev) => setFirstName(ev.target.value)}
                       type="text"
                       placeholder="Ime člana"
                       required
-                      disabled={viewMode}
+                      disabled={viewMode && !editMode}
                     />
                   </FloatingLabel>
                 </Col>
@@ -210,13 +241,15 @@ const FormAddMember = ({
                   >
                     <Form.Control
                       value={
-                        !viewMode ? phoneNumber : memberInfo.member.PhoneNumber
+                        !viewMode || editMode
+                          ? phoneNumber
+                          : memberInfo.member.PhoneNumber
                       }
                       onChange={(ev) => setPhoneNumber(ev.target.value)}
                       type="text"
                       placeholder="Broj telefona"
                       required
-                      disabled={viewMode}
+                      disabled={viewMode && !editMode}
                     />
                   </FloatingLabel>
                 </Col>
@@ -227,12 +260,16 @@ const FormAddMember = ({
                     className="mb-3"
                   >
                     <Form.Control
-                      value={!viewMode ? address : memberInfo.member.Address}
+                      value={
+                        !viewMode || editMode
+                          ? address
+                          : memberInfo.member.Address
+                      }
                       onChange={(ev) => setAddress(ev.target.value)}
                       type="text"
                       placeholder="Adresa Stanovanja"
                       required
-                      disabled={viewMode}
+                      disabled={viewMode && !editMode}
                     />
                   </FloatingLabel>
                 </Col>
@@ -243,12 +280,14 @@ const FormAddMember = ({
                     className="mb-3"
                   >
                     <Form.Control
-                      value={!viewMode ? email : memberInfo.member.Email}
+                      value={
+                        !viewMode || editMode ? email : memberInfo.member.Email
+                      }
                       onChange={(ev) => setEmail(ev.target.value)}
                       type="email"
                       placeholder="Email adresa"
                       required
-                      disabled={viewMode}
+                      disabled={viewMode && !editMode}
                     />
                   </FloatingLabel>
                 </Col>
@@ -259,12 +298,12 @@ const FormAddMember = ({
                 <Col lg={2} md="auto" sm={8}>
                   <FloatingLabel controlId="floatingDebt" label="Dug">
                     <Form.Control
-                      value={!viewMode ? debt : memberInfo.Debt}
+                      value={!viewMode || editMode ? debt : memberInfo.Debt}
                       onChange={(ev) => setDebt(ev.target.value)}
                       type="number"
                       placeholder="Dug"
                       required
-                      disabled={viewMode}
+                      disabled={viewMode && !editMode}
                     />
                   </FloatingLabel>
                 </Col>
@@ -290,7 +329,6 @@ const FormAddMember = ({
 
                 <Col lg={4} md="auto" sm={8}>
                   <FloatingLabel
-                    value={status}
                     controlId="floatingStatus"
                     label="Status člana"
                   >
@@ -298,8 +336,13 @@ const FormAddMember = ({
                       onChange={(ev) => setStatus(ev.target.value)}
                       aria-label="MemberStatus"
                       required
-                      disabled={viewMode}
+                      disabled={viewMode && !editMode}
                       defaultValue={"0"}
+                      value={
+                        !viewMode || editMode
+                          ? status
+                          : memberInfo.member.Status
+                      }
                     >
                       <option>Status člana</option>
                       <option value="0">Brak</option>
@@ -320,7 +363,7 @@ const FormAddMember = ({
                   </Button>
                 </div>
               )}
-              {viewMode && memberInfo.payments.length < 1 && (
+              {viewMode && memberInfo.payments.length < 1 && !editMode && (
                 <h5>Nema uplata za otvorenu bazu</h5>
               )}
               {viewMode && memberInfo.payments.length > 0 && (
@@ -333,6 +376,7 @@ const FormAddMember = ({
                           {tableColumns.map((el, index) => (
                             <th key={index}>{el}</th>
                           ))}
+                          {editMode && <th key="5">Postavke</th>}
                         </tr>
                       </thead>
                       <tbody>
@@ -347,11 +391,13 @@ const FormAddMember = ({
                                   " " +
                                   el.supervisor.LastName}
                               </td>
-                              <td>
-                                <Button size="sm" variant="danger">
-                                  Izbriši
-                                </Button>
-                              </td>
+                              {editMode && (
+                                <td>
+                                  <Button size="sm" variant="danger">
+                                    Izbriši
+                                  </Button>
+                                </td>
+                              )}
                             </tr>
                           );
                         })}
@@ -363,17 +409,16 @@ const FormAddMember = ({
                   </div>
                 </React.Fragment>
               )}
-              {!viewMode ||
-                (editMode && (
-                  <Button
-                    type="submit"
-                    style={{ marginRight: "20px" }}
-                    variant="primary"
-                  >
-                    Spremi
-                  </Button>
-                ))}
-              {viewMode && (
+              {(!viewMode || editMode) && (
+                <Button
+                  type="submit"
+                  style={{ marginRight: "20px" }}
+                  variant={editMode ? "success" : "primary"}
+                >
+                  Spremi
+                </Button>
+              )}
+              {viewMode && !editMode && (
                 <Button
                   onClick={handleEditMode}
                   style={{ marginRight: "15px" }}
@@ -392,7 +437,11 @@ const FormAddMember = ({
                 }}
                 variant={!viewMode ? "danger" : "primary"}
               >
-                {!viewMode ? "Odustani" : "Nazad"}
+                {!viewMode
+                  ? "Odustani"
+                  : viewMode && !editMode
+                  ? "Nazad"
+                  : "Odustani"}
               </Button>
             </Form>
           </div>

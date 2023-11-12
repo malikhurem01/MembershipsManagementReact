@@ -8,6 +8,8 @@ const routes = {
   archiveSpreadsheet: "Spreadsheet/archive",
   getActiveSpreadsheet: "Spreadsheet/get/active",
   addNewMember: "Member/add",
+  modifyMember: "Member/modify",
+  filterMembers: "Member/get/all/filter",
   addPayment: "Payment/add",
   deletePayment: "Payment/delete",
 };
