@@ -307,25 +307,6 @@ const FormAddMember = ({
                     />
                   </FloatingLabel>
                 </Col>
-                {!viewMode && (
-                  <Col lg={3} md="auto" sm={8}>
-                    <FloatingLabel
-                      value={paymentMade}
-                      controlId="floatingPayed"
-                      label="Uplaćeno?"
-                    >
-                      <Form.Select
-                        onChange={(ev) => setPaymentMade(ev.target.value)}
-                        aria-label="MemberStatus"
-                        required
-                        defaultValue={"0"}
-                      >
-                        <option value="0">Da</option>
-                        <option value="1">Ne</option>
-                      </Form.Select>
-                    </FloatingLabel>{" "}
-                  </Col>
-                )}
 
                 <Col lg={4} md="auto" sm={8}>
                   <FloatingLabel
