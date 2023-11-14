@@ -18,7 +18,7 @@ const LoginUserPage = () => {
       .then((res) => {
         localStorage.setItem("user_jwt", JSON.stringify(res.data.data.token));
         handleSetResponse({ loading: "done", success: true });
-        navigate("/naslovna");
+        window.location.replace("/naslovna");
       })
       .catch((err) => {
         handleSetResponse({ loading: "done", success: false });
