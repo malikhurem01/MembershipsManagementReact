@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import styles from "./FormModal.module.css";
 import { Form, Row, Col, FloatingLabel, Button } from "react-bootstrap";
@@ -7,17 +7,16 @@ import paymentService from "../../Services/paymentService";
 import loadingSvg from "../../Assets/Pictures/loadingSvg.svg";
 import creationFailed from "../../Assets/Pictures/creationFailed.svg";
 import creationSuccess from "../../Assets/Pictures/creationSuccess.svg";
+import ActiveSpreadsheetContext from "../../Store/active-spreadsheet-context";
 
-const FormAddPayment = ({
-  memberId,
-  activeSpreadsheet,
-  handleShowAddPayment,
-  handleFetchActiveSpreadsheet,
-}) => {
+const FormAddPayment = ({ handleShowAddPayment }) => {
   const [response, setResponse] = useState();
   const [waitingResponse, setWaitingResponse] = useState(false);
   const [amount, setAmount] = useState("");
   const [dateOfPayment, setDateOfPayment] = useState("");
+
+  let { handleFetchActiveSpreadsheet, activeSpreadsheet, selectedMember } =
+    useContext(ActiveSpreadsheetContext);
 
   const handlePaymentSubmit = (ev) => {
     ev.preventDefault();
@@ -27,7 +26,7 @@ const FormAddPayment = ({
       amount,
       dateOfPayment,
       spreadsheetId: activeSpreadsheet.id,
-      memberId,
+      memberId: selectedMember.member.Id,
     };
     const token = JSON.parse(localStorage.getItem("user_jwt"));
     paymentService
@@ -44,7 +43,6 @@ const FormAddPayment = ({
           statusCode: err.response.data.statusCode,
         });
       });
-    //
   };
 
   const handleClearSubmit = () => {

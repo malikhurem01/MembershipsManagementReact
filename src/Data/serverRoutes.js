@@ -1,4 +1,4 @@
-const serverURL = "https://membershipsmanagement.azurewebsites.net/api/";
+const serverURL = "https://localhost:7136/api/";
 const routes = {
   dzematLogin: "Authentication/login/dzemat",
   supervisorLogin: "Authentication/login/supervisor",
@@ -10,6 +10,8 @@ const routes = {
   addNewMember: "Member/add",
   modifyMember: "Member/modify",
   filterMembers: "Member/get/all/filter",
+  addMemberFamily: "Member/family/add",
+  getMemberFamily: "Member/get/family",
   addPayment: "Payment/add",
   deletePayment: "Payment/delete",
 };

@@ -1,27 +1,68 @@
-import React, { useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import classes from "./FormModal.module.css";
 
 import { Row, Col, FloatingLabel, Form, Button, Table } from "react-bootstrap";
+import memberService from "../../Services/memberService";
+import ActiveSpreadsheetContext from "../../Store/active-spreadsheet-context";
 
-const FamilyMember = ({
-  handleShowFamilyMemberForm,
-  handleAddFamilyMember,
-}) => {
+const FamilyMember = ({ handleShowFamilyMemberForm, editMode }) => {
+  const [familyMembers, setFamilyMembers] = useState([]);
+  const [familyMemberName, setFamilyMemberName] = useState("");
+  const [familyMemberLastName, setFamilyMemberLastName] = useState("");
+  const [familyMemberDateOfBirth, setFamilyMemberDateOfBirth] = useState("");
+  const [familyMemberStatus, setFamilyMemberStatus] = useState("");
   const [sureDeleteFamilyMember, setHandleSureDeleteFamilyMember] =
     useState(false);
 
-  const handleSureDeleteFamilyMember = () => {
-    setHandleSureDeleteFamilyMember((prevState) => !prevState);
-  };
+  let { selectedMember } = useContext(ActiveSpreadsheetContext);
+
+  const handleFetchFamilyMembers = useCallback(() => {
+    if (editMode) {
+      const token = JSON.parse(localStorage.getItem("user_jwt"));
+      memberService
+        .getFamilyMembers(token, selectedMember.member.Id)
+        .then((res) => {
+          setFamilyMembers(res.data.data["$values"]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [selectedMember, editMode]);
+
+  useEffect(() => {
+    handleFetchFamilyMembers();
+  }, [handleFetchFamilyMembers]);
+
   const handleSubmitForm = (ev) => {
     ev.preventDefault();
-    //LOGIC
+    const token = JSON.parse(localStorage.getItem("user_jwt"));
+    memberService
+      .addFamilyMember(token, {
+        memberId: selectedMember.member.Id,
+        firstName: familyMemberName,
+        lastName: familyMemberLastName,
+        dateOfBirth: familyMemberDateOfBirth,
+        status: +familyMemberStatus,
+      })
+      .then((res) => {
+        handleFetchFamilyMembers(selectedMember.member.Id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    setFamilyMemberName("");
+    setFamilyMemberLastName("");
+    setFamilyMemberStatus("");
+    setFamilyMemberDateOfBirth("");
   };
   const tableColumns = [
+    "#",
     "Ime",
     "Prezime",
-    "Godište",
-    "Dijete/Partner",
+    "Datum rođenja",
+    "Status",
     "Postavke",
   ];
 
@@ -51,7 +92,13 @@ const FamilyMember = ({
                   controlId="floatingMembershipFamilyName"
                   label="Ime"
                 >
-                  <Form.Control type="text" placeholder="Ime" />
+                  <Form.Control
+                    value={familyMemberName}
+                    onChange={(ev) => setFamilyMemberName(ev.target.value)}
+                    type="text"
+                    placeholder="Ime"
+                    required
+                  />
                 </FloatingLabel>
               </Col>
               <Col lg={3} md="auto" sm={8}>
@@ -59,7 +106,13 @@ const FamilyMember = ({
                   controlId="floatingMembershipFamilyLastName"
                   label="Prezime"
                 >
-                  <Form.Control type="text" placeholder="Prezime" />
+                  <Form.Control
+                    value={familyMemberLastName}
+                    onChange={(ev) => setFamilyMemberLastName(ev.target.value)}
+                    type="text"
+                    placeholder="Prezime"
+                    required
+                  />
                 </FloatingLabel>
               </Col>
               <Col lg={3} md="auto" sm={8}>
@@ -67,7 +120,15 @@ const FamilyMember = ({
                   controlId="floatingMembershipFamilyBirthDate"
                   label="Godina rođenja"
                 >
-                  <Form.Control type="date" placeholder="Godina rođenja" />
+                  <Form.Control
+                    value={familyMemberDateOfBirth}
+                    onChange={(ev) =>
+                      setFamilyMemberDateOfBirth(ev.target.value)
+                    }
+                    type="date"
+                    placeholder="Godina rođenja"
+                    required
+                  />
                 </FloatingLabel>
               </Col>
               <Col lg={3} md="auto" sm={8}>
@@ -75,10 +136,17 @@ const FamilyMember = ({
                   controlId="floatingFamilyStatus"
                   label="Dijete/Partner"
                 >
-                  <Form.Select aria-label="FamilyMemberStatus">
+                  <Form.Select
+                    value={familyMemberStatus}
+                    onChange={(ev) => setFamilyMemberStatus(ev.target.value)}
+                    aria-label="FamilyMemberStatus"
+                    required
+                  >
                     <option>Dijete/Partner</option>
-                    <option value="1">Partner</option>
-                    <option value="2">Dijete</option>
+                    <option value="0">Muž</option>
+                    <option value="1">Žena</option>
+                    <option value="2">Sin</option>
+                    <option value="3">Kćerka</option>
                   </Form.Select>
                 </FloatingLabel>
               </Col>
@@ -87,50 +155,32 @@ const FamilyMember = ({
               <Table hover striped responsive>
                 <thead>
                   <tr>
-                    <th>#</th>
                     {tableColumns.map((el, index) => (
                       <th key={index}>{el}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    {Array.from({ length: 4 }).map((_, index) => (
-                      <td key={index}>Table cell {index}</td>
-                    ))}
-                    <td>
-                      <Button
-                        onClick={handleSureDeleteFamilyMember}
-                        size="sm"
-                        variant="danger"
-                      >
-                        Izbriši
-                      </Button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    {Array.from({ length: 4 }).map((_, index) => (
-                      <td key={index}>Table cell {index}</td>
-                    ))}
-                    <td>
-                      <Button size="sm" variant="danger">
-                        Izbriši
-                      </Button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    {Array.from({ length: 4 }).map((_, index) => (
-                      <td key={index}>Table cell {index}</td>
-                    ))}
-                    <td>
-                      <Button size="sm" variant="danger">
-                        Izbriši
-                      </Button>
-                    </td>
-                  </tr>
+                  {familyMembers.map((el, index) => {
+                    return (
+                      <tr>
+                        <td>{index}</td>
+                        <td>{el.firstName}</td>
+                        <td>{el.lastName}</td>
+                        <td>{el.dateOfBirth}</td>
+                        <td>{el.status}</td>
+                        <td>
+                          <Button
+                            name={editMode ? el.id : index}
+                            size="sm"
+                            variant="danger"
+                          >
+                            Izbriši
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </Table>
             </div>
@@ -161,18 +211,13 @@ const FamilyMember = ({
           </h4>
           <Button
             onClick={handleDeleteFamilyMember}
-            size="lg"
+            size="md"
             style={{ width: "100%", marginBottom: "15px" }}
             variant="danger"
           >
             Da
           </Button>
-          <Button
-            onClick={handleSureDeleteFamilyMember}
-            size="lg"
-            style={{ width: "100%" }}
-            variant="primary"
-          >
+          <Button size="md" style={{ width: "100%" }} variant="primary">
             Ne
           </Button>
         </div>

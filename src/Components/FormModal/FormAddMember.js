@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { FloatingLabel, Form, Button, Row, Col, Table } from "react-bootstrap";
 
@@ -8,6 +8,7 @@ import FamilyMember from "./FamilyMember";
 import loadingSvg from "../../Assets/Pictures/loadingSvg.svg";
 import creationFailed from "../../Assets/Pictures/creationFailed.svg";
 import creationSuccess from "../../Assets/Pictures/creationSuccess.svg";
+import ActiveSpreadsheetContext from "../../Store/active-spreadsheet-context";
 
 const FormAddMember = ({
   handleFormSubmit,
@@ -16,7 +17,6 @@ const FormAddMember = ({
   waitingResponse,
   clearSubmit,
   viewMode,
-  memberInfo,
 }) => {
   const [evNumber, setEvNumber] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -28,6 +28,10 @@ const FormAddMember = ({
   const [status, setStatus] = useState("");
   const [debt, setDebt] = useState(0);
   const [editMode, setEditMode] = useState(false);
+  const [familyMembers, setFamilyMembers] = useState([]);
+  const [showFamilyMembersForm, setShowFamilyMembersForm] = useState(false);
+
+  let { selectedMember: memberInfo } = useContext(ActiveSpreadsheetContext);
 
   const handeEnterEditMode = () => {
     setEvNumber(memberInfo.member.EvNumber);
@@ -38,9 +42,8 @@ const FormAddMember = ({
     setAddress(memberInfo.member.Address);
     setEmail(memberInfo.member.Email);
     setStatus(memberInfo.member.Status);
+    setFamilyMembers(memberInfo.member.FamilyMembers);
   };
-
-  const [showFamilyMembersForm, setShowFamilyMembersForm] = useState(false);
 
   const tableColumns = ["#", "Datum", "Iznos", "Nadležni"];
 
@@ -57,6 +60,7 @@ const FormAddMember = ({
       address,
       email,
       status: +status,
+      familyMembers,
       debt,
       active: true,
       addToSpreadsheet: true,
@@ -68,6 +72,16 @@ const FormAddMember = ({
 
   const handleShowFamilyMemberForm = () => {
     setShowFamilyMembersForm((prevState) => !prevState);
+  };
+
+  const handleAddFamilyMemberToState = (data) => {
+    const newState = [...familyMembers, data];
+    setFamilyMembers(newState);
+  };
+
+  const handleSetFamilyMemberState = (state) => {
+    console.log(state);
+    setFamilyMembers(state);
   };
 
   const handleClearSubmit = () => {
@@ -327,15 +341,54 @@ const FormAddMember = ({
                 </Col>
               </Row>
 
-              {!viewMode && (
+              {(!viewMode || editMode) && (
                 <div style={{ marginBottom: "20px" }}>
                   <Button
                     variant="success"
                     onClick={handleShowFamilyMemberForm}
                   >
-                    Dodaj člana porodice
+                    {!editMode && "Dodaj članove porodice"}
+                    {editMode && "Uredi članove porodice"}
                   </Button>
                 </div>
+              )}
+              {viewMode &&
+                memberInfo.member.FamilyMembers?.length < 0 &&
+                !editMode && <h5>Nema upisanih članova porodice</h5>}
+              {viewMode && memberInfo.FamilyMembers?.length > 0 && (
+                <Table hover striped responsive>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      {["#", "Ime", "Prezime", "Datum rođenja", "Status"].map(
+                        (el, index) => (
+                          <th key={index}>{el}</th>
+                        )
+                      )}
+                      {editMode && <th key="5">Postavke</th>}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {memberInfo.member.FamilyMembers.map((el, index) => {
+                      return (
+                        <tr>
+                          <td>{index}</td>
+                          <td>{el.firstName}</td>
+                          <td>{el.lastName}</td>
+                          <td>{el.dateOfBirth}</td>
+                          <td>{el.status}</td>
+                          {editMode && (
+                            <td>
+                              <Button size="sm" variant="danger">
+                                Izbriši
+                              </Button>
+                            </td>
+                          )}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
               )}
               {viewMode && memberInfo.payments.length < 1 && !editMode && (
                 <h5>Nema uplata za otvorenu bazu</h5>
@@ -423,7 +476,14 @@ const FormAddMember = ({
       )}
 
       {showFamilyMembersForm && (
-        <FamilyMember handleShowFamilyMemberForm={handleShowFamilyMemberForm} />
+        <FamilyMember
+          familyMembers={familyMembers}
+          handleAddFamilyMemberToState={handleAddFamilyMemberToState}
+          handleSetFamilyMemberState={handleSetFamilyMemberState}
+          handleShowFamilyMemberForm={handleShowFamilyMemberForm}
+          editMode={editMode}
+          memberId={memberInfo?.member.Id}
+        />
       )}
     </React.Fragment>
   );

@@ -1,42 +1,39 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
 import userService from "../../../Services/userService";
 
 import LoginFormComponent from "../LoginFormComponent/LoginFormComponent";
+import AuthContext from "../../../Store/auth-context-api";
 
 const LoginUserPage = () => {
-  const [error, setError] = useState(false);
+  const { handleSetResponse, temporaryDzemat } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
-  let dzematId = JSON.parse(localStorage.getItem("dzemat_id"));
-
   const handleFormSubmit = (email, password) => {
-    dzematId = JSON.parse(localStorage.getItem("dzemat_id"));
+    handleSetResponse({ loading: true, success: false });
     userService
-      .supervisorLogin({ email, password, dzematId })
+      .supervisorLogin({ email, password, dzematId: temporaryDzemat.id })
       .then((res) => {
         localStorage.setItem("user_jwt", JSON.stringify(res.data.data.token));
-        window.location.replace("/naslovna");
+        handleSetResponse({ loading: "done", success: true });
+        navigate("/naslovna");
       })
       .catch((err) => {
-        console.log(err);
-        setError(true);
+        handleSetResponse({ loading: "done", success: false });
+        if (err.code === "ERR_NETWORK") throw new Error(err);
       });
   };
 
   useEffect(() => {
-    if (!dzematId) {
+    if (!temporaryDzemat) {
       navigate("/login/dzemat");
     }
-  }, [dzematId, navigate]);
+  }, [temporaryDzemat, navigate]);
 
   return (
-    <LoginFormComponent
-      onFormSubmit={handleFormSubmit}
-      errorOccured={error}
-      loginStage={"second"}
-    />
+    <LoginFormComponent onFormSubmit={handleFormSubmit} loginStage={"second"} />
   );
 };
 

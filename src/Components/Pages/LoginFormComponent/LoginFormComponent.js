@@ -1,14 +1,27 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { FloatingLabel, Form, Button } from "react-bootstrap";
 
 import logoIZ from "../../../Assets/Pictures/logoIZ.png";
+import loadingSvg from "../../../Assets/Pictures/loadingSvg.svg";
 
 import classes from "./LoginFormComponent.module.css";
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../../../Store/auth-context-api";
 
-const LoginFormComponent = ({ onFormSubmit, errorOccured, loginStage }) => {
+const LoginFormComponent = ({ onFormSubmit, loginStage }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const { temporaryDzemat, response } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (!temporaryDzemat) {
+      navigate("/login/dzemat");
+    }
+  }, [temporaryDzemat, navigate]);
 
   const handleFormSubmit = (ev) => {
     ev.preventDefault();
@@ -27,8 +40,9 @@ const LoginFormComponent = ({ onFormSubmit, errorOccured, loginStage }) => {
               Program za praćenje i upravljanje budžetom
             </div>
             <p>
-              Medžlis islamske zajednice Gračanica&nbsp;|&nbsp;
-              <strong>Džemat Golaći</strong>
+              Medžlis Islamske zajednice {temporaryDzemat.medzlis.name}
+              &nbsp;|&nbsp;
+              <strong>Džemat {temporaryDzemat.name}</strong>
             </p>
           </div>
         </div>
@@ -47,7 +61,6 @@ const LoginFormComponent = ({ onFormSubmit, errorOccured, loginStage }) => {
           className="mb-3"
         >
           <Form.Control
-            size="md"
             value={username}
             onChange={(ev) => setUsername(ev.target.value)}
             type="text"
@@ -68,9 +81,18 @@ const LoginFormComponent = ({ onFormSubmit, errorOccured, loginStage }) => {
           />
         </FloatingLabel>
         <Button className={classes.submitButton} variant="dark" type="submit">
-          PRIJAVA
+          {!response.loading || response.loading === "done" ? (
+            "PRIJAVA"
+          ) : (
+            <img
+              width={30}
+              height={30}
+              src={loadingSvg}
+              alt="loading svg element"
+            />
+          )}
         </Button>
-        {errorOccured && (
+        {response.loading === "done" && response.success === false && (
           <Button className={classes.errorButton} variant="danger" disabled>
             Pogrešni kredencijali
           </Button>

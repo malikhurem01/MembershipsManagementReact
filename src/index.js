@@ -22,6 +22,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "./index.css";
 import ErrorElement from "./Components/Pages/ErrorPage/ErrorElement";
 import IndexPage from "./Components/Pages/IndexPage/IndexPage";
+import { ActiveSpreadsheetContextProvider } from "./Store/active-spreadsheet-context";
 
 const router = createBrowserRouter([
   {
@@ -67,7 +68,6 @@ const initialize = async () => {
     try {
       response = await userService.currentUser(token);
       user = response.data.data;
-      console.log(user);
     } catch (err) {
       localStorage.removeItem("user_jwt");
     }
@@ -82,7 +82,9 @@ const startApplication = (user) => {
   root.render(
     <React.StrictMode>
       <AuthContextProvider userData={user}>
-        <RouterProvider router={router} />
+        <ActiveSpreadsheetContextProvider>
+          <RouterProvider router={router} />
+        </ActiveSpreadsheetContextProvider>
       </AuthContextProvider>
     </React.StrictMode>
   );

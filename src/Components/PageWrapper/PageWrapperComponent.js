@@ -1,6 +1,5 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import AuthContext from "../../Store/auth-context-api";
-import userService from "../../Services/userService";
 
 import { useNavigate } from "react-router-dom";
 
@@ -10,24 +9,17 @@ import classes from "./PageWrapperComponent.module.css";
 
 const PageWrapperComponent = ({ returnArrow, children }) => {
   const navigate = useNavigate();
-  const ctx = useContext(AuthContext);
 
-  useEffect(() => {
-    userService
-      .currentUser(JSON.parse(localStorage.getItem("user_jwt")))
-      .catch(() => {
-        navigate("/login/dzemat");
-      });
-  }, [navigate]);
+  const { userDataState } = useContext(AuthContext);
 
   const handleSetDzematInfo = (title) => {
-    if (!ctx.userDataState) {
+    if (!userDataState) {
       return navigate("/login/dzemat");
     } else {
       if (title === "medzlis") {
-        return ctx.userDataState.dzemat.medzlis.name;
+        return userDataState.dzemat.medzlis.name;
       } else if (title === "dzemat") {
-        return ctx.userDataState.dzemat.name;
+        return userDataState.dzemat.name;
       }
     }
   };

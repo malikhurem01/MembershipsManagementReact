@@ -22,6 +22,27 @@ const filterMembers = (token, name, lastName, spreadsheetId) => {
   );
 };
 
-const memberService = { addMember, modifyMember, filterMembers };
+const addFamilyMember = (token, data) => {
+  return axios.post(`${serverURL}${routes.addMemberFamily}`, data, {
+    headers: { Authorization: "Bearer " + token },
+  });
+};
+
+const getFamilyMembers = (token, memberId) => {
+  return axios.get(
+    `${serverURL}${routes.getMemberFamily}?memberId=${memberId}`,
+    {
+      headers: { Authorization: "Bearer " + token },
+    }
+  );
+};
+
+const memberService = {
+  addMember,
+  modifyMember,
+  filterMembers,
+  addFamilyMember,
+  getFamilyMembers,
+};
 
 export default memberService;

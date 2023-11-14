@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import userService from "../../../Services/userService";
 
 import LoginFormComponent from "../LoginFormComponent/LoginFormComponent";
+import AuthContext from "../../../Store/auth-context-api";
 
 export const loader = () => {
   localStorage.removeItem("dzemat_id");
@@ -11,31 +12,27 @@ export const loader = () => {
 };
 
 export default function LoginDzematPage() {
-  const [error, setError] = useState(false);
+  const { handleSetDzemat, handleSetResponse } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
   const handleFormSubmit = (username, password) => {
+    handleSetResponse({ loading: true, success: false });
     userService
       .dzematLogin({ username, password })
       .then((res) => {
         localStorage.setItem("dzemat_id", JSON.stringify(res.data.data.id));
+        handleSetResponse({ loading: "done", success: true });
+        handleSetDzemat(res.data.data);
         navigate("/login/korisnik");
       })
       .catch((err) => {
-        if (err.code === "ERR_NETWORK") {
-          throw new Error(err);
-        } else {
-          setError(true);
-        }
+        handleSetResponse({ loading: "done", success: false });
+        if (err.code === "ERR_NETWORK") throw new Error(err);
       });
   };
 
   return (
-    <LoginFormComponent
-      onFormSubmit={handleFormSubmit}
-      errorOccured={error}
-      loginStage={"first"}
-    />
+    <LoginFormComponent onFormSubmit={handleFormSubmit} loginStage={"first"} />
   );
 }

@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PageWrapperComponent from "../../PageWrapper/PageWrapperComponent";
 import classes from "./ActiveSpreadsheetPage.module.css";
 import styles from "../../FormModal/FormModal.module.css";
@@ -16,27 +17,27 @@ import {
   Col,
   FloatingLabel,
 } from "react-bootstrap";
+
 import FormAddMember from "../../FormModal/FormAddMember";
 import memberService from "../../../Services/memberService";
 import spreadsheetService from "../../../Services/spreadsheetService";
-import { useNavigate } from "react-router-dom";
 import FormAddPayment from "../../FormModal/FormAddPayment";
+import ActiveSpreadsheetContext from "../../../Store/active-spreadsheet-context";
 
 const ActiveSpreadsheetPage = () => {
-  const [activeSpreadsheet, setActiveSpreadsheet] = useState();
-  const [membersInfo, setMembersInfo] = useState([]);
   const [showAddMember, setShowAddMember] = useState(false);
   const [response, setResponse] = useState();
   const [waitingResponse, setWaitingResponse] = useState(false);
   const [sureArchiveSpreadsheet, setSureArchiveSpreadsheet] = useState(false);
   const [showAddPayment, setShowAddPayment] = useState(false);
   const [showViewMember, setShowViewMember] = useState(false);
-  const [memberToView, setMemberToView] = useState(null);
-  const [selectedMember, setSelectedMember] = useState(null);
-  const [memberFilter, setMemberFilter] = useState({
-    firstName: "",
-    lastName: "",
-  });
+
+  const {
+    handleFetchActiveSpreadsheet,
+    handleSetSelectedMember,
+    activeSpreadsheet,
+    membersInfo,
+  } = useContext(ActiveSpreadsheetContext);
 
   const navigate = useNavigate();
 
@@ -54,44 +55,9 @@ const ActiveSpreadsheetPage = () => {
     "Postavke",
   ];
 
-  const handleFetchActiveSpreadsheet = useCallback(() => {
-    const token = JSON.parse(localStorage.getItem("user_jwt"));
-    spreadsheetService
-      .getActiveSpreadsheet(token)
-      .then((res) => {
-        const responseParsed = JSON.parse(res.data.data);
-        console.log(responseParsed);
-        setActiveSpreadsheet(responseParsed.spreadsheet);
-        setMembersInfo(responseParsed.rawMembersInfo);
-        setMemberFilter({ firstName: "", lastName: "" });
-      })
-      .catch((err) => {
-        setActiveSpreadsheet(null);
-        console.log(err);
-      });
-  }, []);
-
   useEffect(() => {
     handleFetchActiveSpreadsheet();
   }, [handleFetchActiveSpreadsheet]);
-
-  useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("user_jwt"));
-    memberService
-      .filterMembers(
-        token,
-        memberFilter.firstName,
-        memberFilter.lastName,
-        activeSpreadsheet?.id
-      )
-      .then((res) => {
-        const responseParsed = JSON.parse(res.data.data);
-        setMembersInfo(responseParsed.membersList);
-      })
-      .catch((err) => {
-        console.log(memberFilter);
-      });
-  }, [memberFilter, activeSpreadsheet]);
 
   const handleAddMemberClick = () => {
     setShowAddMember((prevState) => !prevState);
@@ -171,7 +137,6 @@ const ActiveSpreadsheetPage = () => {
         }, 2500);
       })
       .catch((err) => {
-        console.log(err);
         setResponse({
           message: err.response.data.message,
           statusCode: err.response.data.statusCode,
@@ -187,39 +152,18 @@ const ActiveSpreadsheetPage = () => {
     navigate("/clanarine");
   };
 
-  const handleShowAddPayment = (ev, id) => {
+  const handleShowAddPayment = (mInfo) => {
     if (!showAddPayment) {
-      setSelectedMember(id);
+      handleSetSelectedMember(mInfo);
     }
     setShowAddPayment((prevState) => !prevState);
   };
 
-  const handleSetViewMember = (ev) => {
+  const handleSetViewMember = (mInfo) => {
     if (!showViewMember) {
-      setMemberToView(() => {
-        const memberToView = membersInfo.filter(
-          (mi) => mi.member.Id === +ev.target.name
-        );
-        return memberToView[0];
-      });
+      handleSetSelectedMember(mInfo);
     }
-
     setShowViewMember((prevState) => !prevState);
-  };
-
-  const handleFilterInput = (ev) => {
-    if (ev.target.name === "firstName") {
-      setMemberFilter((prevState) => {
-        return {
-          firstName: ev.target.value,
-          lastName: prevState.lastName,
-        };
-      });
-    } else if (ev.target.name === "lastName") {
-      setMemberFilter((prevState) => {
-        return { firstName: prevState.firstName, lastName: ev.target.value };
-      });
-    }
   };
 
   return (
@@ -227,7 +171,6 @@ const ActiveSpreadsheetPage = () => {
       {showViewMember && (
         <FormAddMember
           viewMode={true}
-          memberInfo={memberToView}
           handleAddMemberClick={handleSetViewMember}
           response={response}
           waitingResponse={waitingResponse}
@@ -238,12 +181,7 @@ const ActiveSpreadsheetPage = () => {
         />
       )}
       {!waitingResponse && showAddPayment && (
-        <FormAddPayment
-          memberId={selectedMember}
-          activeSpreadsheet={activeSpreadsheet}
-          handleShowAddPayment={handleShowAddPayment}
-          handleFetchActiveSpreadsheet={handleFetchActiveSpreadsheet}
-        />
+        <FormAddPayment handleShowAddPayment={handleShowAddPayment} />
       )}
       {waitingResponse && !showViewMember && (
         <React.Fragment>
@@ -374,7 +312,6 @@ const ActiveSpreadsheetPage = () => {
                 <FloatingLabel controlId="floatingName" label="Ime">
                   <Form.Control
                     name="firstName"
-                    onChange={handleFilterInput}
                     type="text"
                     placeholder="Ime člana"
                   />
@@ -384,7 +321,6 @@ const ActiveSpreadsheetPage = () => {
                 <FloatingLabel controlId="floatingLastName" label="Prezime">
                   <Form.Control
                     name="lastName"
-                    onChange={handleFilterInput}
                     type="text"
                     placeholder="Prezime"
                   />
@@ -488,8 +424,8 @@ const ActiveSpreadsheetPage = () => {
                         ) : (
                           <Button
                             style={{ width: "80%" }}
-                            onClick={(ev) => {
-                              handleShowAddPayment(ev, m.member.Id);
+                            onClick={() => {
+                              handleShowAddPayment(m);
                             }}
                             size="sm"
                             variant="warning"
@@ -523,8 +459,7 @@ const ActiveSpreadsheetPage = () => {
                       </td>
                       <td>
                         <Button
-                          name={m.member.Id}
-                          onClick={handleSetViewMember}
+                          onClick={() => handleSetViewMember(m)}
                           size="sm"
                           variant="primary"
                         >
