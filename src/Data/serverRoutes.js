@@ -1,4 +1,4 @@
-const serverURL = "https://membershipsmanagement.azurewebsites.net/";
+const serverURL = "https://membershipsmanagement.azurewebsites.net/api/";
 const routes = {
   dzematLogin: "Authentication/login/dzemat",
   supervisorLogin: "Authentication/login/supervisor",
