@@ -36,7 +36,17 @@
 @media (max-width: 815px) {
   .modal {
     top: 50%;
-    max-height: 90vh;
+    max-height: 85vh;
+  }
+
+  .responseModal {
+    top: 50%;
+    max-height: 85vh;
+  }
+
+  .responseModalAbsolute {
+    top: 50%;
+    max-height: 85vh;
   }
 
   .noExtraHeight {
@@ -57,14 +67,18 @@
   .modal {
     width: 95%;
     overflow-y: scroll;
-    height: 95vh;
+    max-height: 85vh;
     padding: 10px;
   }
   .responseModal {
     width: 95%;
+    max-height: 85vh;
+    padding: 10px;
   }
   .responseModalAbsolute {
     width: 95%;
+    max-height: 85vh;
+    padding: 10px;
   }
 }
 
