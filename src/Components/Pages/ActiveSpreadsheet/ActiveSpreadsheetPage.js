@@ -343,49 +343,21 @@ const ActiveSpreadsheetPage = () => {
                       {" "}
                       <td>{index}</td>
                       <td>
-                        <Button
-                          style={{ width: "80%" }}
-                          variant="dark"
-                          disabled
-                          size="sm"
-                        >
-                          <strong> {m.member.EvNumber}</strong>
-                        </Button>
+                        <strong> {m.member.EvNumber}</strong>
+                      </td>
+                      <td>
+                        <strong> {m.member.FirstName}</strong>
+                      </td>
+                      <td>
+                        <strong> {m.member.LastName}</strong>
+                      </td>
+                      <td>
+                        <strong> {m.member.FathersName}</strong>
                       </td>
                       <td>
                         <Button
-                          style={{ width: "80%" }}
-                          variant="outline-dark"
-                          disabled
-                          size="sm"
-                        >
-                          <strong> {m.member.FirstName}</strong>
-                        </Button>
-                      </td>
-                      <td>
-                        <Button
-                          style={{ width: "80%" }}
-                          variant="outline-dark"
-                          disabled
-                          size="sm"
-                        >
-                          <strong> {m.member.LastName}</strong>
-                        </Button>
-                      </td>
-                      <td>
-                        <Button
-                          style={{ width: "80%" }}
-                          variant="outline-dark"
-                          disabled
-                          size="sm"
-                        >
-                          <strong> {m.member.FathersName}</strong>
-                        </Button>
-                      </td>
-                      <td>
-                        <Button
-                          style={{ width: "80%" }}
-                          variant="outline-dark"
+                          style={{ minWidth: "130px" }}
+                          variant="light"
                           disabled
                           size="sm"
                         >
@@ -403,7 +375,7 @@ const ActiveSpreadsheetPage = () => {
                       <td>
                         {" "}
                         <Button
-                          style={{ width: "80%" }}
+                          style={{ minWidth: "80px" }}
                           variant="primary"
                           disabled
                           size="sm"
@@ -414,7 +386,7 @@ const ActiveSpreadsheetPage = () => {
                       <td>
                         {m.member.Debt === 0 ? (
                           <Button
-                            style={{ width: "80%" }}
+                            style={{ minWidth: "140px" }}
                             variant="success"
                             disabled
                             size="sm"
@@ -423,7 +395,7 @@ const ActiveSpreadsheetPage = () => {
                           </Button>
                         ) : (
                           <Button
-                            style={{ width: "80%" }}
+                            style={{ minWidth: "140px" }}
                             onClick={() => {
                               handleShowAddPayment(m);
                             }}
@@ -436,6 +408,7 @@ const ActiveSpreadsheetPage = () => {
                       </td>
                       <td>
                         <Button
+                          style={{ minWidth: "80px" }}
                           size="sm"
                           variant={m.member.Debt === 0 ? "success" : "danger"}
                           disabled
@@ -445,7 +418,7 @@ const ActiveSpreadsheetPage = () => {
                       </td>
                       <td>
                         <Button
-                          style={{ width: "80%" }}
+                          style={{ minWidth: "135px" }}
                           variant="success"
                           disabled
                           size="sm"
