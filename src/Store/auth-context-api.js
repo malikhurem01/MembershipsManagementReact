@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
 const AuthContext = React.createContext({
   userDataState: null,
@@ -15,9 +15,9 @@ export const AuthContextProvider = ({ children, userData }) => {
   const [dzemat, setDzemat] = useState();
   const [response, setResponse] = useState({ loading: false, success: false });
 
-  const handleSetUser = (data) => {
+  const handleSetUser = useCallback((data) => {
     setUser(data);
-  };
+  }, []);
 
   const handleLogoutUser = () => {
     setUser(null);

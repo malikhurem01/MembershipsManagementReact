@@ -1,42 +1,46 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import PageWrapperComponent from "../../PageWrapper/PageWrapperComponent";
+import ActiveSpreadsheetContext from "../../../Store/active-spreadsheet-context";
+
 import classes from "./ActiveSpreadsheetPage.module.css";
 import styles from "../../FormModal/FormModal.module.css";
+
 import noSpreadsheetLogo from "../../../Assets/Pictures/creationFailed.svg";
-import loadingSvg from "../../../Assets/Pictures/loadingSvg.svg";
-import creationFailed from "../../../Assets/Pictures/creationFailed.svg";
-import creationSuccess from "../../../Assets/Pictures/creationSuccess.svg";
 
 import {
-  Table,
-  Button,
-  Form,
+  FloatingLabel,
   Container,
+  Button,
+  Table,
+  Form,
   Row,
   Col,
-  FloatingLabel,
 } from "react-bootstrap";
 
 import FormAddMember from "../../FormModal/FormAddMember";
+import FormAddPayment from "../../FormModal/FormAddPayment";
+import ResponseModal from "../../ResponseModal/ResponseModal";
+
 import memberService from "../../../Services/memberService";
 import spreadsheetService from "../../../Services/spreadsheetService";
-import FormAddPayment from "../../FormModal/FormAddPayment";
-import ActiveSpreadsheetContext from "../../../Store/active-spreadsheet-context";
+import paymentService from "../../../Services/paymentService";
 
 const ActiveSpreadsheetPage = () => {
   const [showAddMember, setShowAddMember] = useState(false);
-  const [response, setResponse] = useState();
-  const [waitingResponse, setWaitingResponse] = useState(false);
-  const [sureArchiveSpreadsheet, setSureArchiveSpreadsheet] = useState(false);
   const [showAddPayment, setShowAddPayment] = useState(false);
   const [showViewMember, setShowViewMember] = useState(false);
+  const [sureArchiveSpreadsheet, setSureArchiveSpreadsheet] = useState(false);
 
   const {
     handleFetchActiveSpreadsheet,
     handleSetSelectedMember,
+    handleSetResponse,
     activeSpreadsheet,
+    selectedMember,
     membersInfo,
+    response,
   } = useContext(ActiveSpreadsheetContext);
 
   const navigate = useNavigate();
@@ -59,89 +63,148 @@ const ActiveSpreadsheetPage = () => {
     handleFetchActiveSpreadsheet();
   }, [handleFetchActiveSpreadsheet]);
 
-  const handleAddMemberClick = () => {
-    setShowAddMember((prevState) => !prevState);
-  };
-
-  const handleFormSubmit = (token, data) => {
-    setResponse({ message: "Kreiram...", statusCode: null });
-    setWaitingResponse(true);
+  const handleAddMember = (token, data) => {
+    handleAddMemberClick();
+    handleSetResponse({
+      message: "Dodajem člana...",
+      statusCode: null,
+      loading: true,
+    });
     memberService
       .addMember(token, data)
       .then((res) => {
-        handleFetchActiveSpreadsheet();
-        setResponse({
+        handleSetResponse({
           message: res.data.message,
           statusCode: res.status,
+          loading: true,
+          action: "add_member",
         });
+        setTimeout(() => {
+          handleSetResponse({
+            statusCode: null,
+          });
+        }, 3000);
       })
       .catch((err) => {
-        setResponse({
+        handleSetResponse({
           message: err.response.data.message,
           statusCode: err.response.data.statusCode,
+          loading: true,
+          action: "add_member",
         });
       });
   };
 
   const handleModifyMember = (token, data) => {
-    setResponse({ message: "Uređujem...", statusCode: null });
-    setWaitingResponse(true);
+    handleAddMemberClick();
+    handleSetResponse({
+      message: "Uređujem informacije...",
+      statusCode: null,
+      loading: true,
+    });
     memberService
       .modifyMember(token, data)
       .then((res) => {
-        handleFetchActiveSpreadsheet();
-        setResponse({
+        handleSetResponse({
           message: res.data.message,
           statusCode: res.status,
+          loading: true,
+          action: "modify_member",
         });
+        setTimeout(() => {
+          handleSetResponse({
+            statusCode: null,
+          });
+        }, 3000);
       })
       .catch((err) => {
-        setResponse({
+        handleSetResponse({
           message: err.response.data.message,
           statusCode: err.response.data.statusCode,
+          loading: true,
+          action: "modify_member",
         });
       });
-  };
-
-  const clearSubmit = () => {
-    setResponse();
-    setWaitingResponse(false);
-  };
-
-  const handleGoToMembershipsPage = () => {
-    clearSubmit();
-    navigate("/clanarine");
-  };
-
-  const handleSetArchiveSpreadsheet = () => {
-    setSureArchiveSpreadsheet((prevState) => !prevState);
   };
 
   const handleArchiveSpreadsheet = () => {
     handleSetArchiveSpreadsheet();
     const token = JSON.parse(localStorage.getItem("user_jwt"));
     const dzematId = JSON.parse(localStorage.getItem("dzemat_id"));
-    setResponse({ message: "Arhiviram...", statusCode: null });
-    setWaitingResponse(true);
+    handleSetResponse({
+      message: "Arhiviram...",
+      statusCode: null,
+      loading: true,
+    });
     spreadsheetService
       .archiveSpreadsheet(token, {
         dzematId,
         spreadsheetId: activeSpreadsheet.id,
       })
       .then((res) => {
+        handleSetResponse({
+          message: res.data.message + ".. Preusmjeravanje...",
+          statusCode: res.status,
+          loading: true,
+          action: "archive",
+        });
         setTimeout(() => {
-          setResponse({
-            message: res.data.message,
-            statusCode: res.status,
-          });
-        }, 2500);
+          navigate("/clanarine");
+        }, 3000);
       })
       .catch((err) => {
-        setResponse({
+        handleSetResponse({
           message: err.response.data.message,
           statusCode: err.response.data.statusCode,
+          loading: true,
         });
       });
+  };
+
+  const handleAddPayment = (data) => {
+    handleShowAddPayment(false);
+    handleSetResponse({
+      message: "Pišem uplatu...",
+      statusCode: null,
+      loading: true,
+    });
+    const payloadData = {
+      ...data,
+      spreadsheetId: activeSpreadsheet.id,
+      memberId: selectedMember.member.Id,
+    };
+    const token = JSON.parse(localStorage.getItem("user_jwt"));
+    paymentService
+      .addPayment(token, payloadData)
+      .then((res) => {
+        handleSetResponse({
+          message: res.data.message,
+          statusCode: res.status,
+          loading: true,
+          action: "add_payment",
+        });
+        setTimeout(() => {
+          handleSetResponse({
+            statusCode: null,
+          });
+        }, 3000);
+      })
+      .catch((err) => {
+        handleSetResponse({
+          message: err.response.data.message,
+          statusCode: err.response.data.statusCode,
+          loading: true,
+          action: "add_payment",
+        });
+      });
+  };
+
+  const handleAddMemberClick = () => {
+    setShowAddMember((prevState) => !prevState);
+  };
+
+  const handleSetArchiveSpreadsheet = () => {
+    setSureArchiveSpreadsheet((prevState) => !prevState);
   };
 
   const handleNavigateToCreateSpreadsheet = () => {
@@ -168,60 +231,26 @@ const ActiveSpreadsheetPage = () => {
 
   return (
     <PageWrapperComponent>
+      {response.loading && (
+        <ResponseModal reInitialize={handleFetchActiveSpreadsheet} />
+      )}
       {showViewMember && (
         <FormAddMember
           viewMode={true}
           handleAddMemberClick={handleSetViewMember}
-          response={response}
-          waitingResponse={waitingResponse}
           handleFormSubmit={handleModifyMember}
           clearSubmit={() => {
-            setWaitingResponse(false);
+            handleSetResponse(false);
           }}
         />
       )}
-      {!waitingResponse && showAddPayment && (
-        <FormAddPayment handleShowAddPayment={handleShowAddPayment} />
+      {showAddPayment && (
+        <FormAddPayment
+          handleShowAddPayment={handleShowAddPayment}
+          handleAddPayment={handleAddPayment}
+        />
       )}
-      {waitingResponse && !showViewMember && (
-        <React.Fragment>
-          <div className={styles.backdrop}></div>
-          <div className={styles.responseModalAbsolute}>
-            {response.statusCode == null && (
-              <img src={loadingSvg} alt="učitavam kreiranje baze" />
-            )}
-            {response.statusCode === 200 && (
-              <img src={creationSuccess} alt="baza uspješno kreirana" />
-            )}
-            {response.statusCode >= 400 && (
-              <img src={creationFailed} alt="greška pri kreiranju baze" />
-            )}
-            <p>{response.message}</p>
-            {waitingResponse && response?.statusCode >= 400 && (
-              <Button
-                className={styles.responseButton}
-                onClick={clearSubmit}
-                variant="danger"
-              >
-                Poništi
-              </Button>
-            )}
-            {waitingResponse &&
-              response?.statusCode >= 200 &&
-              response?.statusCode < 300 && (
-                <Button
-                  className={styles.responseButton}
-                  onClick={handleGoToMembershipsPage}
-                  variant="success"
-                >
-                  Nazad
-                </Button>
-              )}
-          </div>
-        </React.Fragment>
-      )}
-
-      {sureArchiveSpreadsheet && !waitingResponse && (
+      {sureArchiveSpreadsheet && !response.loading && (
         <React.Fragment>
           <div className={styles.backdrop}></div>
 
@@ -254,16 +283,13 @@ const ActiveSpreadsheetPage = () => {
           </div>
         </React.Fragment>
       )}
-      {showAddMember && (
+      {showAddMember && !response.loading && (
         <FormAddMember
-          handleFormSubmit={handleFormSubmit}
+          handleFormSubmit={handleAddMember}
           handleAddMemberClick={handleAddMemberClick}
-          response={response}
-          waitingResponse={waitingResponse}
-          clearSubmit={clearSubmit}
         />
       )}
-      {activeSpreadsheet === null && !waitingResponse && (
+      {activeSpreadsheet === null && !response.loading && (
         <div className={styles.responseModalAbsolute}>
           <img src={noSpreadsheetLogo} alt="ne postoji aktivna baza" />
           <p>Aktivna baza ne postoji. Molimo kreirajte bazu.</p>
@@ -284,7 +310,7 @@ const ActiveSpreadsheetPage = () => {
           </Button>
         </div>
       )}
-      {activeSpreadsheet && !waitingResponse && (
+      {activeSpreadsheet && !response.loading && (
         <div className={classes.mainContainer}>
           <Container fluid="md">
             <Row>
@@ -418,7 +444,7 @@ const ActiveSpreadsheetPage = () => {
                       </td>
                       <td>
                         <Button
-                          style={{ minWidth: "135px" }}
+                          style={{ minWidth: "120px" }}
                           variant="success"
                           disabled
                           size="sm"

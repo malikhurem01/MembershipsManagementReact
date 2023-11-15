@@ -1,96 +1,24 @@
 import React, { useContext, useState } from "react";
-
-import styles from "./FormModal.module.css";
 import { Form, Row, Col, FloatingLabel, Button } from "react-bootstrap";
-import paymentService from "../../Services/paymentService";
 
-import loadingSvg from "../../Assets/Pictures/loadingSvg.svg";
-import creationFailed from "../../Assets/Pictures/creationFailed.svg";
-import creationSuccess from "../../Assets/Pictures/creationSuccess.svg";
 import ActiveSpreadsheetContext from "../../Store/active-spreadsheet-context";
 
-const FormAddPayment = ({ handleShowAddPayment }) => {
-  const [response, setResponse] = useState();
-  const [waitingResponse, setWaitingResponse] = useState(false);
+import styles from "./FormModal.module.css";
+
+const FormAddPayment = ({ handleShowAddPayment, handleAddPayment }) => {
   const [amount, setAmount] = useState("");
   const [dateOfPayment, setDateOfPayment] = useState("");
 
-  let { handleFetchActiveSpreadsheet, activeSpreadsheet, selectedMember } =
-    useContext(ActiveSpreadsheetContext);
+  const { response } = useContext(ActiveSpreadsheetContext);
 
   const handlePaymentSubmit = (ev) => {
     ev.preventDefault();
-    setResponse({ message: "Pišem uplatu...", statusCode: null });
-    setWaitingResponse(true);
-    const data = {
-      amount,
-      dateOfPayment,
-      spreadsheetId: activeSpreadsheet.id,
-      memberId: selectedMember.member.Id,
-    };
-    const token = JSON.parse(localStorage.getItem("user_jwt"));
-    paymentService
-      .addPayment(token, data)
-      .then((res) => {
-        setResponse({
-          message: res.data.message,
-          statusCode: res.status,
-        });
-      })
-      .catch((err) => {
-        setResponse({
-          message: err.response.data.message,
-          statusCode: err.response.data.statusCode,
-        });
-      });
-  };
-
-  const handleClearSubmit = () => {
-    setWaitingResponse(false);
-    handleShowAddPayment();
-    handleFetchActiveSpreadsheet();
+    handleAddPayment({ amount, dateOfPayment });
   };
 
   return (
     <React.Fragment>
-      {waitingResponse && (
-        <React.Fragment>
-          <div className={styles.backdrop}></div>
-          <div className={styles.responseModalAbsolute}>
-            {response.statusCode == null && (
-              <img src={loadingSvg} alt="učitavam kreiranje baze" />
-            )}
-            {response.statusCode === 200 && (
-              <img src={creationSuccess} alt="baza uspješno kreirana" />
-            )}
-            {response.statusCode >= 400 && (
-              <img src={creationFailed} alt="greška pri kreiranju baze" />
-            )}
-            <p>{response.message}</p>
-            {waitingResponse && response?.statusCode >= 400 && (
-              <Button
-                className={styles.responseButton}
-                onClick={handleClearSubmit}
-                variant="danger"
-              >
-                Poništi
-              </Button>
-            )}
-            {waitingResponse &&
-              response?.statusCode >= 200 &&
-              response?.statusCode < 300 && (
-                <Button
-                  className={styles.responseButton}
-                  onClick={handleClearSubmit}
-                  variant="success"
-                >
-                  Nazad
-                </Button>
-              )}
-          </div>
-        </React.Fragment>
-      )}
-      {!waitingResponse && (
+      {!response.loading && (
         <React.Fragment>
           <div className={styles.backdrop}></div>
           <div className={styles.modal}>

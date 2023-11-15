@@ -13,8 +13,6 @@ import ActiveSpreadsheetContext from "../../Store/active-spreadsheet-context";
 const FormAddMember = ({
   handleFormSubmit,
   handleAddMemberClick,
-  response,
-  waitingResponse,
   clearSubmit,
   viewMode,
 }) => {
@@ -31,7 +29,9 @@ const FormAddMember = ({
   const [familyMembers, setFamilyMembers] = useState([]);
   const [showFamilyMembersForm, setShowFamilyMembersForm] = useState(false);
 
-  let { selectedMember: memberInfo } = useContext(ActiveSpreadsheetContext);
+  let { selectedMember: memberInfo, response } = useContext(
+    ActiveSpreadsheetContext
+  );
 
   const handeEnterEditMode = () => {
     setEvNumber(memberInfo.member.EvNumber);
@@ -49,7 +49,7 @@ const FormAddMember = ({
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
-
+    setEditMode(false);
     const member = {
       id: editMode ? memberInfo.member.Id : null,
       evNumber: +evNumber,
@@ -80,17 +80,7 @@ const FormAddMember = ({
   };
 
   const handleSetFamilyMemberState = (state) => {
-    console.log(state);
     setFamilyMembers(state);
-  };
-
-  const handleClearSubmit = () => {
-    if (editMode) {
-      setEditMode(false);
-    } else {
-      handleAddMemberClick();
-    }
-    clearSubmit();
   };
 
   const handleEditMode = () => {
@@ -99,11 +89,8 @@ const FormAddMember = ({
     }
     setEditMode((prevState) => !prevState);
   };
-
-  return (
-    <React.Fragment>
-      <div className={classes.backdrop}></div>
-      {waitingResponse && (!viewMode || editMode) && (
+  /*
+{response.loading && (!viewMode || editMode) && (
         <div className={classes.responseModalAbsolute}>
           {response.statusCode == null && (
             <img src={loadingSvg} alt="učitavam kreiranje baze" />
@@ -115,7 +102,7 @@ const FormAddMember = ({
             <img src={creationFailed} alt="greška pri kreiranju baze" />
           )}
           <p>{response.message}</p>
-          {waitingResponse && response?.statusCode >= 400 && (
+          {response.loading === true && response?.statusCode >= 400 && (
             <Button
               className={classes.responseButton}
               onClick={handleClearSubmit}
@@ -124,7 +111,7 @@ const FormAddMember = ({
               Poništi
             </Button>
           )}
-          {waitingResponse &&
+          {response.loading === true &&
             response?.statusCode >= 200 &&
             response?.statusCode < 300 && (
               <Button
@@ -137,7 +124,11 @@ const FormAddMember = ({
             )}
         </div>
       )}
-      {!showFamilyMembersForm && !waitingResponse && (
+*/
+  return (
+    <React.Fragment>
+      <div className={classes.backdrop}></div>
+      {!showFamilyMembersForm && !response.loading && (
         <div className={classes.modal}>
           <h4
             style={{
