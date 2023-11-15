@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import AuthContext from "../../Store/auth-context-api";
 
 import { useNavigate } from "react-router-dom";
@@ -6,11 +6,24 @@ import { useNavigate } from "react-router-dom";
 import logoIZ from "../../Assets/Pictures/logoIZ.png";
 
 import classes from "./PageWrapperComponent.module.css";
+import userService from "../../Services/userService";
 
 const PageWrapperComponent = ({ returnArrow, children }) => {
   const navigate = useNavigate();
 
-  const { userDataState } = useContext(AuthContext);
+  const { userDataState, handleSetUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    const token = JSON.parse(localStorage.getItem("user_jwt"));
+    userService
+      .currentUser(token)
+      .then((res) => {
+        handleSetUser(res.data.data);
+      })
+      .catch(() => {
+        window.location.replace("/login/dzemat");
+      });
+  }, [handleSetUser]);
 
   const handleSetDzematInfo = (title) => {
     if (!userDataState) {
