@@ -27,9 +27,11 @@
   }
 
   .responseModal {
+    width: 80%;
   }
 
   .responseModalAbsolute {
+    width: 80%;
   }
 }
 
