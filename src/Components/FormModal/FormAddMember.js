@@ -440,7 +440,7 @@ const FormAddMember = ({
                       style={{
                         display: "block",
                         marginBottom: "15px",
-                        minWidth: "400px",
+                        minWidth: "370px",
                       }}
                       variant="warning"
                       disabled
@@ -478,7 +478,9 @@ const FormAddMember = ({
                                     <td>{index}</td>
                                     <td>{el.FirstName}</td>
                                     <td>{el.LastName}</td>
-                                    <td>{el.DateOfBirth.split("T")[0]}</td>
+                                    <td style={{ minWidth: "70px" }}>
+                                      {el.DateOfBirth.split("T")[0]}
+                                    </td>
                                     <td>{el.status}</td>
                                   </tr>
                                 );
@@ -494,7 +496,7 @@ const FormAddMember = ({
                     style={{
                       display: "block",
                       marginBottom: "15px",
-                      minWidth: "400px",
+                      minWidth: "370px",
                     }}
                     variant="warning"
                     disabled
@@ -522,7 +524,9 @@ const FormAddMember = ({
                             return (
                               <tr>
                                 <td>{index}</td>
-                                <td>{el.dateOfPayment.split("T")[0]}</td>
+                                <td style={{ minWidth: "70px" }}>
+                                  {el.dateOfPayment.split("T")[0]}
+                                </td>
                                 <td>{el.amount}KM</td>
                                 <td>
                                   {el.supervisor.FirstName +
