@@ -158,7 +158,9 @@ const ActiveSpreadsheetPage = () => {
           action: "archive",
         });
         setTimeout(() => {
-          navigate("/clanarine");
+          handleSetResponse({
+            statusCode: null,
+          });
         }, 3000);
       })
       .catch((err) => {

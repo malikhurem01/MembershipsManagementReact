@@ -6,6 +6,7 @@ import classes from "./FormModal.module.css";
 import FamilyMember from "./FamilyMember";
 
 import ActiveSpreadsheetContext from "../../Store/active-spreadsheet-context";
+import paymentService from "../../Services/paymentService";
 
 const FormAddMember = ({
   handleFormSubmit,
@@ -25,10 +26,15 @@ const FormAddMember = ({
   const [familyMembers, setFamilyMembers] = useState([]);
   const [showFamilyMembersForm, setShowFamilyMembersForm] = useState(false);
   const [sureDeleteFamilyMember, setSureDeleteFamilyMember] = useState(false);
-
-  let { selectedMember: memberInfo, response } = useContext(
-    ActiveSpreadsheetContext
-  );
+  const [sureDeletePayment, setSureDeletePayment] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState();
+  let {
+    handleUpdateActiveSpreadsheet,
+    handleSetResponse,
+    selectedMember: memberInfo,
+    activeSpreadsheet,
+    response,
+  } = useContext(ActiveSpreadsheetContext);
 
   const handeEnterEditMode = () => {
     setEvNumber(memberInfo.member.EvNumber);
@@ -96,18 +102,120 @@ const FormAddMember = ({
     setSureDeleteFamilyMember((prevState) => !prevState);
   };
 
+  const handleSetDeletePayment = (data) => {
+    if (!sureDeletePayment) {
+      setSelectedPayment(data);
+    }
+    setSureDeletePayment((prevState) => !prevState);
+  };
+
   const handleEditMode = () => {
     if (!editMode) {
       handeEnterEditMode();
     }
     setEditMode((prevState) => !prevState);
   };
+
+  const handleDeletePayment = () => {
+    handleSetDeletePayment();
+    const token = JSON.parse(localStorage.getItem("user_jwt"));
+    handleSetResponse({
+      message: "Uklanjam uplatu...",
+      statusCode: null,
+      loading: true,
+    });
+    paymentService
+      .deletePayment(token, {
+        id: selectedPayment.id,
+        memberId: memberInfo.member.Id,
+        spreadsheetId: activeSpreadsheet.id,
+      })
+      .then((res) => {
+        handleUpdateActiveSpreadsheet();
+        handleSetResponse({
+          message: res.data.message,
+          statusCode: res.status,
+          loading: true,
+          action: "payment_delete",
+        });
+        setTimeout(() => {
+          handleSetResponse({
+            statusCode: null,
+          });
+        }, 3000);
+      })
+      .catch((err) => {
+        handleSetResponse({
+          message: err.response.data.message,
+          statusCode: err.response.data.statusCode,
+          loading: true,
+          action: "payment_delete",
+        });
+      });
+  };
   return (
     <React.Fragment>
+      {sureDeletePayment && !response.loading && (
+        <div className={classes.modal}>
+          <h4
+            style={{
+              borderBottom: "1px solid #cecece",
+              marginBottom: "15px",
+              paddingBottom: "5px",
+            }}
+          >
+            Želite li izbrisati uplatu?
+          </h4>
+          <div
+            style={{
+              margin: "15px 15px",
+              borderBottom: "1px solid #cecece",
+              marginBottom: "15px",
+              paddingBottom: "5px",
+            }}
+          >
+            <h6>
+              {`Ime i prezime: ${memberInfo.member.FirstName} ${memberInfo.member.LastName}`}
+            </h6>
+            <h6>{`Iznos: ${selectedPayment.amount}KM`}</h6>
+            <h6>{`Datum uplate: ${
+              selectedPayment.dateOfPayment.split("T")[0]
+            }`}</h6>
+            <h6>{`Baza za godinu: ${activeSpreadsheet.year}`}</h6>
+          </div>
+          <div
+            style={{ margin: "15px 15px", fontSize: "16px", fontWeight: "700" }}
+          >
+            <Button variant="outline-dark">
+              <strong>
+                Iznos uplate će se upisati u dug člana{" "}
+                {`${memberInfo.member.FirstName} ${memberInfo.member.LastName}`}
+              </strong>
+            </Button>
+          </div>
+          <Button
+            onClick={handleDeletePayment}
+            size="md"
+            style={{ width: "30%", marginRight: "10px" }}
+            variant="danger"
+          >
+            Da
+          </Button>
+          <Button
+            onClick={handleSetDeletePayment}
+            size="md"
+            style={{ width: "30%" }}
+            variant="primary"
+          >
+            Ne
+          </Button>
+        </div>
+      )}
       <div className={classes.backdrop}></div>
       {!showFamilyMembersForm &&
         !response.loading &&
-        !sureDeleteFamilyMember && (
+        !sureDeleteFamilyMember &&
+        !sureDeletePayment && (
           <div className={classes.modal}>
             <h4
               style={{
@@ -423,7 +531,11 @@ const FormAddMember = ({
                                 </td>
                                 {editMode && (
                                   <td>
-                                    <Button size="sm" variant="danger">
+                                    <Button
+                                      onClick={() => handleSetDeletePayment(el)}
+                                      size="sm"
+                                      variant="danger"
+                                    >
                                       Izbriši
                                     </Button>
                                   </td>
