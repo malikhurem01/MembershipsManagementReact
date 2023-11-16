@@ -11,6 +11,7 @@ const ActiveSpreadsheetContext = React.createContext({
   handleSetActiveSpreadsheet: () => {},
   handleFetchActiveSpreadsheet: () => {},
   handleSetResponse: () => {},
+  handleUpdateActiveSpreadsheet: () => {},
 });
 
 export default ActiveSpreadsheetContext;
@@ -40,6 +41,20 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
   const handleSetResponse = useCallback((data) => {
     setResponse(data);
   }, []);
+
+  const handleUpdateActiveSpreadsheet = () => {
+    const token = JSON.parse(localStorage.getItem("user_jwt"));
+    spreadsheetService
+      .getActiveSpreadsheet(token)
+      .then((res) => {
+        const responseParsed = JSON.parse(res.data.data);
+        handleSetActiveSpreadsheet(responseParsed.spreadsheet);
+        handleSetMembersInfo(responseParsed.rawMembersInfo);
+      })
+      .catch(() => {
+        handleSetActiveSpreadsheet(null);
+      });
+  };
 
   const handleFetchActiveSpreadsheet = useCallback(() => {
     handleSetResponse({
@@ -82,6 +97,7 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
         handleSetActiveSpreadsheet,
         handleFetchActiveSpreadsheet,
         handleSetResponse,
+        handleUpdateActiveSpreadsheet,
       }}
     >
       {children}

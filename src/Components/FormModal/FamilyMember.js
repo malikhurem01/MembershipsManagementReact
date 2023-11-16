@@ -151,7 +151,7 @@ const FamilyMember = ({ handleShowFamilyMemberForm, editMode }) => {
                 </FloatingLabel>
               </Col>
             </Row>
-            <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+            <div style={{ marginTop: "20px", marginBottom: "5px" }}>
               <Table hover striped responsive>
                 <thead>
                   <tr>
@@ -167,8 +167,18 @@ const FamilyMember = ({ handleShowFamilyMemberForm, editMode }) => {
                         <td>{index}</td>
                         <td>{el.firstName}</td>
                         <td>{el.lastName}</td>
-                        <td>{el.dateOfBirth}</td>
-                        <td>{el.status}</td>
+                        <td style={{ minWidth: "130px" }}>
+                          {el.dateOfBirth.split("T")[0]}
+                        </td>
+                        <td>
+                          {el.status === 0
+                            ? "Muž"
+                            : el.status === 1
+                            ? "Žena"
+                            : el.status === 2
+                            ? "Sin"
+                            : "Kćerka"}
+                        </td>
                         <td>
                           <Button
                             name={editMode ? el.id : index}
@@ -184,7 +194,6 @@ const FamilyMember = ({ handleShowFamilyMemberForm, editMode }) => {
                 </tbody>
               </Table>
             </div>
-
             <Button
               type="submit"
               style={{ marginRight: "20px" }}

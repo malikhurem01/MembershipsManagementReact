@@ -5,15 +5,11 @@ import { FloatingLabel, Form, Button, Row, Col, Table } from "react-bootstrap";
 import classes from "./FormModal.module.css";
 import FamilyMember from "./FamilyMember";
 
-import loadingSvg from "../../Assets/Pictures/loadingSvg.svg";
-import creationFailed from "../../Assets/Pictures/creationFailed.svg";
-import creationSuccess from "../../Assets/Pictures/creationSuccess.svg";
 import ActiveSpreadsheetContext from "../../Store/active-spreadsheet-context";
 
 const FormAddMember = ({
   handleFormSubmit,
   handleAddMemberClick,
-  clearSubmit,
   viewMode,
 }) => {
   const [evNumber, setEvNumber] = useState("");
@@ -45,7 +41,7 @@ const FormAddMember = ({
     setFamilyMembers(memberInfo.member.FamilyMembers);
   };
 
-  const tableColumns = ["#", "Datum", "Iznos", "Nadležni"];
+  const tableColumns = ["#", "Datum uplate", "Iznos", "Nadležni"];
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
@@ -89,42 +85,6 @@ const FormAddMember = ({
     }
     setEditMode((prevState) => !prevState);
   };
-  /*
-{response.loading && (!viewMode || editMode) && (
-        <div className={classes.responseModalAbsolute}>
-          {response.statusCode == null && (
-            <img src={loadingSvg} alt="učitavam kreiranje baze" />
-          )}
-          {response.statusCode === 200 && (
-            <img src={creationSuccess} alt="baza uspješno kreirana" />
-          )}
-          {response.statusCode >= 400 && (
-            <img src={creationFailed} alt="greška pri kreiranju baze" />
-          )}
-          <p>{response.message}</p>
-          {response.loading === true && response?.statusCode >= 400 && (
-            <Button
-              className={classes.responseButton}
-              onClick={handleClearSubmit}
-              variant="danger"
-            >
-              Poništi
-            </Button>
-          )}
-          {response.loading === true &&
-            response?.statusCode >= 200 &&
-            response?.statusCode < 300 && (
-              <Button
-                className={classes.responseButton}
-                onClick={handleClearSubmit}
-                variant="success"
-              >
-                Nazad
-              </Button>
-            )}
-        </div>
-      )}
-*/
   return (
     <React.Fragment>
       <div className={classes.backdrop}></div>
@@ -381,8 +341,83 @@ const FormAddMember = ({
                   </tbody>
                 </Table>
               )}
+
+              {viewMode &&
+                memberInfo.member.FamilyMembers.length < 1 &&
+                !editMode && (
+                  <Button
+                    style={{
+                      display: "block",
+                      marginBottom: "15px",
+                      minWidth: "400px",
+                    }}
+                    variant="warning"
+                    disabled
+                  >
+                    <h6 style={{ marginTop: "5px" }}>
+                      Nema spremljenih članova porodice
+                    </h6>
+                  </Button>
+                )}
+              {viewMode &&
+                memberInfo.member.FamilyMembers.length > 0 &&
+                !editMode && (
+                  <React.Fragment>
+                    <h4>Članovi porodice</h4>
+                    <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+                      <Table hover striped responsive>
+                        <thead>
+                          <tr>
+                            {[
+                              "#",
+                              "Ime",
+                              "Prezime",
+                              "Datum rođenja",
+                              "Status",
+                            ].map((el, index) => (
+                              <th key={index}>{el}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {memberInfo.member.FamilyMembers.map((el, index) => {
+                            return (
+                              <tr>
+                                <td>{index}</td>
+                                <td>{el.FirstName}</td>
+                                <td>{el.LastName}</td>
+                                <td>{el.DateOfBirth.split("T")[0]}</td>
+                                <td>
+                                  {el.status === 0
+                                    ? "Muž"
+                                    : el.status === 1
+                                    ? "Žena"
+                                    : el.status === 2
+                                    ? "Sin"
+                                    : "Kćerka"}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </Table>
+                    </div>
+                  </React.Fragment>
+                )}
               {viewMode && memberInfo.payments.length < 1 && !editMode && (
-                <h5>Nema uplata za otvorenu bazu</h5>
+                <Button
+                  style={{
+                    display: "block",
+                    marginBottom: "15px",
+                    minWidth: "400px",
+                  }}
+                  variant="warning"
+                  disabled
+                >
+                  <h6 style={{ marginTop: "5px" }}>
+                    Nema uplata za otvorenu bazu
+                  </h6>
+                </Button>
               )}
               {viewMode && memberInfo.payments.length > 0 && (
                 <React.Fragment>
@@ -473,6 +508,7 @@ const FormAddMember = ({
           handleSetFamilyMemberState={handleSetFamilyMemberState}
           handleShowFamilyMemberForm={handleShowFamilyMemberForm}
           editMode={editMode}
+          viewMode={viewMode}
           memberId={memberInfo?.member.Id}
         />
       )}

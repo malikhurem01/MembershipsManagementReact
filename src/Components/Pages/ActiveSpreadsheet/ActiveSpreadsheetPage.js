@@ -34,6 +34,7 @@ const ActiveSpreadsheetPage = () => {
   const [sureArchiveSpreadsheet, setSureArchiveSpreadsheet] = useState(false);
 
   const {
+    handleUpdateActiveSpreadsheet,
     handleFetchActiveSpreadsheet,
     handleSetSelectedMember,
     handleSetResponse,
@@ -73,6 +74,7 @@ const ActiveSpreadsheetPage = () => {
     memberService
       .addMember(token, data)
       .then((res) => {
+        handleUpdateActiveSpreadsheet();
         handleSetResponse({
           message: res.data.message,
           statusCode: res.status,
@@ -105,6 +107,8 @@ const ActiveSpreadsheetPage = () => {
     memberService
       .modifyMember(token, data)
       .then((res) => {
+        handleUpdateActiveSpreadsheet();
+        setShowAddMember(false);
         handleSetResponse({
           message: res.data.message,
           statusCode: res.status,
@@ -177,6 +181,7 @@ const ActiveSpreadsheetPage = () => {
     paymentService
       .addPayment(token, payloadData)
       .then((res) => {
+        handleUpdateActiveSpreadsheet();
         handleSetResponse({
           message: res.data.message,
           statusCode: res.status,
