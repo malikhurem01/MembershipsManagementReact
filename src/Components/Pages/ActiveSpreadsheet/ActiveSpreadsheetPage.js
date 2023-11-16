@@ -107,6 +107,11 @@ const ActiveSpreadsheetPage = () => {
     memberService
       .modifyMember(token, data)
       .then((res) => {
+        handleSetSelectedMember((prevState) => {
+          const responseParsed = JSON.parse(res.data.data);
+          prevState.member = responseParsed.memberFetched;
+          return prevState;
+        });
         handleUpdateActiveSpreadsheet();
         setShowAddMember(false);
         handleSetResponse({
