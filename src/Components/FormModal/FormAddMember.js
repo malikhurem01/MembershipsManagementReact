@@ -24,6 +24,7 @@ const FormAddMember = ({
   const [editMode, setEditMode] = useState(false);
   const [familyMembers, setFamilyMembers] = useState([]);
   const [showFamilyMembersForm, setShowFamilyMembersForm] = useState(false);
+  const [sureDeleteFamilyMember, setSureDeleteFamilyMember] = useState(false);
 
   let { selectedMember: memberInfo, response } = useContext(
     ActiveSpreadsheetContext
@@ -71,12 +72,28 @@ const FormAddMember = ({
   };
 
   const handleAddFamilyMemberToState = (data) => {
-    const newState = [...familyMembers, data];
-    setFamilyMembers(newState);
+    setFamilyMembers((prevState) => {
+      const updatedState = [...prevState, data];
+      return updatedState;
+    });
+  };
+
+  const handleDeleteFamilyMemberFromState = (data) => {
+    setFamilyMembers((prevState) => {
+      const updatedState = prevState.filter(
+        (fm) => fm.firstName !== data.firstName
+      );
+      console.log(updatedState);
+      return updatedState;
+    });
   };
 
   const handleSetFamilyMemberState = (state) => {
     setFamilyMembers(state);
+  };
+
+  const handleSetDeleteFamilyMember = () => {
+    setSureDeleteFamilyMember((prevState) => !prevState);
   };
 
   const handleEditMode = () => {
@@ -88,263 +105,283 @@ const FormAddMember = ({
   return (
     <React.Fragment>
       <div className={classes.backdrop}></div>
-      {!showFamilyMembersForm && !response.loading && (
-        <div className={classes.modal}>
-          <h4
-            style={{
-              borderBottom: "1px solid #cecece",
-              marginBottom: "15px",
-              paddingBottom: "5px",
-            }}
-          >
-            {!viewMode
-              ? "Novi član"
-              : viewMode && editMode
-              ? "Uredi člana"
-              : "Pregled člana"}
-          </h4>
-          <div className={classes.scrollable}>
-            <Form onSubmit={handleSubmit}>
-              <h4>Osnovni podaci</h4>
-              <Row className="g-2">
-                <Col lg={2} md="auto" sm={8}>
-                  <FloatingLabel
-                    controlId="floatingEvNumber"
-                    label="Ev. broj"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      value={
-                        !viewMode || editMode
-                          ? evNumber
-                          : memberInfo.member.EvNumber
-                      }
-                      onChange={(ev) => setEvNumber(ev.target.value)}
-                      type="number"
-                      placeholder="Ev. broj"
-                      required
-                      disabled={viewMode && !editMode}
-                    />
-                  </FloatingLabel>
-                </Col>
-                <Col lg={3} md="auto" sm={8}>
-                  <FloatingLabel
-                    controlId="floatingLastName"
-                    label="Prezime"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      value={
-                        !viewMode || editMode
-                          ? lastName
-                          : memberInfo.member.LastName
-                      }
-                      onChange={(ev) => setLastName(ev.target.value)}
-                      type="text"
-                      placeholder="Prezime"
-                      required
-                      disabled={viewMode && !editMode}
-                    />
-                  </FloatingLabel>
-                </Col>
-                <Col lg={3} md="auto" sm={8}>
-                  <FloatingLabel
-                    controlId="floatingFathersName"
-                    label="Ime oca"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      value={
-                        !viewMode || editMode
-                          ? fathersName
-                          : memberInfo.member.FathersName
-                      }
-                      onChange={(ev) => setFathersName(ev.target.value)}
-                      type="text"
-                      placeholder="Ime oca"
-                      required
-                      disabled={viewMode && !editMode}
-                    />
-                  </FloatingLabel>
-                </Col>
-                <Col lg={3} md="auto" sm={8}>
-                  <FloatingLabel
-                    controlId="floatingName"
-                    label="Ime člana"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      value={
-                        !viewMode || editMode
-                          ? firstName
-                          : memberInfo.member.FirstName
-                      }
-                      onChange={(ev) => setFirstName(ev.target.value)}
-                      type="text"
-                      placeholder="Ime člana"
-                      required
-                      disabled={viewMode && !editMode}
-                    />
-                  </FloatingLabel>
-                </Col>
-              </Row>
-              <h4>Kontakt podaci</h4>
-
-              <Row className="g-2">
-                <Col lg={3} md="auto" sm={8}>
-                  <FloatingLabel
-                    controlId="floatingPhoneNumber"
-                    label="Broj telefona"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      value={
-                        !viewMode || editMode
-                          ? phoneNumber
-                          : memberInfo.member.PhoneNumber
-                      }
-                      onChange={(ev) => setPhoneNumber(ev.target.value)}
-                      type="text"
-                      placeholder="Broj telefona"
-                      required
-                      disabled={viewMode && !editMode}
-                    />
-                  </FloatingLabel>
-                </Col>
-                <Col lg={4} md="auto" sm={8}>
-                  <FloatingLabel
-                    controlId="floatingAddress"
-                    label="Adresa stanovanja"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      value={
-                        !viewMode || editMode
-                          ? address
-                          : memberInfo.member.Address
-                      }
-                      onChange={(ev) => setAddress(ev.target.value)}
-                      type="text"
-                      placeholder="Adresa Stanovanja"
-                      required
-                      disabled={viewMode && !editMode}
-                    />
-                  </FloatingLabel>
-                </Col>
-                <Col lg={4} md="auto" sm={8}>
-                  <FloatingLabel
-                    controlId="floatingEmail"
-                    label="Email adresa"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      value={
-                        !viewMode || editMode ? email : memberInfo.member.Email
-                      }
-                      onChange={(ev) => setEmail(ev.target.value)}
-                      type="email"
-                      placeholder="Email adresa"
-                      required
-                      disabled={viewMode && !editMode}
-                    />
-                  </FloatingLabel>
-                </Col>
-              </Row>
-              <h4>Tehnički podaci</h4>
-
-              <Row className="g-2" style={{ marginBottom: "16px" }}>
-                <Col lg={2} md="auto" sm={8}>
-                  <FloatingLabel controlId="floatingDebt" label="Dug">
-                    <Form.Control
-                      value={!viewMode || editMode ? debt : memberInfo.Debt}
-                      onChange={(ev) => setDebt(ev.target.value)}
-                      type="number"
-                      placeholder="Dug"
-                      required
-                      disabled={viewMode && !editMode}
-                    />
-                  </FloatingLabel>
-                </Col>
-
-                <Col lg={4} md="auto" sm={8}>
-                  <FloatingLabel
-                    controlId="floatingStatus"
-                    label="Status člana"
-                  >
-                    <Form.Select
-                      onChange={(ev) => setStatus(ev.target.value)}
-                      aria-label="MemberStatus"
-                      required
-                      disabled={viewMode && !editMode}
-                      defaultValue={"0"}
-                      value={
-                        !viewMode || editMode
-                          ? status
-                          : memberInfo.member.Status
-                      }
+      {!showFamilyMembersForm &&
+        !response.loading &&
+        !sureDeleteFamilyMember && (
+          <div className={classes.modal}>
+            <h4
+              style={{
+                borderBottom: "1px solid #cecece",
+                marginBottom: "15px",
+                paddingBottom: "5px",
+              }}
+            >
+              {!viewMode
+                ? "Novi član"
+                : viewMode && editMode
+                ? "Uredi člana"
+                : "Pregled člana"}
+            </h4>
+            <div className={classes.scrollable}>
+              <Form onSubmit={handleSubmit}>
+                <h4>Osnovni podaci</h4>
+                <Row className="g-2">
+                  <Col lg={2} md="auto" sm={8}>
+                    <FloatingLabel
+                      controlId="floatingEvNumber"
+                      label="Ev. broj"
+                      className="mb-3"
                     >
-                      <option>Status člana</option>
-                      <option value="0">Brak</option>
-                      <option value="1">Udovac/Udovica</option>
-                      <option value="2">Granična dob</option>
-                    </Form.Select>
-                  </FloatingLabel>
-                </Col>
-              </Row>
+                      <Form.Control
+                        value={
+                          !viewMode || editMode
+                            ? evNumber
+                            : memberInfo.member.EvNumber
+                        }
+                        onChange={(ev) => setEvNumber(ev.target.value)}
+                        type="number"
+                        placeholder="Ev. broj"
+                        required
+                        disabled={viewMode && !editMode}
+                      />
+                    </FloatingLabel>
+                  </Col>
+                  <Col lg={3} md="auto" sm={8}>
+                    <FloatingLabel
+                      controlId="floatingLastName"
+                      label="Prezime"
+                      className="mb-3"
+                    >
+                      <Form.Control
+                        value={
+                          !viewMode || editMode
+                            ? lastName
+                            : memberInfo.member.LastName
+                        }
+                        onChange={(ev) => setLastName(ev.target.value)}
+                        type="text"
+                        placeholder="Prezime"
+                        required
+                        disabled={viewMode && !editMode}
+                      />
+                    </FloatingLabel>
+                  </Col>
+                  <Col lg={3} md="auto" sm={8}>
+                    <FloatingLabel
+                      controlId="floatingFathersName"
+                      label="Ime oca"
+                      className="mb-3"
+                    >
+                      <Form.Control
+                        value={
+                          !viewMode || editMode
+                            ? fathersName
+                            : memberInfo.member.FathersName
+                        }
+                        onChange={(ev) => setFathersName(ev.target.value)}
+                        type="text"
+                        placeholder="Ime oca"
+                        required
+                        disabled={viewMode && !editMode}
+                      />
+                    </FloatingLabel>
+                  </Col>
+                  <Col lg={3} md="auto" sm={8}>
+                    <FloatingLabel
+                      controlId="floatingName"
+                      label="Ime člana"
+                      className="mb-3"
+                    >
+                      <Form.Control
+                        value={
+                          !viewMode || editMode
+                            ? firstName
+                            : memberInfo.member.FirstName
+                        }
+                        onChange={(ev) => setFirstName(ev.target.value)}
+                        type="text"
+                        placeholder="Ime člana"
+                        required
+                        disabled={viewMode && !editMode}
+                      />
+                    </FloatingLabel>
+                  </Col>
+                </Row>
+                <h4>Kontakt podaci</h4>
 
-              {(!viewMode || editMode) && (
-                <div style={{ marginBottom: "20px" }}>
-                  <Button
-                    variant="success"
-                    onClick={handleShowFamilyMemberForm}
-                  >
-                    {!editMode && "Dodaj članove porodice"}
-                    {editMode && "Uredi članove porodice"}
-                  </Button>
-                </div>
-              )}
-              {viewMode &&
-                memberInfo.member.FamilyMembers?.length < 0 &&
-                !editMode && <h5>Nema upisanih članova porodice</h5>}
-              {viewMode && memberInfo.FamilyMembers?.length > 0 && (
-                <Table hover striped responsive>
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      {["#", "Ime", "Prezime", "Datum rođenja", "Status"].map(
-                        (el, index) => (
-                          <th key={index}>{el}</th>
-                        )
-                      )}
-                      {editMode && <th key="5">Postavke</th>}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {memberInfo.member.FamilyMembers.map((el, index) => {
-                      return (
-                        <tr>
-                          <td>{index}</td>
-                          <td>{el.firstName}</td>
-                          <td>{el.lastName}</td>
-                          <td>{el.dateOfBirth}</td>
-                          <td>{el.status}</td>
-                          {editMode && (
-                            <td>
-                              <Button size="sm" variant="danger">
-                                Izbriši
-                              </Button>
-                            </td>
-                          )}
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </Table>
-              )}
+                <Row className="g-2">
+                  <Col lg={3} md="auto" sm={8}>
+                    <FloatingLabel
+                      controlId="floatingPhoneNumber"
+                      label="Broj telefona"
+                      className="mb-3"
+                    >
+                      <Form.Control
+                        value={
+                          !viewMode || editMode
+                            ? phoneNumber
+                            : memberInfo.member.PhoneNumber
+                        }
+                        onChange={(ev) => setPhoneNumber(ev.target.value)}
+                        type="text"
+                        placeholder="Broj telefona"
+                        required
+                        disabled={viewMode && !editMode}
+                      />
+                    </FloatingLabel>
+                  </Col>
+                  <Col lg={4} md="auto" sm={8}>
+                    <FloatingLabel
+                      controlId="floatingAddress"
+                      label="Adresa stanovanja"
+                      className="mb-3"
+                    >
+                      <Form.Control
+                        value={
+                          !viewMode || editMode
+                            ? address
+                            : memberInfo.member.Address
+                        }
+                        onChange={(ev) => setAddress(ev.target.value)}
+                        type="text"
+                        placeholder="Adresa Stanovanja"
+                        required
+                        disabled={viewMode && !editMode}
+                      />
+                    </FloatingLabel>
+                  </Col>
+                  <Col lg={4} md="auto" sm={8}>
+                    <FloatingLabel
+                      controlId="floatingEmail"
+                      label="Email adresa"
+                      className="mb-3"
+                    >
+                      <Form.Control
+                        value={
+                          !viewMode || editMode
+                            ? email
+                            : memberInfo.member.Email
+                        }
+                        onChange={(ev) => setEmail(ev.target.value)}
+                        type="email"
+                        placeholder="Email adresa"
+                        required
+                        disabled={viewMode && !editMode}
+                      />
+                    </FloatingLabel>
+                  </Col>
+                </Row>
+                <h4>Tehnički podaci</h4>
 
-              {viewMode &&
-                memberInfo.member.FamilyMembers.length < 1 &&
-                !editMode && (
+                <Row className="g-2" style={{ marginBottom: "16px" }}>
+                  <Col lg={2} md="auto" sm={8}>
+                    <FloatingLabel controlId="floatingDebt" label="Dug">
+                      <Form.Control
+                        value={!viewMode || editMode ? debt : memberInfo.Debt}
+                        onChange={(ev) => setDebt(ev.target.value)}
+                        type="number"
+                        placeholder="Dug"
+                        required
+                        disabled={viewMode && !editMode}
+                      />
+                    </FloatingLabel>
+                  </Col>
+
+                  <Col lg={4} md="auto" sm={8}>
+                    <FloatingLabel
+                      controlId="floatingStatus"
+                      label="Status člana"
+                    >
+                      <Form.Select
+                        onChange={(ev) => setStatus(ev.target.value)}
+                        aria-label="MemberStatus"
+                        required
+                        disabled={viewMode && !editMode}
+                        defaultValue={"0"}
+                        value={
+                          !viewMode || editMode
+                            ? status
+                            : memberInfo.member.Status
+                        }
+                      >
+                        <option>Status člana</option>
+                        <option value="0">Brak</option>
+                        <option value="1">Udovac/Udovica</option>
+                        <option value="2">Granična dob</option>
+                      </Form.Select>
+                    </FloatingLabel>
+                  </Col>
+                </Row>
+
+                {(!viewMode || editMode) && (
+                  <div style={{ marginBottom: "20px" }}>
+                    <Button
+                      variant="success"
+                      onClick={handleShowFamilyMemberForm}
+                    >
+                      {!editMode && "Dodaj članove porodice"}
+                      {editMode && "Uredi članove porodice"}
+                    </Button>
+                  </div>
+                )}
+
+                {viewMode &&
+                  memberInfo.member.FamilyMembers.length < 1 &&
+                  !editMode && (
+                    <Button
+                      style={{
+                        display: "block",
+                        marginBottom: "15px",
+                        minWidth: "400px",
+                      }}
+                      variant="warning"
+                      disabled
+                    >
+                      <h6 style={{ marginTop: "5px" }}>
+                        Nema spremljenih članova porodice
+                      </h6>
+                    </Button>
+                  )}
+                {viewMode &&
+                  memberInfo.member.FamilyMembers.length > 0 &&
+                  !editMode && (
+                    <React.Fragment>
+                      <h4>Članovi porodice</h4>
+                      <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+                        <Table hover striped responsive>
+                          <thead>
+                            <tr>
+                              {[
+                                "#",
+                                "Ime",
+                                "Prezime",
+                                "Datum rođenja",
+                                "Status",
+                              ].map((el, index) => (
+                                <th key={index}>{el}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {memberInfo.member.FamilyMembers.map(
+                              (el, index) => {
+                                return (
+                                  <tr>
+                                    <td>{index}</td>
+                                    <td>{el.FirstName}</td>
+                                    <td>{el.LastName}</td>
+                                    <td>{el.DateOfBirth.split("T")[0]}</td>
+                                    <td>{el.status}</td>
+                                  </tr>
+                                );
+                              }
+                            )}
+                          </tbody>
+                        </Table>
+                      </div>
+                    </React.Fragment>
+                  )}
+                {viewMode && memberInfo.payments.length < 1 && !editMode && (
                   <Button
                     style={{
                       display: "block",
@@ -355,161 +392,103 @@ const FormAddMember = ({
                     disabled
                   >
                     <h6 style={{ marginTop: "5px" }}>
-                      Nema spremljenih članova porodice
+                      Nema uplata za otvorenu bazu
                     </h6>
                   </Button>
                 )}
-              {viewMode &&
-                memberInfo.member.FamilyMembers.length > 0 &&
-                !editMode && (
+                {viewMode && memberInfo.payments.length > 0 && (
                   <React.Fragment>
-                    <h4>Članovi porodice</h4>
+                    <h4>Uplate za otvorenu bazu</h4>
                     <div style={{ marginTop: "20px", marginBottom: "20px" }}>
                       <Table hover striped responsive>
                         <thead>
                           <tr>
-                            {[
-                              "#",
-                              "Ime",
-                              "Prezime",
-                              "Datum rođenja",
-                              "Status",
-                            ].map((el, index) => (
+                            {tableColumns.map((el, index) => (
                               <th key={index}>{el}</th>
                             ))}
+                            {editMode && <th key="5">Postavke</th>}
                           </tr>
                         </thead>
                         <tbody>
-                          {memberInfo.member.FamilyMembers.map((el, index) => {
+                          {memberInfo.payments.map((el, index) => {
                             return (
                               <tr>
                                 <td>{index}</td>
-                                <td>{el.FirstName}</td>
-                                <td>{el.LastName}</td>
-                                <td>{el.DateOfBirth.split("T")[0]}</td>
+                                <td>{el.dateOfPayment.split("T")[0]}</td>
+                                <td>{el.amount}KM</td>
                                 <td>
-                                  {el.status === 0
-                                    ? "Muž"
-                                    : el.status === 1
-                                    ? "Žena"
-                                    : el.status === 2
-                                    ? "Sin"
-                                    : "Kćerka"}
+                                  {el.supervisor.FirstName +
+                                    " " +
+                                    el.supervisor.LastName}
                                 </td>
+                                {editMode && (
+                                  <td>
+                                    <Button size="sm" variant="danger">
+                                      Izbriši
+                                    </Button>
+                                  </td>
+                                )}
                               </tr>
                             );
                           })}
                         </tbody>
                       </Table>
+                      <Button size="sm" variant="secondary" disabled>
+                        <strong>Ukupno: {memberInfo.totalAmountPayed}KM</strong>
+                      </Button>
                     </div>
                   </React.Fragment>
                 )}
-              {viewMode && memberInfo.payments.length < 1 && !editMode && (
+                {(!viewMode || editMode) && (
+                  <Button
+                    type="submit"
+                    style={{ marginRight: "20px" }}
+                    variant={editMode ? "success" : "primary"}
+                  >
+                    Spremi
+                  </Button>
+                )}
+                {viewMode && !editMode && (
+                  <Button
+                    onClick={handleEditMode}
+                    style={{ marginRight: "15px" }}
+                    variant="success"
+                  >
+                    Uredi
+                  </Button>
+                )}
                 <Button
-                  style={{
-                    display: "block",
-                    marginBottom: "15px",
-                    minWidth: "400px",
+                  onClick={() => {
+                    if (!editMode) {
+                      handleAddMemberClick();
+                    } else {
+                      setEditMode(false);
+                    }
                   }}
-                  variant="warning"
-                  disabled
+                  variant={!viewMode ? "danger" : "primary"}
                 >
-                  <h6 style={{ marginTop: "5px" }}>
-                    Nema uplata za otvorenu bazu
-                  </h6>
+                  {!viewMode
+                    ? "Odustani"
+                    : viewMode && !editMode
+                    ? "Nazad"
+                    : "Odustani"}
                 </Button>
-              )}
-              {viewMode && memberInfo.payments.length > 0 && (
-                <React.Fragment>
-                  <h4>Uplate za otvorenu bazu</h4>
-                  <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-                    <Table hover striped responsive>
-                      <thead>
-                        <tr>
-                          {tableColumns.map((el, index) => (
-                            <th key={index}>{el}</th>
-                          ))}
-                          {editMode && <th key="5">Postavke</th>}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {memberInfo.payments.map((el, index) => {
-                          return (
-                            <tr>
-                              <td>{index}</td>
-                              <td>{el.dateOfPayment.split("T")[0]}</td>
-                              <td>{el.amount}KM</td>
-                              <td>
-                                {el.supervisor.FirstName +
-                                  " " +
-                                  el.supervisor.LastName}
-                              </td>
-                              {editMode && (
-                                <td>
-                                  <Button size="sm" variant="danger">
-                                    Izbriši
-                                  </Button>
-                                </td>
-                              )}
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </Table>
-                    <Button size="sm" variant="secondary" disabled>
-                      <strong>Ukupno: {memberInfo.totalAmountPayed}KM</strong>
-                    </Button>
-                  </div>
-                </React.Fragment>
-              )}
-              {(!viewMode || editMode) && (
-                <Button
-                  type="submit"
-                  style={{ marginRight: "20px" }}
-                  variant={editMode ? "success" : "primary"}
-                >
-                  Spremi
-                </Button>
-              )}
-              {viewMode && !editMode && (
-                <Button
-                  onClick={handleEditMode}
-                  style={{ marginRight: "15px" }}
-                  variant="success"
-                >
-                  Uredi
-                </Button>
-              )}
-              <Button
-                onClick={() => {
-                  if (!editMode) {
-                    handleAddMemberClick();
-                  } else {
-                    setEditMode(false);
-                  }
-                }}
-                variant={!viewMode ? "danger" : "primary"}
-              >
-                {!viewMode
-                  ? "Odustani"
-                  : viewMode && !editMode
-                  ? "Nazad"
-                  : "Odustani"}
-              </Button>
-            </Form>
+              </Form>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       {showFamilyMembersForm && (
         <FamilyMember
-          familyMembers={familyMembers}
+          memberToAddFamilyMembers={familyMembers}
           handleAddFamilyMemberToState={handleAddFamilyMemberToState}
+          handleDeleteFamilyMemberFromState={handleDeleteFamilyMemberFromState}
           handleSetFamilyMemberState={handleSetFamilyMemberState}
           handleShowFamilyMemberForm={handleShowFamilyMemberForm}
+          handleSetDeleteFamilyMember={handleSetDeleteFamilyMember}
+          sureDeleteFamilyMember={sureDeleteFamilyMember}
           editMode={editMode}
           viewMode={viewMode}
-          memberId={memberInfo?.member.Id}
         />
       )}
     </React.Fragment>

@@ -48,7 +48,8 @@ const ResponseModal = ({ reInitialize }) => {
           response.action !== "add_member" &&
           response.action !== "archive" &&
           response.action !== "modify_member" &&
-          response.action !== "add_payment" && (
+          response.action !== "add_payment" &&
+          response.action !== "family_member" && (
             <Button
               className={styles.responseButton}
               onClick={handleClear}

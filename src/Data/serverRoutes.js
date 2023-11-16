@@ -11,6 +11,7 @@ const routes = {
   modifyMember: "Member/modify",
   filterMembers: "Member/get/all/filter",
   addMemberFamily: "Member/family/add",
+  deleteMemberFamily: "Member/family/delete",
   getMemberFamily: "Member/get/family",
   addPayment: "Payment/add",
   deletePayment: "Payment/delete",

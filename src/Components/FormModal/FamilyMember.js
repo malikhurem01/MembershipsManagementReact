@@ -5,16 +5,29 @@ import { Row, Col, FloatingLabel, Form, Button, Table } from "react-bootstrap";
 import memberService from "../../Services/memberService";
 import ActiveSpreadsheetContext from "../../Store/active-spreadsheet-context";
 
-const FamilyMember = ({ handleShowFamilyMemberForm, editMode }) => {
-  const [familyMembers, setFamilyMembers] = useState([]);
+const FamilyMember = ({
+  handleDeleteFamilyMemberFromState,
+  handleAddFamilyMemberToState,
+  handleShowFamilyMemberForm,
+  handleSetDeleteFamilyMember,
+  sureDeleteFamilyMember,
+  memberToAddFamilyMembers,
+  editMode,
+}) => {
+  let {
+    handleUpdateActiveSpreadsheet,
+    handleSetResponse,
+    response,
+    selectedMember,
+  } = useContext(ActiveSpreadsheetContext);
+  const [familyMembers, setFamilyMembers] = useState(
+    editMode ? selectedMember.FamilyMembers : memberToAddFamilyMembers
+  );
   const [familyMemberName, setFamilyMemberName] = useState("");
   const [familyMemberLastName, setFamilyMemberLastName] = useState("");
   const [familyMemberDateOfBirth, setFamilyMemberDateOfBirth] = useState("");
   const [familyMemberStatus, setFamilyMemberStatus] = useState("");
-  const [sureDeleteFamilyMember, setHandleSureDeleteFamilyMember] =
-    useState(false);
-
-  let { selectedMember } = useContext(ActiveSpreadsheetContext);
+  const [selectedFamilyMember, setSelectedFamilyMember] = useState();
 
   const handleFetchFamilyMembers = useCallback(() => {
     if (editMode) {
@@ -37,26 +50,118 @@ const FamilyMember = ({ handleShowFamilyMemberForm, editMode }) => {
   const handleSubmitForm = (ev) => {
     ev.preventDefault();
     const token = JSON.parse(localStorage.getItem("user_jwt"));
-    memberService
-      .addFamilyMember(token, {
-        memberId: selectedMember.member.Id,
+    if (editMode) {
+      handleSetResponse({
+        message: "Uređujem informacije...",
+        statusCode: null,
+        loading: true,
+      });
+      memberService
+        .addFamilyMember(token, {
+          memberId: selectedMember.member.Id,
+          firstName: familyMemberName,
+          lastName: familyMemberLastName,
+          dateOfBirth: familyMemberDateOfBirth,
+          status: +familyMemberStatus,
+        })
+        .then((res) => {
+          handleUpdateActiveSpreadsheet();
+          handleFetchFamilyMembers(selectedMember.member.Id);
+          handleSetResponse({
+            message: res.data.message,
+            statusCode: res.status,
+            loading: true,
+            action: "family_member",
+          });
+          setTimeout(() => {
+            handleSetResponse({
+              statusCode: null,
+            });
+          }, 3000);
+        })
+        .catch((err) => {
+          handleSetResponse({
+            message: err.response.data.message,
+            statusCode: err.response.data.statusCode,
+            loading: true,
+            action: "family_member",
+          });
+        });
+      setFamilyMemberName("");
+      setFamilyMemberLastName("");
+      setFamilyMemberStatus("");
+      setFamilyMemberDateOfBirth("");
+    } else {
+      //LOGIC TO ADD TO ARRAY WHEN ADDING NEW MEMBER
+      const familyMemberToAdd = {
         firstName: familyMemberName,
         lastName: familyMemberLastName,
         dateOfBirth: familyMemberDateOfBirth,
         status: +familyMemberStatus,
-      })
-      .then((res) => {
-        handleFetchFamilyMembers(selectedMember.member.Id);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    setFamilyMemberName("");
-    setFamilyMemberLastName("");
-    setFamilyMemberStatus("");
-    setFamilyMemberDateOfBirth("");
+      };
+      handleAddFamilyMemberToState(familyMemberToAdd);
+      setFamilyMembers((prevState) => [...prevState, familyMemberToAdd]);
+    }
   };
+
+  const handleDeleteFamilyMember = () => {
+    handleSetDeleteFamilyMember();
+
+    if (editMode) {
+      const token = JSON.parse(localStorage.getItem("user_jwt"));
+      handleSetResponse({
+        message: "Uklanjam člana porodice...",
+        statusCode: null,
+        loading: true,
+      });
+      memberService
+        .deleteFamilyMember(token, {
+          id: selectedFamilyMember.id,
+          memberId: selectedFamilyMember.memberId,
+        })
+        .then((res) => {
+          handleUpdateActiveSpreadsheet();
+          handleFetchFamilyMembers(selectedMember.member.Id);
+          handleSetResponse({
+            message: res.data.message,
+            statusCode: res.status,
+            loading: true,
+            action: "family_member",
+          });
+          setTimeout(() => {
+            handleSetResponse({
+              statusCode: null,
+            });
+          }, 3000);
+        })
+        .catch((err) => {
+          handleSetResponse({
+            message: err.response.data.message,
+            statusCode: err.response.data.statusCode,
+            loading: true,
+            action: "family_member",
+          });
+        });
+    } else {
+      //LOGIC TO REMOVE FROM ADD NEW MEMBER ARRAY
+      handleDeleteFamilyMemberFromState(selectedFamilyMember);
+      setFamilyMembers((prevState) => {
+        const updatedState = prevState.filter(
+          (fm) => fm.firstName !== selectedFamilyMember.firstName
+        );
+        console.log(updatedState);
+        return updatedState;
+      });
+    }
+  };
+
+  const handleSetSelectedFamilyMember = (data) => {
+    if (!sureDeleteFamilyMember) {
+      setSelectedFamilyMember(data);
+    }
+    handleSetDeleteFamilyMember();
+  };
+
   const tableColumns = [
     "#",
     "Ime",
@@ -66,13 +171,9 @@ const FamilyMember = ({ handleShowFamilyMemberForm, editMode }) => {
     "Postavke",
   ];
 
-  const handleDeleteFamilyMember = () => {
-    //LOGIC
-  };
-
   return (
     <React.Fragment>
-      {!sureDeleteFamilyMember && (
+      {!sureDeleteFamilyMember && !response.loading && (
         <div className={classes.modal}>
           <h4
             style={{
@@ -138,6 +239,7 @@ const FamilyMember = ({ handleShowFamilyMemberForm, editMode }) => {
                 >
                   <Form.Select
                     value={familyMemberStatus}
+                    defaultValue={1}
                     onChange={(ev) => setFamilyMemberStatus(ev.target.value)}
                     aria-label="FamilyMemberStatus"
                     required
@@ -161,7 +263,7 @@ const FamilyMember = ({ handleShowFamilyMemberForm, editMode }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {familyMembers.map((el, index) => {
+                  {familyMembers?.map((el, index) => {
                     return (
                       <tr>
                         <td>{index}</td>
@@ -181,7 +283,7 @@ const FamilyMember = ({ handleShowFamilyMemberForm, editMode }) => {
                         </td>
                         <td>
                           <Button
-                            name={editMode ? el.id : index}
+                            onClick={() => handleSetSelectedFamilyMember(el)}
                             size="sm"
                             variant="danger"
                           >
@@ -207,8 +309,8 @@ const FamilyMember = ({ handleShowFamilyMemberForm, editMode }) => {
           </Form>
         </div>
       )}
-      {sureDeleteFamilyMember && (
-        <div className={classes.modal + " " + classes.noExtraHeight}>
+      {sureDeleteFamilyMember && !response.loading && (
+        <div className={classes.modal}>
           <h4
             style={{
               borderBottom: "1px solid #cecece",
@@ -226,7 +328,12 @@ const FamilyMember = ({ handleShowFamilyMemberForm, editMode }) => {
           >
             Da
           </Button>
-          <Button size="md" style={{ width: "100%" }} variant="primary">
+          <Button
+            onClick={handleSetDeleteFamilyMember}
+            size="md"
+            style={{ width: "100%" }}
+            variant="primary"
+          >
             Ne
           </Button>
         </div>

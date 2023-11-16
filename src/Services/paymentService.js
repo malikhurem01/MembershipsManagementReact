@@ -8,9 +8,7 @@ const addPayment = (token, data) => {
 };
 
 const deletePayment = (token, data) => {
-  console.log(token);
-  console.log(data);
-  return axios.delete(`${serverURL}${routes.deletePayment}`, data, {
+  return axios.post(`${serverURL}${routes.deletePayment}`, data, {
     headers: { Authorization: "Bearer " + token },
   });
 };

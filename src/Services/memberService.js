@@ -28,6 +28,12 @@ const addFamilyMember = (token, data) => {
   });
 };
 
+const deleteFamilyMember = (token, data) => {
+  return axios.post(`${serverURL}${routes.deleteMemberFamily}`, data, {
+    headers: { Authorization: "Bearer " + token },
+  });
+};
+
 const getFamilyMembers = (token, memberId) => {
   return axios.get(
     `${serverURL}${routes.getMemberFamily}?memberId=${memberId}`,
@@ -43,6 +49,7 @@ const memberService = {
   filterMembers,
   addFamilyMember,
   getFamilyMembers,
+  deleteFamilyMember,
 };
 
 export default memberService;
