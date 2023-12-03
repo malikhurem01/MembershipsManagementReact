@@ -1,17 +1,17 @@
-import React, { useContext, useState } from "react";
-import { Form, Row, Col, FloatingLabel, Button } from "react-bootstrap";
+import React, { useContext, useState } from 'react';
+import { Form, Row, Col, FloatingLabel, Button } from 'react-bootstrap';
 
-import ActiveSpreadsheetContext from "../../Store/active-spreadsheet-context";
+import ActiveSpreadsheetContext from '../../Store/active-spreadsheet-context';
 
-import styles from "./FormModal.module.css";
+import styles from './FormModal.module.css';
 
 const FormAddPayment = ({ handleShowAddPayment, handleAddPayment }) => {
-  const [amount, setAmount] = useState("");
-  const [dateOfPayment, setDateOfPayment] = useState("");
+  const [amount, setAmount] = useState('');
+  const [dateOfPayment, setDateOfPayment] = useState('');
 
   const { response } = useContext(ActiveSpreadsheetContext);
 
-  const handlePaymentSubmit = (ev) => {
+  const handlePaymentSubmit = ev => {
     ev.preventDefault();
     handleAddPayment({ amount, dateOfPayment });
   };
@@ -24,9 +24,9 @@ const FormAddPayment = ({ handleShowAddPayment, handleAddPayment }) => {
           <div className={styles.modal}>
             <h4
               style={{
-                borderBottom: "1px solid #cecece",
-                marginBottom: "15px",
-                paddingBottom: "5px",
+                borderBottom: '1px solid #cecece',
+                marginBottom: '15px',
+                paddingBottom: '5px'
               }}
             >
               Nova uplata
@@ -42,7 +42,7 @@ const FormAddPayment = ({ handleShowAddPayment, handleAddPayment }) => {
                   >
                     <Form.Control
                       value={amount}
-                      onChange={(ev) => setAmount(ev.target.value)}
+                      onChange={ev => setAmount(ev.target.value)}
                       type="number"
                       placeholder="Iznos"
                       required
@@ -57,7 +57,7 @@ const FormAddPayment = ({ handleShowAddPayment, handleAddPayment }) => {
                   >
                     <Form.Control
                       value={dateOfPayment}
-                      onChange={(ev) => setDateOfPayment(ev.target.value)}
+                      onChange={ev => setDateOfPayment(ev.target.value)}
                       type="date"
                       placeholder="Datum uplate"
                       required
@@ -67,7 +67,7 @@ const FormAddPayment = ({ handleShowAddPayment, handleAddPayment }) => {
               </Row>
               <Button
                 type="submit"
-                style={{ marginRight: "20px" }}
+                style={{ marginRight: '20px' }}
                 variant="primary"
               >
                 Spremi

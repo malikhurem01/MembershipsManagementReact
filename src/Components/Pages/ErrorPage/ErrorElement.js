@@ -1,4 +1,4 @@
-import { isRouteErrorResponse, useRouteError } from "react-router-dom";
+import { isRouteErrorResponse, useRouteError } from 'react-router-dom';
 
 const ErrorElement = () => {
   const error = useRouteError();
@@ -9,7 +9,7 @@ const ErrorElement = () => {
         <div class="text-center">
           <h1 class="display-1 fw-bold">404</h1>
           <p class="fs-3">
-            {" "}
+            {' '}
             <span class="text-danger">Opps!</span> Stranica nije pronađena.
           </p>
           <p class="lead">

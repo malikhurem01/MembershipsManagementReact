@@ -1,17 +1,17 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from 'react';
 
-import { FloatingLabel, Form, Button } from "react-bootstrap";
+import { FloatingLabel, Form, Button } from 'react-bootstrap';
 
-import logoIZ from "../../../Assets/Pictures/logoIZ.png";
-import loadingSvg from "../../../Assets/Pictures/loadingSvg.svg";
+import logoIZ from '../../../Assets/Pictures/logoIZ.png';
+import loadingSvg from '../../../Assets/Pictures/loadingSvg.svg';
 
-import classes from "./LoginFormComponent.module.css";
-import { useNavigate } from "react-router-dom";
-import AuthContext from "../../../Store/auth-context-api";
+import classes from './LoginFormComponent.module.css';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from '../../../Store/auth-context-api';
 
 const LoginFormComponent = ({ onFormSubmit, loginStage }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
 
@@ -19,18 +19,18 @@ const LoginFormComponent = ({ onFormSubmit, loginStage }) => {
 
   useEffect(() => {
     if (!temporaryDzemat) {
-      navigate("/login/dzemat");
+      navigate('/login/dzemat');
     }
   }, [temporaryDzemat, navigate]);
 
-  const handleFormSubmit = (ev) => {
+  const handleFormSubmit = ev => {
     ev.preventDefault();
     onFormSubmit(username, password);
   };
 
   return (
     <div className={classes.loginContainer}>
-      {loginStage !== "first" && (
+      {loginStage !== 'first' && (
         <div className={classes.loginContainerHeader}>
           <div>
             <img src={logoIZ} alt="Islamska zajednica u Bosni i Hercegovini" />
@@ -47,7 +47,7 @@ const LoginFormComponent = ({ onFormSubmit, loginStage }) => {
           </div>
         </div>
       )}
-      {loginStage === "first" && (
+      {loginStage === 'first' && (
         <div className={classes.loginContainerHeaderFirstLoginStage}>
           <h4>
             Program za praćenje i<br /> upravljanje budžetom
@@ -62,7 +62,7 @@ const LoginFormComponent = ({ onFormSubmit, loginStage }) => {
         >
           <Form.Control
             value={username}
-            onChange={(ev) => setUsername(ev.target.value)}
+            onChange={ev => setUsername(ev.target.value)}
             type="text"
             placeholder="Korisničko ime"
           />
@@ -75,14 +75,14 @@ const LoginFormComponent = ({ onFormSubmit, loginStage }) => {
           <Form.Control
             size="md"
             value={password}
-            onChange={(ev) => setPassword(ev.target.value)}
+            onChange={ev => setPassword(ev.target.value)}
             type="password"
             placeholder="Lozinka"
           />
         </FloatingLabel>
         <Button className={classes.submitButton} variant="dark" type="submit">
-          {!response.loading || response.loading === "done" ? (
-            "PRIJAVA"
+          {!response.loading || response.loading === 'done' ? (
+            'PRIJAVA'
           ) : (
             <img
               width={30}
@@ -92,7 +92,7 @@ const LoginFormComponent = ({ onFormSubmit, loginStage }) => {
             />
           )}
         </Button>
-        {response.loading === "done" && response.success === false && (
+        {response.loading === 'done' && response.success === false && (
           <Button className={classes.errorButton} variant="danger" disabled>
             Pogrešni kredencijali
           </Button>

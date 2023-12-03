@@ -1,15 +1,15 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
-import PageWrapperComponent from "../../PageWrapper/PageWrapperComponent";
+import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
 
-import budgetBalance from "../../../Assets/Pictures/stanjeBudzeta.svg";
-import budgetBalanceDonations from "../../../Assets/Pictures/stanjeBudzetaDonacije.svg";
-import budgetBalanceOtherIncome from "../../../Assets/Pictures/stanjeBudzetaOstaliPrihodi.svg";
-import accountLogo from "../../../Assets/Pictures/accountLogo.svg";
-import expensesLogo from "../../../Assets/Pictures/expensesLogo.svg";
-import odjavaLogo from "../../../Assets/Pictures/odjavaLogo.svg";
+import budgetBalance from '../../../Assets/Pictures/stanjeBudzeta.svg';
+import budgetBalanceDonations from '../../../Assets/Pictures/stanjeBudzetaDonacije.svg';
+import budgetBalanceOtherIncome from '../../../Assets/Pictures/stanjeBudzetaOstaliPrihodi.svg';
+import accountLogo from '../../../Assets/Pictures/accountLogo.svg';
+import expensesLogo from '../../../Assets/Pictures/expensesLogo.svg';
+import odjavaLogo from '../../../Assets/Pictures/odjavaLogo.svg';
 
-import classes from "./MainPage.module.css";
+import classes from './MainPage.module.css';
 
 const MainPage = () => {
   return (
@@ -19,7 +19,7 @@ const MainPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="/clanarine">
               <div>
-                {" "}
+                {' '}
                 <img
                   src={budgetBalance}
                   alt="stanje budžeta redovne članarine"
@@ -34,7 +34,7 @@ const MainPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="/logout">
               <div>
-                {" "}
+                {' '}
                 <img
                   src={budgetBalanceDonations}
                   alt="stanje budžeta donacije"
@@ -49,7 +49,7 @@ const MainPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="/logout">
               <div>
-                {" "}
+                {' '}
                 <img
                   src={budgetBalanceOtherIncome}
                   alt="stanje budžeta ostali prihodi"
@@ -66,7 +66,7 @@ const MainPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="/logout">
               <div>
-                {" "}
+                {' '}
                 <img src={expensesLogo} alt="Odjava" />
                 <p className={classes.menuOptionText}>
                   Pregled stanja budžeta
@@ -78,7 +78,7 @@ const MainPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="/logout">
               <div>
-                {" "}
+                {' '}
                 <img src={accountLogo} alt="Odjava" />
                 <p className={classes.menuOptionText}>Moj račun</p>
               </div>
@@ -87,7 +87,7 @@ const MainPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="/logout">
               <div>
-                {" "}
+                {' '}
                 <img src={odjavaLogo} alt="Odjava" />
                 <p className={classes.menuOptionText}>Odjava</p>
               </div>

@@ -1,12 +1,12 @@
-import React, { useContext, useEffect } from "react";
-import AuthContext from "../../Store/auth-context-api";
+import React, { useContext, useEffect } from 'react';
+import AuthContext from '../../Store/auth-context-api';
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
-import logoIZ from "../../Assets/Pictures/logoIZ.png";
+import logoIZ from '../../Assets/Pictures/logoIZ.png';
 
-import classes from "./PageWrapperComponent.module.css";
-import userService from "../../Services/userService";
+import classes from './PageWrapperComponent.module.css';
+import userService from '../../Services/userService';
 
 const PageWrapperComponent = ({ returnArrow, children }) => {
   const navigate = useNavigate();
@@ -14,24 +14,24 @@ const PageWrapperComponent = ({ returnArrow, children }) => {
   const { userDataState, handleSetUser } = useContext(AuthContext);
 
   useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("user_jwt"));
+    const token = JSON.parse(localStorage.getItem('user_jwt'));
     userService
       .currentUser(token)
-      .then((res) => {
+      .then(res => {
         handleSetUser(res.data.data);
       })
       .catch(() => {
-        window.location.replace("/login/dzemat");
+        window.location.replace('/login/dzemat');
       });
   }, [handleSetUser]);
 
-  const handleSetDzematInfo = (title) => {
+  const handleSetDzematInfo = title => {
     if (!userDataState) {
-      return navigate("/login/dzemat");
+      return navigate('/login/dzemat');
     } else {
-      if (title === "medzlis") {
+      if (title === 'medzlis') {
         return userDataState.dzemat.medzlis.name;
-      } else if (title === "dzemat") {
+      } else if (title === 'dzemat') {
         return userDataState.dzemat.name;
       }
     }
@@ -56,9 +56,9 @@ const PageWrapperComponent = ({ returnArrow, children }) => {
                   Program za praćenje i upravljanje budžetom
                 </span>
                 <br />
-                Medžlis islamske zajednice {`${handleSetDzematInfo("medzlis")}`}
+                Medžlis islamske zajednice {`${handleSetDzematInfo('medzlis')}`}
                 <br />
-                {`Džemat ${handleSetDzematInfo("dzemat")}`}
+                {`Džemat ${handleSetDzematInfo('dzemat')}`}
               </p>
             </div>
           </div>

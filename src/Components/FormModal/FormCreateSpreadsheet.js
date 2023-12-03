@@ -1,45 +1,45 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
-import { FloatingLabel, Form, Button, Row, Col } from "react-bootstrap";
+import { FloatingLabel, Form, Button, Row, Col } from 'react-bootstrap';
 
-import loadingSvg from "../../Assets/Pictures/loadingSvg.svg";
-import creationFailed from "../../Assets/Pictures/creationFailed.svg";
-import creationSuccess from "../../Assets/Pictures/creationSuccess.svg";
+import loadingSvg from '../../Assets/Pictures/loadingSvg.svg';
+import creationFailed from '../../Assets/Pictures/creationFailed.svg';
+import creationSuccess from '../../Assets/Pictures/creationSuccess.svg';
 
-import classes from "./FormModal.module.css";
+import classes from './FormModal.module.css';
 
 const FormCreateSpreadsheet = ({
   handleCreateDatabase,
   response,
   waitingResponse,
-  clearSubmit,
+  clearSubmit
 }) => {
   const [year, setYear] = useState(new Date().getFullYear());
-  const [marriageFee, setMarriageFee] = useState("");
-  const [widowerFee, setWidowerFee] = useState("");
-  const [ageLimitFee, setAgeLimitFee] = useState("");
+  const [marriageFee, setMarriageFee] = useState('');
+  const [widowerFee, setWidowerFee] = useState('');
+  const [ageLimitFee, setAgeLimitFee] = useState('');
 
   const navigate = useNavigate();
 
-  const handleSubmit = (ev) => {
+  const handleSubmit = ev => {
     ev.preventDefault();
 
     const data = {
       year,
-      dzematId: JSON.parse(localStorage.getItem("dzemat_id")),
+      dzematId: JSON.parse(localStorage.getItem('dzemat_id')),
       marriageFee,
       widowerFee,
       ageLimitFee,
-      archived: false,
+      archived: false
     };
-    const token = JSON.parse(localStorage.getItem("user_jwt"));
+    const token = JSON.parse(localStorage.getItem('user_jwt'));
     handleCreateDatabase(token, data);
   };
 
   const handleNavigateBack = () => {
-    navigate("/clanarine");
+    navigate('/clanarine');
   };
 
   const handleClearSubmit = () => {
@@ -52,9 +52,9 @@ const FormCreateSpreadsheet = ({
         <Form onSubmit={handleSubmit}>
           <h4
             style={{
-              borderBottom: "1px solid #cecece",
-              marginBottom: "15px",
-              paddingBottom: "5px",
+              borderBottom: '1px solid #cecece',
+              marginBottom: '15px',
+              paddingBottom: '5px'
             }}
           >
             Kreiraj bazu
@@ -68,7 +68,7 @@ const FormCreateSpreadsheet = ({
               >
                 <Form.Control
                   value={year}
-                  onChange={(ev) => setYear(ev.target.value)}
+                  onChange={ev => setYear(ev.target.value)}
                   type="number"
                   placeholder="Godina"
                   label="Baza za godinu:"
@@ -84,7 +84,7 @@ const FormCreateSpreadsheet = ({
               >
                 <Form.Control
                   value={marriageFee}
-                  onChange={(ev) => setMarriageFee(ev.target.value)}
+                  onChange={ev => setMarriageFee(ev.target.value)}
                   type="number"
                   placeholder="Status brak"
                   required
@@ -99,7 +99,7 @@ const FormCreateSpreadsheet = ({
               >
                 <Form.Control
                   value={widowerFee}
-                  onChange={(ev) => setWidowerFee(ev.target.value)}
+                  onChange={ev => setWidowerFee(ev.target.value)}
                   type="number"
                   placeholder="Status udovac"
                   required
@@ -114,7 +114,7 @@ const FormCreateSpreadsheet = ({
               >
                 <Form.Control
                   value={ageLimitFee}
-                  onChange={(ev) => setAgeLimitFee(ev.target.value)}
+                  onChange={ev => setAgeLimitFee(ev.target.value)}
                   type="number"
                   placeholder="Granična dob"
                   required
@@ -159,7 +159,7 @@ const FormCreateSpreadsheet = ({
           {!waitingResponse && (
             <React.Fragment>
               <Button
-                style={{ marginRight: "20px" }}
+                style={{ marginRight: '20px' }}
                 type="submit"
                 variant="primary"
               >

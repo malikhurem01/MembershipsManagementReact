@@ -1,26 +1,26 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState } from 'react';
 
-import { FloatingLabel, Form, Button, Row, Col, Table } from "react-bootstrap";
+import { FloatingLabel, Form, Button, Row, Col, Table } from 'react-bootstrap';
 
-import classes from "./FormModal.module.css";
-import FamilyMember from "./FamilyMember";
+import classes from './FormModal.module.css';
+import FamilyMember from './FamilyMember';
 
-import ActiveSpreadsheetContext from "../../Store/active-spreadsheet-context";
-import paymentService from "../../Services/paymentService";
+import ActiveSpreadsheetContext from '../../Store/active-spreadsheet-context';
+import paymentService from '../../Services/paymentService';
 
 const FormAddMember = ({
   handleFormSubmit,
   handleAddMemberClick,
-  viewMode,
+  viewMode
 }) => {
-  const [evNumber, setEvNumber] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [fathersName, setFathersName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [address, setAddress] = useState("");
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState("");
+  const [evNumber, setEvNumber] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [fathersName, setFathersName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [address, setAddress] = useState('');
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState('');
   const [debt, setDebt] = useState(0);
   const [editMode, setEditMode] = useState(false);
   const [familyMembers, setFamilyMembers] = useState([]);
@@ -33,7 +33,7 @@ const FormAddMember = ({
     handleSetResponse,
     selectedMember: memberInfo,
     activeSpreadsheet,
-    response,
+    response
   } = useContext(ActiveSpreadsheetContext);
 
   const handeEnterEditMode = () => {
@@ -48,9 +48,9 @@ const FormAddMember = ({
     setFamilyMembers(memberInfo.member.FamilyMembers);
   };
 
-  const tableColumns = ["#", "Datum uplate", "Iznos", "Nadležni"];
+  const tableColumns = ['#', 'Datum uplate', 'Iznos', 'Nadležni'];
 
-  const handleSubmit = (ev) => {
+  const handleSubmit = ev => {
     ev.preventDefault();
     setEditMode(false);
     const member = {
@@ -67,89 +67,89 @@ const FormAddMember = ({
       debt,
       active: true,
       addToSpreadsheet: true,
-      dzematId: JSON.parse(localStorage.getItem("dzemat_id")),
+      dzematId: JSON.parse(localStorage.getItem('dzemat_id'))
     };
-    const token = JSON.parse(localStorage.getItem("user_jwt"));
+    const token = JSON.parse(localStorage.getItem('user_jwt'));
     handleFormSubmit(token, member);
   };
 
   const handleShowFamilyMemberForm = () => {
-    setShowFamilyMembersForm((prevState) => !prevState);
+    setShowFamilyMembersForm(prevState => !prevState);
   };
 
-  const handleAddFamilyMemberToState = (data) => {
-    setFamilyMembers((prevState) => {
+  const handleAddFamilyMemberToState = data => {
+    setFamilyMembers(prevState => {
       const updatedState = [...prevState, data];
       return updatedState;
     });
   };
 
-  const handleDeleteFamilyMemberFromState = (data) => {
-    setFamilyMembers((prevState) => {
+  const handleDeleteFamilyMemberFromState = data => {
+    setFamilyMembers(prevState => {
       const updatedState = prevState.filter(
-        (fm) => fm.firstName !== data.firstName
+        fm => fm.firstName !== data.firstName
       );
       console.log(updatedState);
       return updatedState;
     });
   };
 
-  const handleSetFamilyMemberState = (state) => {
+  const handleSetFamilyMemberState = state => {
     setFamilyMembers(state);
   };
 
   const handleSetDeleteFamilyMember = () => {
-    setSureDeleteFamilyMember((prevState) => !prevState);
+    setSureDeleteFamilyMember(prevState => !prevState);
   };
 
-  const handleSetDeletePayment = (data) => {
+  const handleSetDeletePayment = data => {
     if (!sureDeletePayment) {
       setSelectedPayment(data);
     }
-    setSureDeletePayment((prevState) => !prevState);
+    setSureDeletePayment(prevState => !prevState);
   };
 
   const handleEditMode = () => {
     if (!editMode) {
       handeEnterEditMode();
     }
-    setEditMode((prevState) => !prevState);
+    setEditMode(prevState => !prevState);
   };
 
   const handleDeletePayment = () => {
     handleSetDeletePayment();
-    const token = JSON.parse(localStorage.getItem("user_jwt"));
+    const token = JSON.parse(localStorage.getItem('user_jwt'));
     handleSetResponse({
-      message: "Uklanjam uplatu...",
+      message: 'Uklanjam uplatu...',
       statusCode: null,
-      loading: true,
+      loading: true
     });
     paymentService
       .deletePayment(token, {
         id: selectedPayment.id,
         memberId: memberInfo.member.Id,
-        spreadsheetId: activeSpreadsheet.id,
+        spreadsheetId: activeSpreadsheet.id
       })
-      .then((res) => {
+      .then(res => {
         handleUpdateActiveSpreadsheet();
         handleSetResponse({
           message: res.data.message,
           statusCode: res.status,
           loading: true,
-          action: "payment_delete",
+          action: 'payment_delete'
         });
         setTimeout(() => {
           handleSetResponse({
-            statusCode: null,
+            statusCode: null
           });
         }, 3000);
       })
-      .catch((err) => {
+      .catch(err => {
         handleSetResponse({
           message: err.response.data.message,
           statusCode: err.response.data.statusCode,
           loading: true,
-          action: "payment_delete",
+          action: 'payment_delete'
         });
       });
   };
@@ -159,19 +159,19 @@ const FormAddMember = ({
         <div className={classes.modal}>
           <h4
             style={{
-              borderBottom: "1px solid #cecece",
-              marginBottom: "15px",
-              paddingBottom: "5px",
+              borderBottom: '1px solid #cecece',
+              marginBottom: '15px',
+              paddingBottom: '5px'
             }}
           >
             Želite li izbrisati uplatu?
           </h4>
           <div
             style={{
-              margin: "15px 15px",
-              borderBottom: "1px solid #cecece",
-              marginBottom: "15px",
-              paddingBottom: "5px",
+              margin: '15px 15px',
+              borderBottom: '1px solid #cecece',
+              marginBottom: '15px',
+              paddingBottom: '5px'
             }}
           >
             <h6>
@@ -179,16 +179,16 @@ const FormAddMember = ({
             </h6>
             <h6>{`Iznos: ${selectedPayment.amount}KM`}</h6>
             <h6>{`Datum uplate: ${
-              selectedPayment.dateOfPayment.split("T")[0]
+              selectedPayment.dateOfPayment.split('T')[0]
             }`}</h6>
             <h6>{`Baza za godinu: ${activeSpreadsheet.year}`}</h6>
           </div>
           <div
-            style={{ margin: "15px 15px", fontSize: "16px", fontWeight: "700" }}
+            style={{ margin: '15px 15px', fontSize: '16px', fontWeight: '700' }}
           >
             <Button variant="outline-dark">
               <strong>
-                Iznos uplate će se upisati u dug člana{" "}
+                Iznos uplate će se upisati u dug člana{' '}
                 {`${memberInfo.member.FirstName} ${memberInfo.member.LastName}`}
               </strong>
             </Button>
@@ -196,7 +196,7 @@ const FormAddMember = ({
           <Button
             onClick={handleDeletePayment}
             size="md"
-            style={{ width: "30%", marginRight: "10px" }}
+            style={{ width: '30%', marginRight: '10px' }}
             variant="danger"
           >
             Da
@@ -204,7 +204,7 @@ const FormAddMember = ({
           <Button
             onClick={handleSetDeletePayment}
             size="md"
-            style={{ width: "30%" }}
+            style={{ width: '30%' }}
             variant="primary"
           >
             Ne
@@ -219,16 +219,16 @@ const FormAddMember = ({
           <div className={classes.modal}>
             <h4
               style={{
-                borderBottom: "1px solid #cecece",
-                marginBottom: "15px",
-                paddingBottom: "5px",
+                borderBottom: '1px solid #cecece',
+                marginBottom: '15px',
+                paddingBottom: '5px'
               }}
             >
               {!viewMode
-                ? "Novi član"
+                ? 'Novi član'
                 : viewMode && editMode
-                ? "Uredi člana"
-                : "Pregled člana"}
+                ? 'Uredi člana'
+                : 'Pregled člana'}
             </h4>
             <div className={classes.scrollable}>
               <Form onSubmit={handleSubmit}>
@@ -246,7 +246,7 @@ const FormAddMember = ({
                             ? evNumber
                             : memberInfo.member.EvNumber
                         }
-                        onChange={(ev) => setEvNumber(ev.target.value)}
+                        onChange={ev => setEvNumber(ev.target.value)}
                         type="number"
                         placeholder="Ev. broj"
                         required
@@ -266,7 +266,7 @@ const FormAddMember = ({
                             ? lastName
                             : memberInfo.member.LastName
                         }
-                        onChange={(ev) => setLastName(ev.target.value)}
+                        onChange={ev => setLastName(ev.target.value)}
                         type="text"
                         placeholder="Prezime"
                         required
@@ -286,7 +286,7 @@ const FormAddMember = ({
                             ? fathersName
                             : memberInfo.member.FathersName
                         }
-                        onChange={(ev) => setFathersName(ev.target.value)}
+                        onChange={ev => setFathersName(ev.target.value)}
                         type="text"
                         placeholder="Ime oca"
                         required
@@ -306,7 +306,7 @@ const FormAddMember = ({
                             ? firstName
                             : memberInfo.member.FirstName
                         }
-                        onChange={(ev) => setFirstName(ev.target.value)}
+                        onChange={ev => setFirstName(ev.target.value)}
                         type="text"
                         placeholder="Ime člana"
                         required
@@ -330,7 +330,7 @@ const FormAddMember = ({
                             ? phoneNumber
                             : memberInfo.member.PhoneNumber
                         }
-                        onChange={(ev) => setPhoneNumber(ev.target.value)}
+                        onChange={ev => setPhoneNumber(ev.target.value)}
                         type="text"
                         placeholder="Broj telefona"
                         required
@@ -350,7 +350,7 @@ const FormAddMember = ({
                             ? address
                             : memberInfo.member.Address
                         }
-                        onChange={(ev) => setAddress(ev.target.value)}
+                        onChange={ev => setAddress(ev.target.value)}
                         type="text"
                         placeholder="Adresa Stanovanja"
                         required
@@ -370,7 +370,7 @@ const FormAddMember = ({
                             ? email
                             : memberInfo.member.Email
                         }
-                        onChange={(ev) => setEmail(ev.target.value)}
+                        onChange={ev => setEmail(ev.target.value)}
                         type="email"
                         placeholder="Email adresa"
                         required
@@ -381,12 +381,12 @@ const FormAddMember = ({
                 </Row>
                 <h4>Tehnički podaci</h4>
 
-                <Row className="g-2" style={{ marginBottom: "16px" }}>
+                <Row className="g-2" style={{ marginBottom: '16px' }}>
                   <Col lg={2} md="auto" sm={8}>
                     <FloatingLabel controlId="floatingDebt" label="Dug">
                       <Form.Control
                         value={!viewMode || editMode ? debt : memberInfo.Debt}
-                        onChange={(ev) => setDebt(ev.target.value)}
+                        onChange={ev => setDebt(ev.target.value)}
                         type="number"
                         placeholder="Dug"
                         required
@@ -401,11 +401,11 @@ const FormAddMember = ({
                       label="Status člana"
                     >
                       <Form.Select
-                        onChange={(ev) => setStatus(ev.target.value)}
+                        onChange={ev => setStatus(ev.target.value)}
                         aria-label="MemberStatus"
                         required
                         disabled={viewMode && !editMode}
-                        defaultValue={"0"}
+                        defaultValue={'0'}
                         value={
                           !viewMode || editMode
                             ? status
@@ -422,13 +422,13 @@ const FormAddMember = ({
                 </Row>
 
                 {(!viewMode || editMode) && (
-                  <div style={{ marginBottom: "20px" }}>
+                  <div style={{ marginBottom: '20px' }}>
                     <Button
                       variant="success"
                       onClick={handleShowFamilyMemberForm}
                     >
-                      {!editMode && "Dodaj članove porodice"}
-                      {editMode && "Uredi članove porodice"}
+                      {!editMode && 'Dodaj članove porodice'}
+                      {editMode && 'Uredi članove porodice'}
                     </Button>
                   </div>
                 )}
@@ -438,14 +438,14 @@ const FormAddMember = ({
                   !editMode && (
                     <Button
                       style={{
-                        display: "block",
-                        marginBottom: "15px",
-                        minWidth: "370px",
+                        display: 'block',
+                        marginBottom: '15px',
+                        minWidth: '370px'
                       }}
                       variant="warning"
                       disabled
                     >
-                      <h6 style={{ marginTop: "5px" }}>
+                      <h6 style={{ marginTop: '5px' }}>
                         Nema spremljenih članova porodice
                       </h6>
                     </Button>
@@ -455,16 +455,16 @@ const FormAddMember = ({
                   !editMode && (
                     <React.Fragment>
                       <h4>Članovi porodice</h4>
-                      <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+                      <div style={{ marginTop: '20px', marginBottom: '20px' }}>
                         <Table hover striped responsive>
                           <thead>
                             <tr>
                               {[
-                                "#",
-                                "Ime",
-                                "Prezime",
-                                "Datum rođenja",
-                                "Status",
+                                '#',
+                                'Ime',
+                                'Prezime',
+                                'Datum rođenja',
+                                'Status'
                               ].map((el, index) => (
                                 <th key={index}>{el}</th>
                               ))}
@@ -478,8 +478,8 @@ const FormAddMember = ({
                                     <td>{index}</td>
                                     <td>{el.FirstName}</td>
                                     <td>{el.LastName}</td>
-                                    <td style={{ minWidth: "70px" }}>
-                                      {el.DateOfBirth.split("T")[0]}
+                                    <td style={{ minWidth: '70px' }}>
+                                      {el.DateOfBirth.split('T')[0]}
                                     </td>
                                     <td>{el.status}</td>
                                   </tr>
@@ -494,14 +494,14 @@ const FormAddMember = ({
                 {viewMode && memberInfo.payments.length < 1 && !editMode && (
                   <Button
                     style={{
-                      display: "block",
-                      marginBottom: "15px",
-                      minWidth: "370px",
+                      display: 'block',
+                      marginBottom: '15px',
+                      minWidth: '370px'
                     }}
                     variant="warning"
                     disabled
                   >
-                    <h6 style={{ marginTop: "5px" }}>
+                    <h6 style={{ marginTop: '5px' }}>
                       Nema uplata za otvorenu bazu
                     </h6>
                   </Button>
@@ -509,7 +509,7 @@ const FormAddMember = ({
                 {viewMode && memberInfo.payments.length > 0 && (
                   <React.Fragment>
                     <h4>Uplate za otvorenu bazu</h4>
-                    <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+                    <div style={{ marginTop: '20px', marginBottom: '20px' }}>
                       <Table hover striped responsive>
                         <thead>
                           <tr>
@@ -524,13 +524,13 @@ const FormAddMember = ({
                             return (
                               <tr>
                                 <td>{index}</td>
-                                <td style={{ minWidth: "70px" }}>
-                                  {el.dateOfPayment.split("T")[0]}
+                                <td style={{ minWidth: '70px' }}>
+                                  {el.dateOfPayment.split('T')[0]}
                                 </td>
                                 <td>{el.amount}KM</td>
                                 <td>
                                   {el.supervisor.FirstName +
-                                    " " +
+                                    ' ' +
                                     el.supervisor.LastName}
                                 </td>
                                 {editMode && (
@@ -558,8 +558,8 @@ const FormAddMember = ({
                 {(!viewMode || editMode) && (
                   <Button
                     type="submit"
-                    style={{ marginRight: "20px" }}
-                    variant={editMode ? "success" : "primary"}
+                    style={{ marginRight: '20px' }}
+                    variant={editMode ? 'success' : 'primary'}
                   >
                     Spremi
                   </Button>
@@ -567,7 +567,7 @@ const FormAddMember = ({
                 {viewMode && !editMode && (
                   <Button
                     onClick={handleEditMode}
-                    style={{ marginRight: "15px" }}
+                    style={{ marginRight: '15px' }}
                     variant="success"
                   >
                     Uredi
@@ -581,13 +581,13 @@ const FormAddMember = ({
                       setEditMode(false);
                     }
                   }}
-                  variant={!viewMode ? "danger" : "primary"}
+                  variant={!viewMode ? 'danger' : 'primary'}
                 >
                   {!viewMode
-                    ? "Odustani"
+                    ? 'Odustani'
                     : viewMode && !editMode
-                    ? "Nazad"
-                    : "Odustani"}
+                    ? 'Nazad'
+                    : 'Odustani'}
                 </Button>
               </Form>
             </div>

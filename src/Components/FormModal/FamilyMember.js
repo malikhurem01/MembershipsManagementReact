@@ -1,9 +1,9 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import classes from "./FormModal.module.css";
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import classes from './FormModal.module.css';
 
-import { Row, Col, FloatingLabel, Form, Button, Table } from "react-bootstrap";
-import memberService from "../../Services/memberService";
-import ActiveSpreadsheetContext from "../../Store/active-spreadsheet-context";
+import { Row, Col, FloatingLabel, Form, Button, Table } from 'react-bootstrap';
+import memberService from '../../Services/memberService';
+import ActiveSpreadsheetContext from '../../Store/active-spreadsheet-context';
 
 const FamilyMember = ({
   handleDeleteFamilyMemberFromState,
@@ -12,32 +12,32 @@ const FamilyMember = ({
   handleSetDeleteFamilyMember,
   sureDeleteFamilyMember,
   memberToAddFamilyMembers,
-  editMode,
+  editMode
 }) => {
   let {
     handleUpdateActiveSpreadsheet,
     handleSetResponse,
     response,
-    selectedMember,
+    selectedMember
   } = useContext(ActiveSpreadsheetContext);
   const [familyMembers, setFamilyMembers] = useState(
     editMode ? selectedMember.FamilyMembers : memberToAddFamilyMembers
   );
-  const [familyMemberName, setFamilyMemberName] = useState("");
-  const [familyMemberLastName, setFamilyMemberLastName] = useState("");
-  const [familyMemberDateOfBirth, setFamilyMemberDateOfBirth] = useState("");
-  const [familyMemberStatus, setFamilyMemberStatus] = useState("");
+  const [familyMemberName, setFamilyMemberName] = useState('');
+  const [familyMemberLastName, setFamilyMemberLastName] = useState('');
+  const [familyMemberDateOfBirth, setFamilyMemberDateOfBirth] = useState('');
+  const [familyMemberStatus, setFamilyMemberStatus] = useState('');
   const [selectedFamilyMember, setSelectedFamilyMember] = useState();
 
   const handleFetchFamilyMembers = useCallback(() => {
     if (editMode) {
-      const token = JSON.parse(localStorage.getItem("user_jwt"));
+      const token = JSON.parse(localStorage.getItem('user_jwt'));
       memberService
         .getFamilyMembers(token, selectedMember.member.Id)
-        .then((res) => {
-          setFamilyMembers(res.data.data["$values"]);
+        .then(res => {
+          setFamilyMembers(res.data.data['$values']);
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
     }
@@ -47,14 +47,14 @@ const FamilyMember = ({
     handleFetchFamilyMembers();
   }, [handleFetchFamilyMembers]);
 
-  const handleSubmitForm = (ev) => {
+  const handleSubmitForm = ev => {
     ev.preventDefault();
-    const token = JSON.parse(localStorage.getItem("user_jwt"));
+    const token = JSON.parse(localStorage.getItem('user_jwt'));
     if (editMode) {
       handleSetResponse({
-        message: "Uređujem informacije...",
+        message: 'Uređujem informacije...',
         statusCode: null,
-        loading: true,
+        loading: true
       });
       memberService
         .addFamilyMember(token, {
@@ -62,45 +62,45 @@ const FamilyMember = ({
           firstName: familyMemberName,
           lastName: familyMemberLastName,
           dateOfBirth: familyMemberDateOfBirth,
-          status: +familyMemberStatus,
+          status: +familyMemberStatus
         })
-        .then((res) => {
+        .then(res => {
           handleUpdateActiveSpreadsheet();
           handleFetchFamilyMembers(selectedMember.member.Id);
           handleSetResponse({
             message: res.data.message,
             statusCode: res.status,
             loading: true,
-            action: "family_member",
+            action: 'family_member'
           });
           setTimeout(() => {
             handleSetResponse({
-              statusCode: null,
+              statusCode: null
             });
           }, 3000);
         })
-        .catch((err) => {
+        .catch(err => {
           handleSetResponse({
             message: err.response.data.message,
             statusCode: err.response.data.statusCode,
             loading: true,
-            action: "family_member",
+            action: 'family_member'
           });
         });
-      setFamilyMemberName("");
-      setFamilyMemberLastName("");
-      setFamilyMemberStatus("");
-      setFamilyMemberDateOfBirth("");
+      setFamilyMemberName('');
+      setFamilyMemberLastName('');
+      setFamilyMemberStatus('');
+      setFamilyMemberDateOfBirth('');
     } else {
       //LOGIC TO ADD TO ARRAY WHEN ADDING NEW MEMBER
       const familyMemberToAdd = {
         firstName: familyMemberName,
         lastName: familyMemberLastName,
         dateOfBirth: familyMemberDateOfBirth,
-        status: +familyMemberStatus,
+        status: +familyMemberStatus
       };
       handleAddFamilyMemberToState(familyMemberToAdd);
-      setFamilyMembers((prevState) => [...prevState, familyMemberToAdd]);
+      setFamilyMembers(prevState => [...prevState, familyMemberToAdd]);
     }
   };
 
@@ -108,46 +108,46 @@ const FamilyMember = ({
     handleSetDeleteFamilyMember();
 
     if (editMode) {
-      const token = JSON.parse(localStorage.getItem("user_jwt"));
+      const token = JSON.parse(localStorage.getItem('user_jwt'));
       handleSetResponse({
-        message: "Uklanjam člana porodice...",
+        message: 'Uklanjam člana porodice...',
         statusCode: null,
-        loading: true,
+        loading: true
       });
       memberService
         .deleteFamilyMember(token, {
           id: selectedFamilyMember.id,
-          memberId: selectedFamilyMember.memberId,
+          memberId: selectedFamilyMember.memberId
         })
-        .then((res) => {
+        .then(res => {
           handleUpdateActiveSpreadsheet();
           handleFetchFamilyMembers(selectedMember.member.Id);
           handleSetResponse({
             message: res.data.message,
             statusCode: res.status,
             loading: true,
-            action: "family_member",
+            action: 'family_member'
           });
           setTimeout(() => {
             handleSetResponse({
-              statusCode: null,
+              statusCode: null
             });
           }, 3000);
         })
-        .catch((err) => {
+        .catch(err => {
           handleSetResponse({
             message: err.response.data.message,
             statusCode: err.response.data.statusCode,
             loading: true,
-            action: "family_member",
+            action: 'family_member'
           });
         });
     } else {
       //LOGIC TO REMOVE FROM ADD NEW MEMBER ARRAY
       handleDeleteFamilyMemberFromState(selectedFamilyMember);
-      setFamilyMembers((prevState) => {
+      setFamilyMembers(prevState => {
         const updatedState = prevState.filter(
-          (fm) => fm.firstName !== selectedFamilyMember.firstName
+          fm => fm.firstName !== selectedFamilyMember.firstName
         );
         console.log(updatedState);
         return updatedState;
@@ -155,7 +155,7 @@ const FamilyMember = ({
     }
   };
 
-  const handleSetSelectedFamilyMember = (data) => {
+  const handleSetSelectedFamilyMember = data => {
     if (!sureDeleteFamilyMember) {
       setSelectedFamilyMember(data);
     }
@@ -163,12 +163,12 @@ const FamilyMember = ({
   };
 
   const tableColumns = [
-    "#",
-    "Ime",
-    "Prezime",
-    "Datum rođenja",
-    "Status",
-    "Postavke",
+    '#',
+    'Ime',
+    'Prezime',
+    'Datum rođenja',
+    'Status',
+    'Postavke'
   ];
 
   return (
@@ -177,9 +177,9 @@ const FamilyMember = ({
         <div className={classes.modal}>
           <h4
             style={{
-              borderBottom: "1px solid #cecece",
-              marginBottom: "15px",
-              paddingBottom: "5px",
+              borderBottom: '1px solid #cecece',
+              marginBottom: '15px',
+              paddingBottom: '5px'
             }}
           >
             Članovi porodice
@@ -195,7 +195,7 @@ const FamilyMember = ({
                 >
                   <Form.Control
                     value={familyMemberName}
-                    onChange={(ev) => setFamilyMemberName(ev.target.value)}
+                    onChange={ev => setFamilyMemberName(ev.target.value)}
                     type="text"
                     placeholder="Ime"
                     required
@@ -209,7 +209,7 @@ const FamilyMember = ({
                 >
                   <Form.Control
                     value={familyMemberLastName}
-                    onChange={(ev) => setFamilyMemberLastName(ev.target.value)}
+                    onChange={ev => setFamilyMemberLastName(ev.target.value)}
                     type="text"
                     placeholder="Prezime"
                     required
@@ -223,9 +223,7 @@ const FamilyMember = ({
                 >
                   <Form.Control
                     value={familyMemberDateOfBirth}
-                    onChange={(ev) =>
-                      setFamilyMemberDateOfBirth(ev.target.value)
-                    }
+                    onChange={ev => setFamilyMemberDateOfBirth(ev.target.value)}
                     type="date"
                     placeholder="Godina rođenja"
                     required
@@ -240,7 +238,7 @@ const FamilyMember = ({
                   <Form.Select
                     value={familyMemberStatus}
                     defaultValue={1}
-                    onChange={(ev) => setFamilyMemberStatus(ev.target.value)}
+                    onChange={ev => setFamilyMemberStatus(ev.target.value)}
                     aria-label="FamilyMemberStatus"
                     required
                   >
@@ -253,7 +251,7 @@ const FamilyMember = ({
                 </FloatingLabel>
               </Col>
             </Row>
-            <div style={{ marginTop: "20px", marginBottom: "5px" }}>
+            <div style={{ marginTop: '20px', marginBottom: '5px' }}>
               <Table hover striped responsive>
                 <thead>
                   <tr>
@@ -269,17 +267,17 @@ const FamilyMember = ({
                         <td>{index}</td>
                         <td>{el.firstName}</td>
                         <td>{el.lastName}</td>
-                        <td style={{ minWidth: "130px" }}>
-                          {el.dateOfBirth.split("T")[0]}
+                        <td style={{ minWidth: '130px' }}>
+                          {el.dateOfBirth.split('T')[0]}
                         </td>
                         <td>
                           {el.status === 0
-                            ? "Muž"
+                            ? 'Muž'
                             : el.status === 1
-                            ? "Žena"
+                            ? 'Žena'
                             : el.status === 2
-                            ? "Sin"
-                            : "Kćerka"}
+                            ? 'Sin'
+                            : 'Kćerka'}
                         </td>
                         <td>
                           <Button
@@ -298,7 +296,7 @@ const FamilyMember = ({
             </div>
             <Button
               type="submit"
-              style={{ marginRight: "20px" }}
+              style={{ marginRight: '20px' }}
               variant="primary"
             >
               Spremi
@@ -313,9 +311,9 @@ const FamilyMember = ({
         <div className={classes.modal}>
           <h4
             style={{
-              borderBottom: "1px solid #cecece",
-              marginBottom: "15px",
-              paddingBottom: "5px",
+              borderBottom: '1px solid #cecece',
+              marginBottom: '15px',
+              paddingBottom: '5px'
             }}
           >
             Želite li izbrisati člana porodice?
@@ -323,7 +321,7 @@ const FamilyMember = ({
           <Button
             onClick={handleDeleteFamilyMember}
             size="md"
-            style={{ width: "100%", marginBottom: "15px" }}
+            style={{ width: '100%', marginBottom: '15px' }}
             variant="danger"
           >
             Da
@@ -331,7 +329,7 @@ const FamilyMember = ({
           <Button
             onClick={handleSetDeleteFamilyMember}
             size="md"
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
             variant="primary"
           >
             Ne

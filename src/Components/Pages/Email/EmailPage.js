@@ -1,8 +1,8 @@
-import { Button } from "react-bootstrap";
+import { Button } from 'react-bootstrap';
 
-import PageWrapperComponent from "../../PageWrapper/PageWrapperComponent";
+import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
 
-import classes from "./EmailPage.module.css";
+import classes from './EmailPage.module.css';
 
 const EmailPage = () => {
   return (

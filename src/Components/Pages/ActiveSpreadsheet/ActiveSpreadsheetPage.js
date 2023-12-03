@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import PageWrapperComponent from "../../PageWrapper/PageWrapperComponent";
-import ActiveSpreadsheetContext from "../../../Store/active-spreadsheet-context";
+import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
+import ActiveSpreadsheetContext from '../../../Store/active-spreadsheet-context';
 
-import classes from "./ActiveSpreadsheetPage.module.css";
-import styles from "../../FormModal/FormModal.module.css";
+import classes from './ActiveSpreadsheetPage.module.css';
+import styles from '../../FormModal/FormModal.module.css';
 
-import noSpreadsheetLogo from "../../../Assets/Pictures/creationFailed.svg";
+import noSpreadsheetLogo from '../../../Assets/Pictures/creationFailed.svg';
 
 import {
   FloatingLabel,
@@ -16,16 +16,16 @@ import {
   Table,
   Form,
   Row,
-  Col,
-} from "react-bootstrap";
+  Col
+} from 'react-bootstrap';
 
-import FormAddMember from "../../FormModal/FormAddMember";
-import FormAddPayment from "../../FormModal/FormAddPayment";
-import ResponseModal from "../../ResponseModal/ResponseModal";
+import FormAddMember from '../../FormModal/FormAddMember';
+import FormAddPayment from '../../FormModal/FormAddPayment';
+import ResponseModal from '../../ResponseModal/ResponseModal';
 
-import memberService from "../../../Services/memberService";
-import spreadsheetService from "../../../Services/spreadsheetService";
-import paymentService from "../../../Services/paymentService";
+import memberService from '../../../Services/memberService';
+import spreadsheetService from '../../../Services/spreadsheetService';
+import paymentService from '../../../Services/paymentService';
 
 const ActiveSpreadsheetPage = () => {
   const [showAddMember, setShowAddMember] = useState(false);
@@ -34,65 +34,74 @@ const ActiveSpreadsheetPage = () => {
   const [sureArchiveSpreadsheet, setSureArchiveSpreadsheet] = useState(false);
 
   const {
+    handleFilterActiveSpreadsheetMembers,
     handleUpdateActiveSpreadsheet,
     handleFetchActiveSpreadsheet,
     handleSetSelectedMember,
+    handleSetSearchFirstName,
+    handleSetSearchLastName,
     handleSetResponse,
     activeSpreadsheet,
     selectedMember,
     membersInfo,
-    response,
+    searchFirstName,
+    searchLastName,
+    response
   } = useContext(ActiveSpreadsheetContext);
 
   const navigate = useNavigate();
 
   const tableColumns = [
-    "#",
-    "Ev. broj",
-    "Ime",
-    "Prezime",
-    "Ime oca",
-    "Status",
-    "Članarina",
-    "Uplaćeno",
-    "Dug",
-    "Posljednja uplata",
-    "Postavke",
+    '#',
+    'Ev. broj',
+    'Ime',
+    'Prezime',
+    'Ime oca',
+    'Status',
+    'Članarina',
+    'Uplaćeno',
+    'Dug',
+    'Posljednja uplata',
+    'Postavke'
   ];
 
   useEffect(() => {
     handleFetchActiveSpreadsheet();
   }, [handleFetchActiveSpreadsheet]);
 
+  useEffect(() => {
+    handleFilterActiveSpreadsheetMembers();
+  }, [handleFilterActiveSpreadsheetMembers]);
+
   const handleAddMember = (token, data) => {
     handleAddMemberClick();
     handleSetResponse({
-      message: "Dodajem člana...",
+      message: 'Dodajem člana...',
       statusCode: null,
-      loading: true,
+      loading: true
     });
     memberService
       .addMember(token, data)
-      .then((res) => {
+      .then(res => {
         handleUpdateActiveSpreadsheet();
         handleSetResponse({
           message: res.data.message,
           statusCode: res.status,
           loading: true,
-          action: "add_member",
+          action: 'add_member'
         });
         setTimeout(() => {
           handleSetResponse({
-            statusCode: null,
+            statusCode: null
           });
         }, 3000);
       })
-      .catch((err) => {
+      .catch(err => {
         handleSetResponse({
           message: err.response.data.message,
           statusCode: err.response.data.statusCode,
           loading: true,
-          action: "add_member",
+          action: 'add_member'
         });
       });
   };
@@ -100,14 +109,14 @@ const ActiveSpreadsheetPage = () => {
   const handleModifyMember = (token, data) => {
     handleAddMemberClick();
     handleSetResponse({
-      message: "Uređujem informacije...",
+      message: 'Uređujem informacije...',
       statusCode: null,
-      loading: true,
+      loading: true
     });
     memberService
       .modifyMember(token, data)
-      .then((res) => {
-        handleSetSelectedMember((prevState) => {
+      .then(res => {
+        handleSetSelectedMember(prevState => {
           const responseParsed = JSON.parse(res.data.data);
           prevState.member = responseParsed.memberFetched;
           return prevState;
@@ -118,127 +127,128 @@ const ActiveSpreadsheetPage = () => {
           message: res.data.message,
           statusCode: res.status,
           loading: true,
-          action: "modify_member",
+          action: 'modify_member'
         });
         setTimeout(() => {
           handleSetResponse({
-            statusCode: null,
+            statusCode: null
           });
         }, 3000);
       })
-      .catch((err) => {
+      .catch(err => {
         handleSetResponse({
           message: err.response.data.message,
           statusCode: err.response.data.statusCode,
           loading: true,
-          action: "modify_member",
+          action: 'modify_member'
         });
       });
   };
 
   const handleArchiveSpreadsheet = () => {
     handleSetArchiveSpreadsheet();
-    const token = JSON.parse(localStorage.getItem("user_jwt"));
-    const dzematId = JSON.parse(localStorage.getItem("dzemat_id"));
+    const token = JSON.parse(localStorage.getItem('user_jwt'));
+    const dzematId = JSON.parse(localStorage.getItem('dzemat_id'));
     handleSetResponse({
-      message: "Arhiviram...",
+      message: 'Arhiviram...',
       statusCode: null,
-      loading: true,
+      loading: true
     });
     spreadsheetService
       .archiveSpreadsheet(token, {
         dzematId,
-        spreadsheetId: activeSpreadsheet.id,
+        spreadsheetId: activeSpreadsheet.id
       })
-      .then((res) => {
+      .then(res => {
         handleSetResponse({
-          message: res.data.message + ".. Preusmjeravanje...",
+          message: res.data.message + '.. Preusmjeravanje...',
           statusCode: res.status,
           loading: true,
-          action: "archive",
+          action: 'archive'
         });
         setTimeout(() => {
           handleSetResponse({
-            statusCode: null,
+            statusCode: null
           });
+          navigate('/clanarine');
         }, 3000);
       })
-      .catch((err) => {
+      .catch(err => {
         handleSetResponse({
           message: err.response.data.message,
           statusCode: err.response.data.statusCode,
-          loading: true,
+          loading: true
         });
       });
   };
 
-  const handleAddPayment = (data) => {
+  const handleAddPayment = data => {
     handleShowAddPayment(false);
     handleSetResponse({
-      message: "Pišem uplatu...",
+      message: 'Pišem uplatu...',
       statusCode: null,
-      loading: true,
+      loading: true
     });
     const payloadData = {
       ...data,
       spreadsheetId: activeSpreadsheet.id,
-      memberId: selectedMember.member.Id,
+      memberId: selectedMember.member.Id
     };
-    const token = JSON.parse(localStorage.getItem("user_jwt"));
+    const token = JSON.parse(localStorage.getItem('user_jwt'));
     paymentService
       .addPayment(token, payloadData)
-      .then((res) => {
+      .then(res => {
         handleUpdateActiveSpreadsheet();
         handleSetResponse({
           message: res.data.message,
           statusCode: res.status,
           loading: true,
-          action: "add_payment",
+          action: 'add_payment'
         });
         setTimeout(() => {
           handleSetResponse({
-            statusCode: null,
+            statusCode: null
           });
         }, 3000);
       })
-      .catch((err) => {
+      .catch(err => {
         handleSetResponse({
           message: err.response.data.message,
           statusCode: err.response.data.statusCode,
           loading: true,
-          action: "add_payment",
+          action: 'add_payment'
         });
       });
   };
 
   const handleAddMemberClick = () => {
-    setShowAddMember((prevState) => !prevState);
+    setShowAddMember(prevState => !prevState);
   };
 
   const handleSetArchiveSpreadsheet = () => {
-    setSureArchiveSpreadsheet((prevState) => !prevState);
+    setSureArchiveSpreadsheet(prevState => !prevState);
   };
 
   const handleNavigateToCreateSpreadsheet = () => {
-    navigate("/clanarine/kreiraj-bazu");
+    navigate('/clanarine/kreiraj-bazu');
   };
 
   const handleNavigateToMembershipsPage = () => {
-    navigate("/clanarine");
+    navigate('/clanarine');
   };
 
-  const handleShowAddPayment = (mInfo) => {
+  const handleShowAddPayment = mInfo => {
     if (!showAddPayment) {
       handleSetSelectedMember(mInfo);
     }
-    setShowAddPayment((prevState) => !prevState);
+    setShowAddPayment(prevState => !prevState);
   };
 
-  const handleSetViewMember = (mInfo) => {
+  const handleSetViewMember = mInfo => {
     if (!showViewMember) {
       handleSetSelectedMember(mInfo);
     }
-    setShowViewMember((prevState) => !prevState);
+    setShowViewMember(prevState => !prevState);
   };
 
   return (
@@ -269,9 +279,9 @@ const ActiveSpreadsheetPage = () => {
           <div className={styles.modal}>
             <h4
               style={{
-                borderBottom: "1px solid #cecece",
-                marginBottom: "15px",
-                paddingBottom: "5px",
+                borderBottom: '1px solid #cecece',
+                marginBottom: '15px',
+                paddingBottom: '5px'
               }}
             >
               Želite li arhivirati bazu za {activeSpreadsheet.year}. godinu?
@@ -279,7 +289,7 @@ const ActiveSpreadsheetPage = () => {
             <Button
               onClick={handleArchiveSpreadsheet}
               size="lg"
-              style={{ width: "100%", marginBottom: "15px" }}
+              style={{ width: '100%', marginBottom: '15px' }}
               variant="danger"
             >
               Arhiviraj
@@ -287,7 +297,7 @@ const ActiveSpreadsheetPage = () => {
             <Button
               onClick={handleSetArchiveSpreadsheet}
               size="lg"
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               variant="primary"
             >
               Odustani
@@ -308,7 +318,7 @@ const ActiveSpreadsheetPage = () => {
           <Button
             onClick={handleNavigateToCreateSpreadsheet}
             className={styles.responseButton}
-            style={{ marginTop: "10px", marginBottom: "6px" }}
+            style={{ marginTop: '10px', marginBottom: '6px' }}
             variant="success"
           >
             Kreiraj bazu
@@ -352,6 +362,8 @@ const ActiveSpreadsheetPage = () => {
                     name="firstName"
                     type="text"
                     placeholder="Ime člana"
+                    value={searchFirstName}
+                    onChange={handleSetSearchFirstName}
                   />
                 </FloatingLabel>
               </Col>
@@ -361,6 +373,8 @@ const ActiveSpreadsheetPage = () => {
                     name="lastName"
                     type="text"
                     placeholder="Prezime"
+                    value={searchLastName}
+                    onChange={handleSetSearchLastName}
                   />
                 </FloatingLabel>
               </Col>
@@ -369,7 +383,7 @@ const ActiveSpreadsheetPage = () => {
             <Table hover striped responsive>
               <thead>
                 <tr>
-                  {tableColumns.map((val) => (
+                  {tableColumns.map(val => (
                     <th>{val}</th>
                   ))}
                 </tr>
@@ -378,7 +392,7 @@ const ActiveSpreadsheetPage = () => {
                 {membersInfo.map((m, index) => {
                   return (
                     <tr>
-                      {" "}
+                      {' '}
                       <td>{index}</td>
                       <td>
                         <strong> {m.member.EvNumber}</strong>
@@ -394,26 +408,26 @@ const ActiveSpreadsheetPage = () => {
                       </td>
                       <td>
                         <Button
-                          style={{ minWidth: "130px" }}
+                          style={{ minWidth: '130px' }}
                           variant="light"
                           disabled
                           size="sm"
                         >
                           <strong>
                             {m.member.Status === 0
-                              ? "Brak"
+                              ? 'Brak'
                               : m.member.Status === 1
-                              ? "Udovac"
+                              ? 'Udovac'
                               : m.member.Status === 2
-                              ? "Granična dob"
-                              : ""}
+                              ? 'Granična dob'
+                              : ''}
                           </strong>
                         </Button>
                       </td>
                       <td>
-                        {" "}
+                        {' '}
                         <Button
-                          style={{ minWidth: "80px" }}
+                          style={{ minWidth: '80px' }}
                           variant="primary"
                           disabled
                           size="sm"
@@ -424,7 +438,7 @@ const ActiveSpreadsheetPage = () => {
                       <td>
                         {m.member.Debt === 0 ? (
                           <Button
-                            style={{ minWidth: "140px" }}
+                            style={{ minWidth: '140px' }}
                             variant="success"
                             disabled
                             size="sm"
@@ -433,7 +447,7 @@ const ActiveSpreadsheetPage = () => {
                           </Button>
                         ) : (
                           <Button
-                            style={{ minWidth: "140px" }}
+                            style={{ minWidth: '140px' }}
                             onClick={() => {
                               handleShowAddPayment(m);
                             }}
@@ -446,9 +460,9 @@ const ActiveSpreadsheetPage = () => {
                       </td>
                       <td>
                         <Button
-                          style={{ minWidth: "80px" }}
+                          style={{ minWidth: '80px' }}
                           size="sm"
-                          variant={m.member.Debt === 0 ? "success" : "danger"}
+                          variant={m.member.Debt === 0 ? 'success' : 'danger'}
                           disabled
                         >
                           {m.member.Debt}KM
@@ -456,15 +470,15 @@ const ActiveSpreadsheetPage = () => {
                       </td>
                       <td>
                         <Button
-                          style={{ minWidth: "120px" }}
+                          style={{ minWidth: '120px' }}
                           variant="success"
                           disabled
                           size="sm"
                         >
                           <strong>
                             {m.latestPayment
-                              ? m.latestPayment.DateOfPayment.split("T")[0]
-                              : "Nema uplata"}
+                              ? m.latestPayment.DateOfPayment.split('T')[0]
+                              : 'Nema uplata'}
                           </strong>
                         </Button>
                       </td>

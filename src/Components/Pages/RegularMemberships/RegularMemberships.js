@@ -1,14 +1,14 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
-import PageWrapperComponent from "../../PageWrapper/PageWrapperComponent";
+import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
 
-import createDatabase from "../../../Assets/Pictures/createDatabase.svg";
-import activeDatabase from "../../../Assets/Pictures/activeDatabase.svg";
-import archivedDatabases from "../../../Assets/Pictures/archivedDatabases.svg";
-import debtWarning from "../../../Assets/Pictures/opomenaDug.svg";
-import reportLogo from "../../../Assets/Pictures/izvjestaj.svg";
+import createDatabase from '../../../Assets/Pictures/createDatabase.svg';
+import activeDatabase from '../../../Assets/Pictures/activeDatabase.svg';
+import archivedDatabases from '../../../Assets/Pictures/archivedDatabases.svg';
+import debtWarning from '../../../Assets/Pictures/opomenaDug.svg';
+import reportLogo from '../../../Assets/Pictures/izvjestaj.svg';
 
-import classes from "./RegularMemberships.module.css";
+import classes from './RegularMemberships.module.css';
 
 const RegularMemberships = () => {
   return (

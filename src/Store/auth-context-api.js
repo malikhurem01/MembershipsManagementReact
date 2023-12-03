@@ -1,11 +1,11 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState } from 'react';
 
 const AuthContext = React.createContext({
   userDataState: null,
   temporaryDzemat: null,
   response: null,
   handleLogoutUser: () => {},
-  handleSetUser: () => {},
+  handleSetUser: () => {}
 });
 
 export default AuthContext;
@@ -15,7 +15,7 @@ export const AuthContextProvider = ({ children, userData }) => {
   const [dzemat, setDzemat] = useState();
   const [response, setResponse] = useState({ loading: false, success: false });
 
-  const handleSetUser = useCallback((data) => {
+  const handleSetUser = useCallback(data => {
     setUser(data);
   }, []);
 
@@ -23,11 +23,11 @@ export const AuthContextProvider = ({ children, userData }) => {
     setUser(null);
   };
 
-  const handleSetDzemat = (data) => {
+  const handleSetDzemat = data => {
     setDzemat(data);
   };
 
-  const handleSetResponse = (data) => {
+  const handleSetResponse = data => {
     setResponse(data);
   };
 
@@ -40,7 +40,7 @@ export const AuthContextProvider = ({ children, userData }) => {
         handleLogoutUser,
         handleSetUser,
         handleSetDzemat,
-        handleSetResponse,
+        handleSetResponse
       }}
     >
       {children}

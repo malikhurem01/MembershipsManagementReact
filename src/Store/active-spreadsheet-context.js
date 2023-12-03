@@ -1,17 +1,24 @@
-import React, { useCallback, useState } from "react";
-import spreadsheetService from "../Services/spreadsheetService";
+import React, { useCallback, useState } from 'react';
+import spreadsheetService from '../Services/spreadsheetService';
+import memberService from '../Services/memberService';
 
 const ActiveSpreadsheetContext = React.createContext({
   activeSpreadsheet: null,
   membersInfo: [],
   selectedMember: null,
   response: null,
+  searchFirstName: null,
+  searchLastName: null,
   handleSetMembersInfo: () => {},
   handleSetSelectedMember: () => {},
   handleSetActiveSpreadsheet: () => {},
   handleFetchActiveSpreadsheet: () => {},
+  handleSetSearchFirstName: () => {},
+  handleSetSearchLastName: () => {},
+  handleSetPageNumber: () => {},
   handleSetResponse: () => {},
   handleUpdateActiveSpreadsheet: () => {},
+  handleFilterActiveSpreadsheetMembers: () => {}
 });
 
 export default ActiveSpreadsheetContext;
@@ -20,70 +27,107 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
   const [activeSpreadsheet, setActiveSpreadsheet] = useState(null);
   const [membersInfo, setMembersInfo] = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
+  const [searchFirstName, setSearchFirstName] = useState('');
+  const [searchLastName, setSearchLastName] = useState('');
+  const [pageNumber, setPageNumber] = useState(1);
   const [response, setResponse] = useState({
     message: false,
     statusCode: false,
-    loading: false,
+    loading: false
   });
 
-  const handleSetActiveSpreadsheet = useCallback((data) => {
+  const handleSetActiveSpreadsheet = useCallback(data => {
     setActiveSpreadsheet(data);
   }, []);
 
-  const handleSetMembersInfo = useCallback((data) => {
+  const handleSetMembersInfo = useCallback(data => {
     setMembersInfo(data);
   }, []);
 
-  const handleSetSelectedMember = useCallback((data) => {
+  const handleSetSelectedMember = useCallback(data => {
     setSelectedMember(data);
   }, []);
 
-  const handleSetResponse = useCallback((data) => {
+  const handleSetSearchFirstName = ev => {
+    setSearchFirstName(ev.target.value);
+  };
+
+  const handleSetSearchLastName = ev => {
+    setSearchLastName(ev.target.value);
+  };
+
+  const handleSetPageNumber = number => {
+    setPageNumber(number);
+  };
+
+  const handleSetResponse = useCallback(data => {
     setResponse(data);
   }, []);
 
   const handleUpdateActiveSpreadsheet = () => {
-    const token = JSON.parse(localStorage.getItem("user_jwt"));
+    const token = JSON.parse(localStorage.getItem('user_jwt'));
     spreadsheetService
       .getActiveSpreadsheet(token)
-      .then((res) => {
+      .then(res => {
         const responseParsed = JSON.parse(res.data.data);
         handleSetActiveSpreadsheet(responseParsed.spreadsheet);
-        handleSetMembersInfo(responseParsed.rawMembersInfo);
+        handleFilterActiveSpreadsheetMembers();
       })
       .catch(() => {
         handleSetActiveSpreadsheet(null);
       });
   };
 
+  const handleFilterActiveSpreadsheetMembers = useCallback(() => {
+    const token = JSON.parse(localStorage.getItem('user_jwt'));
+    memberService
+      .filterMembers(
+        token,
+        searchFirstName,
+        searchLastName,
+        pageNumber,
+        activeSpreadsheet?.id
+      )
+      .then(res => {
+        const responseParsed = JSON.parse(res.data.data);
+        handleSetMembersInfo(responseParsed.membersInfo);
+      })
+      .catch(err => console.log(err));
+  }, [
+    handleSetMembersInfo,
+    searchFirstName,
+    searchLastName,
+    pageNumber,
+    activeSpreadsheet
+  ]);
+
   const handleFetchActiveSpreadsheet = useCallback(() => {
     handleSetResponse({
-      message: "Učitavam bazu",
+      message: 'Učitavam bazu',
       statusCode: null,
-      loading: true,
+      loading: true
     });
-    const token = JSON.parse(localStorage.getItem("user_jwt"));
+    const token = JSON.parse(localStorage.getItem('user_jwt'));
     spreadsheetService
       .getActiveSpreadsheet(token)
-      .then((res) => {
+      .then(res => {
         const responseParsed = JSON.parse(res.data.data);
         handleSetActiveSpreadsheet(responseParsed.spreadsheet);
-        handleSetMembersInfo(responseParsed.rawMembersInfo);
         handleSetResponse({
-          message: "Učitano...",
+          message: 'Učitano...',
           statusCode: null,
-          loading: false,
+          loading: false
         });
       })
       .catch(() => {
         handleSetActiveSpreadsheet(null);
         handleSetResponse({
-          message: "Greška...",
+          message: 'Greška...',
           statusCode: null,
-          loading: false,
+          loading: false
         });
       });
-  }, [handleSetActiveSpreadsheet, handleSetMembersInfo, handleSetResponse]);
+  }, [handleSetActiveSpreadsheet, handleSetResponse]);
 
   return (
     <ActiveSpreadsheetContext.Provider
@@ -91,13 +135,19 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
         activeSpreadsheet,
         membersInfo,
         selectedMember,
+        searchFirstName,
+        searchLastName,
         response,
         handleSetMembersInfo,
         handleSetSelectedMember,
         handleSetActiveSpreadsheet,
         handleFetchActiveSpreadsheet,
+        handleSetSearchFirstName,
+        handleSetSearchLastName,
+        handleSetPageNumber,
         handleSetResponse,
         handleUpdateActiveSpreadsheet,
+        handleFilterActiveSpreadsheetMembers
       }}
     >
       {children}
