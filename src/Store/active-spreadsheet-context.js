@@ -9,12 +9,15 @@ const ActiveSpreadsheetContext = React.createContext({
   response: null,
   searchFirstName: null,
   searchLastName: null,
+  searchFathersName: null,
   handleSetMembersInfo: () => {},
   handleSetSelectedMember: () => {},
   handleSetActiveSpreadsheet: () => {},
   handleFetchActiveSpreadsheet: () => {},
   handleSetSearchFirstName: () => {},
   handleSetSearchLastName: () => {},
+  handleSetSearchFathersName: () => {},
+  handleRemoveFilters: () => {},
   handleSetPageNumber: () => {},
   handleSetResponse: () => {},
   handleUpdateActiveSpreadsheet: () => {},
@@ -29,6 +32,7 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
   const [selectedMember, setSelectedMember] = useState(null);
   const [searchFirstName, setSearchFirstName] = useState('');
   const [searchLastName, setSearchLastName] = useState('');
+  const [searchFathersName, setSearchFathersName] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
   const [response, setResponse] = useState({
     message: false,
@@ -54,6 +58,16 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
 
   const handleSetSearchLastName = ev => {
     setSearchLastName(ev.target.value);
+  };
+
+  const handleSetSearchFathersName = ev => {
+    setSearchFathersName(ev.target.value);
+  };
+
+  const handleRemoveFilters = () => {
+    setSearchFirstName('');
+    setSearchLastName('');
+    setSearchFathersName('');
   };
 
   const handleSetPageNumber = number => {
@@ -85,6 +99,7 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
         token,
         searchFirstName,
         searchLastName,
+        searchFathersName,
         pageNumber,
         activeSpreadsheet?.id
       )
@@ -97,6 +112,7 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
     handleSetMembersInfo,
     searchFirstName,
     searchLastName,
+    searchFathersName,
     pageNumber,
     activeSpreadsheet
   ]);
@@ -137,6 +153,7 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
         selectedMember,
         searchFirstName,
         searchLastName,
+        searchFathersName,
         response,
         handleSetMembersInfo,
         handleSetSelectedMember,
@@ -144,6 +161,8 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
         handleFetchActiveSpreadsheet,
         handleSetSearchFirstName,
         handleSetSearchLastName,
+        handleSetSearchFathersName,
+        handleRemoveFilters,
         handleSetPageNumber,
         handleSetResponse,
         handleUpdateActiveSpreadsheet,

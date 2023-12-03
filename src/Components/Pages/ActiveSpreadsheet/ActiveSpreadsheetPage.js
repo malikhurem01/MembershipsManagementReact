@@ -9,15 +9,7 @@ import styles from '../../FormModal/FormModal.module.css';
 
 import noSpreadsheetLogo from '../../../Assets/Pictures/creationFailed.svg';
 
-import {
-  FloatingLabel,
-  Container,
-  Button,
-  Table,
-  Form,
-  Row,
-  Col
-} from 'react-bootstrap';
+import { Container, Button, Table, Form, Row, Col } from 'react-bootstrap';
 
 import FormAddMember from '../../FormModal/FormAddMember';
 import FormAddPayment from '../../FormModal/FormAddPayment';
@@ -40,12 +32,15 @@ const ActiveSpreadsheetPage = () => {
     handleSetSelectedMember,
     handleSetSearchFirstName,
     handleSetSearchLastName,
+    handleSetSearchFathersName,
+    handleRemoveFilters,
     handleSetResponse,
     activeSpreadsheet,
     selectedMember,
     membersInfo,
     searchFirstName,
     searchLastName,
+    searchFathersName,
     response
   } = useContext(ActiveSpreadsheetContext);
 
@@ -61,7 +56,7 @@ const ActiveSpreadsheetPage = () => {
     'Članarina',
     'Uplaćeno',
     'Dug',
-    'Posljednja uplata',
+    'Zadnja uplata',
     'Postavke'
   ];
 
@@ -335,7 +330,7 @@ const ActiveSpreadsheetPage = () => {
       {activeSpreadsheet && !response.loading && (
         <div className={classes.mainContainer}>
           <Container fluid="md">
-            <Row>
+            <Row style={{ marginTop: '2vh' }}>
               <Col className={classes.optionButtons} lg="auto" md="auto" xs={7}>
                 <Button
                   size="md"
@@ -355,37 +350,97 @@ const ActiveSpreadsheetPage = () => {
                 </Button>
               </Col>
             </Row>
-            <Row className={classes.inputs}>
-              <Col lg="auto" md="auto" sm="auto">
-                <FloatingLabel controlId="floatingName" label="Ime">
-                  <Form.Control
-                    name="firstName"
-                    type="text"
-                    placeholder="Ime člana"
-                    value={searchFirstName}
-                    onChange={handleSetSearchFirstName}
-                  />
-                </FloatingLabel>
-              </Col>
-              <Col lg="auto" md={4} sm="auto">
-                <FloatingLabel controlId="floatingLastName" label="Prezime">
-                  <Form.Control
-                    name="lastName"
-                    type="text"
-                    placeholder="Prezime"
-                    value={searchLastName}
-                    onChange={handleSetSearchLastName}
-                  />
-                </FloatingLabel>
-              </Col>
-            </Row>
-
-            <Table hover striped responsive>
+            <Table style={{ marginTop: '2vh' }} hover striped responsive>
               <thead>
                 <tr>
-                  {tableColumns.map(val => (
-                    <th>{val}</th>
+                  {tableColumns.map((val, index) => (
+                    <th
+                      style={{ minWidth: `${index === 9 ? '120px' : '90px'}` }}
+                    >
+                      {val}
+                    </th>
                   ))}
+                </tr>
+                <tr>
+                  <th></th>
+                  <th>
+                    <Form.Control
+                      size="sm"
+                      name="firstName"
+                      type="text"
+                      placeholder="Filter"
+                      disabled
+                    />
+                  </th>
+                  <th>
+                    <Form.Control
+                      size="sm"
+                      name="firstName"
+                      type="text"
+                      placeholder="Ime člana"
+                      value={searchFirstName}
+                      onChange={handleSetSearchFirstName}
+                    />
+                  </th>
+                  <th>
+                    <Form.Control
+                      size="sm"
+                      name="lastName"
+                      type="text"
+                      placeholder="Prezime"
+                      value={searchLastName}
+                      onChange={handleSetSearchLastName}
+                    />
+                  </th>
+                  <th>
+                    <Form.Control
+                      size="sm"
+                      name="lastName"
+                      type="text"
+                      placeholder="Ime oca"
+                      value={searchFathersName}
+                      onChange={handleSetSearchFathersName}
+                    />
+                  </th>
+                  <th>
+                    <Form.Control
+                      size="sm"
+                      name="firstName"
+                      type="text"
+                      placeholder="Filter"
+                      disabled
+                    />
+                  </th>
+
+                  <th></th>
+                  <th>
+                    <Form.Control
+                      size="sm"
+                      name="firstName"
+                      type="text"
+                      placeholder="Filter"
+                      disabled
+                    />
+                  </th>
+                  <th>
+                    <Form.Control
+                      size="sm"
+                      name="firstName"
+                      type="text"
+                      placeholder="Filter"
+                      disabled
+                    />
+                  </th>
+                  <th></th>
+                  <th>
+                    <Button
+                      onClick={handleRemoveFilters}
+                      variant="danger"
+                      size="sm"
+                    >
+                      <strong>Bez filtera</strong>
+                    </Button>
+                  </th>
                 </tr>
               </thead>
               <tbody>

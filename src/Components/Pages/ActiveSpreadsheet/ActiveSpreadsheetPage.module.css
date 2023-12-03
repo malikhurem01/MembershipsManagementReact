@@ -16,6 +16,10 @@
   margin-right: 15px;
 }
 
+tr th * {
+  width: 100px;
+}
+
 .inputs {
   margin-bottom: 10px;
 }
