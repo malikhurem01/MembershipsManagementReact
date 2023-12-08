@@ -104,8 +104,7 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
         activeSpreadsheet?.id
       )
       .then(res => {
-        const responseParsed = JSON.parse(res.data.data);
-        handleSetMembersInfo(responseParsed.membersInfo);
+        handleSetMembersInfo(res.data.data["$values"]);
       })
       .catch(err => console.log(err));
   }, [

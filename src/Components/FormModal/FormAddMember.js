@@ -37,15 +37,15 @@ const FormAddMember = ({
   } = useContext(ActiveSpreadsheetContext);
 
   const handeEnterEditMode = () => {
-    setEvNumber(memberInfo.member.EvNumber);
-    setFirstName(memberInfo.member.FirstName);
-    setLastName(memberInfo.member.LastName);
-    setFathersName(memberInfo.member.FathersName);
-    setPhoneNumber(memberInfo.member.PhoneNumber);
-    setAddress(memberInfo.member.Address);
-    setEmail(memberInfo.member.Email);
-    setStatus(memberInfo.member.Status);
-    setFamilyMembers(memberInfo.member.FamilyMembers);
+    setEvNumber(memberInfo.member.evNumber);
+    setFirstName(memberInfo.member.firstName);
+    setLastName(memberInfo.member.lastName);
+    setFathersName(memberInfo.member.fathersName);
+    setPhoneNumber(memberInfo.member.phoneNumber);
+    setAddress(memberInfo.member.address);
+    setEmail(memberInfo.member.email);
+    setStatus(memberInfo.member.status);
+    setFamilyMembers(memberInfo.member.familyMembers["$values"]);
   };
 
   const tableColumns = ['#', 'Datum uplate', 'Iznos', 'Nadležni'];
@@ -54,7 +54,7 @@ const FormAddMember = ({
     ev.preventDefault();
     setEditMode(false);
     const member = {
-      id: editMode ? memberInfo.member.Id : null,
+      id: editMode ? memberInfo.member.id : null,
       evNumber: +evNumber,
       firstName,
       lastName,
@@ -127,7 +127,7 @@ const FormAddMember = ({
     paymentService
       .deletePayment(token, {
         id: selectedPayment.id,
-        memberId: memberInfo.member.Id,
+        memberId: memberInfo.member.id,
         spreadsheetId: activeSpreadsheet.id
       })
       .then(res => {
@@ -175,7 +175,7 @@ const FormAddMember = ({
             }}
           >
             <h6>
-              {`Ime i prezime: ${memberInfo.member.FirstName} ${memberInfo.member.LastName}`}
+              {`Ime i prezime: ${memberInfo.member.firstName} ${memberInfo.member.lastName}`}
             </h6>
             <h6>{`Iznos: ${selectedPayment.amount}KM`}</h6>
             <h6>{`Datum uplate: ${
@@ -189,7 +189,7 @@ const FormAddMember = ({
             <Button variant="outline-dark">
               <strong>
                 Iznos uplate će se upisati u dug člana{' '}
-                {`${memberInfo.member.FirstName} ${memberInfo.member.LastName}`}
+                {`${memberInfo.member.firstName} ${memberInfo.member.lastName}`}
               </strong>
             </Button>
           </div>
@@ -244,7 +244,7 @@ const FormAddMember = ({
                         value={
                           !viewMode || editMode
                             ? evNumber
-                            : memberInfo.member.EvNumber
+                            : memberInfo.member.evNumber
                         }
                         onChange={ev => setEvNumber(ev.target.value)}
                         type="number"
@@ -264,7 +264,7 @@ const FormAddMember = ({
                         value={
                           !viewMode || editMode
                             ? lastName
-                            : memberInfo.member.LastName
+                            : memberInfo.member.lastName
                         }
                         onChange={ev => setLastName(ev.target.value)}
                         type="text"
@@ -284,7 +284,7 @@ const FormAddMember = ({
                         value={
                           !viewMode || editMode
                             ? fathersName
-                            : memberInfo.member.FathersName
+                            : memberInfo.member.fathersName
                         }
                         onChange={ev => setFathersName(ev.target.value)}
                         type="text"
@@ -304,7 +304,7 @@ const FormAddMember = ({
                         value={
                           !viewMode || editMode
                             ? firstName
-                            : memberInfo.member.FirstName
+                            : memberInfo.member.firstName
                         }
                         onChange={ev => setFirstName(ev.target.value)}
                         type="text"
@@ -328,7 +328,7 @@ const FormAddMember = ({
                         value={
                           !viewMode || editMode
                             ? phoneNumber
-                            : memberInfo.member.PhoneNumber
+                            : memberInfo.member.phoneNumber
                         }
                         onChange={ev => setPhoneNumber(ev.target.value)}
                         type="text"
@@ -348,7 +348,7 @@ const FormAddMember = ({
                         value={
                           !viewMode || editMode
                             ? address
-                            : memberInfo.member.Address
+                            : memberInfo.member.address
                         }
                         onChange={ev => setAddress(ev.target.value)}
                         type="text"
@@ -368,7 +368,7 @@ const FormAddMember = ({
                         value={
                           !viewMode || editMode
                             ? email
-                            : memberInfo.member.Email
+                            : memberInfo.member.email
                         }
                         onChange={ev => setEmail(ev.target.value)}
                         type="email"
@@ -385,7 +385,7 @@ const FormAddMember = ({
                   <Col lg={2} md="auto" sm={8}>
                     <FloatingLabel controlId="floatingDebt" label="Dug">
                       <Form.Control
-                        value={!viewMode || editMode ? debt : memberInfo.Debt}
+                        value={!viewMode || editMode ? debt : memberInfo.debt}
                         onChange={ev => setDebt(ev.target.value)}
                         type="number"
                         placeholder="Dug"
@@ -409,7 +409,7 @@ const FormAddMember = ({
                         value={
                           !viewMode || editMode
                             ? status
-                            : memberInfo.member.Status
+                            : memberInfo.member.status
                         }
                       >
                         <option>Status člana</option>
@@ -434,7 +434,7 @@ const FormAddMember = ({
                 )}
 
                 {viewMode &&
-                  memberInfo.member.FamilyMembers.length < 1 &&
+                  memberInfo.member.familyMembers["$values"].length < 1 &&
                   !editMode && (
                     <Button
                       style={{
@@ -451,7 +451,7 @@ const FormAddMember = ({
                     </Button>
                   )}
                 {viewMode &&
-                  memberInfo.member.FamilyMembers.length > 0 &&
+                  memberInfo.member.familyMembers["$values"].length > 0 &&
                   !editMode && (
                     <React.Fragment>
                       <h4>Članovi porodice</h4>
@@ -471,15 +471,15 @@ const FormAddMember = ({
                             </tr>
                           </thead>
                           <tbody>
-                            {memberInfo.member.FamilyMembers.map(
+                            {memberInfo.member.familyMembers["$values"].map(
                               (el, index) => {
                                 return (
                                   <tr>
                                     <td>{index}</td>
-                                    <td>{el.FirstName}</td>
-                                    <td>{el.LastName}</td>
+                                    <td>{el.firstName}</td>
+                                    <td>{el.lastName}</td>
                                     <td style={{ minWidth: '70px' }}>
-                                      {el.DateOfBirth.split('T')[0]}
+                                      {el.dateOfBirth.split('T')[0]}
                                     </td>
                                     <td>{el.status}</td>
                                   </tr>
@@ -491,7 +491,7 @@ const FormAddMember = ({
                       </div>
                     </React.Fragment>
                   )}
-                {viewMode && memberInfo.payments.length < 1 && !editMode && (
+                {viewMode && memberInfo.payments["$values"].length < 1 && !editMode && (
                   <Button
                     style={{
                       display: 'block',
@@ -506,7 +506,7 @@ const FormAddMember = ({
                     </h6>
                   </Button>
                 )}
-                {viewMode && memberInfo.payments.length > 0 && (
+                {viewMode && memberInfo.payments["$values"].length > 0 && (
                   <React.Fragment>
                     <h4>Uplate za otvorenu bazu</h4>
                     <div style={{ marginTop: '20px', marginBottom: '20px' }}>
@@ -520,7 +520,7 @@ const FormAddMember = ({
                           </tr>
                         </thead>
                         <tbody>
-                          {memberInfo.payments.map((el, index) => {
+                          {memberInfo.payments["$values"].map((el, index) => {
                             return (
                               <tr>
                                 <td>{index+1}</td>

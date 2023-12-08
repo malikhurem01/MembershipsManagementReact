@@ -112,8 +112,7 @@ const ActiveSpreadsheetPage = () => {
       .modifyMember(token, data)
       .then(res => {
         handleSetSelectedMember(prevState => {
-          const responseParsed = JSON.parse(res.data.data);
-          prevState.member = responseParsed.memberFetched;
+          prevState.member = res.data.data;
           return prevState;
         });
         handleUpdateActiveSpreadsheet();
@@ -187,7 +186,7 @@ const ActiveSpreadsheetPage = () => {
     const payloadData = {
       ...data,
       spreadsheetId: activeSpreadsheet.id,
-      memberId: selectedMember.member.Id
+      memberId: selectedMember.member.id
     };
     const token = JSON.parse(localStorage.getItem('user_jwt'));
     paymentService
@@ -450,16 +449,16 @@ const ActiveSpreadsheetPage = () => {
                       {' '}
                       <td>{index+1}</td>
                       <td>
-                        <strong> {m.member.EvNumber}</strong>
+                        <strong> {m.member.evNumber}</strong>
                       </td>
                       <td>
-                        <strong> {m.member.FirstName}</strong>
+                        <strong> {m.member.firstName}</strong>
                       </td>
                       <td>
-                        <strong> {m.member.LastName}</strong>
+                        <strong> {m.member.lastName}</strong>
                       </td>
                       <td>
-                        <strong> {m.member.FathersName}</strong>
+                        <strong> {m.member.fathersName}</strong>
                       </td>
                       <td>
                         <Button
@@ -469,11 +468,11 @@ const ActiveSpreadsheetPage = () => {
                           size="sm"
                         >
                           <strong>
-                            {m.member.Status === 0
+                            {m.member.status === 0
                               ? 'Brak'
-                              : m.member.Status === 1
+                              : m.member.status === 1
                               ? 'Udovac'
-                              : m.member.Status === 2
+                              : m.member.status === 2
                               ? 'Granična dob'
                               : ''}
                           </strong>
@@ -491,7 +490,7 @@ const ActiveSpreadsheetPage = () => {
                         </Button>
                       </td>
                       <td>
-                        {m.member.Debt === 0 ? (
+                        {m.member.debt === 0 ? (
                           <Button
                             style={{ minWidth: '140px' }}
                             variant="success"
@@ -517,10 +516,10 @@ const ActiveSpreadsheetPage = () => {
                         <Button
                           style={{ minWidth: '80px' }}
                           size="sm"
-                          variant={m.member.Debt === 0 ? 'success' : 'danger'}
+                          variant={m.member.debt === 0 ? 'success' : 'danger'}
                           disabled
                         >
-                          {m.member.Debt}KM
+                          {m.member.debt}KM
                         </Button>
                       </td>
                       <td>
@@ -531,8 +530,8 @@ const ActiveSpreadsheetPage = () => {
                           size="sm"
                         >
                           <strong>
-                            {m.payments.length > 0
-                              ? m.payments[0].dateOfPayment.split('T')[0]
+                            {m.payments["$values"].length > 0
+                              ? m.payments["$values"][0].dateOfPayment.split('T')[0]
                               : 'Nema uplata'}
                           </strong>
                         </Button>
