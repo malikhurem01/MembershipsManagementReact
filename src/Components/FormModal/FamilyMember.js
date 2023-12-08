@@ -117,7 +117,7 @@ const FamilyMember = ({
       memberService
         .deleteFamilyMember(token, {
           id: selectedFamilyMember.id,
-          memberId: selectedFamilyMember.memberId
+          memberId: selectedMember.member.id
         })
         .then(res => {
           handleUpdateActiveSpreadsheet();
