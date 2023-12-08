@@ -514,7 +514,7 @@ const FormAddMember = ({
                         <thead>
                           <tr>
                             {tableColumns.map((el, index) => (
-                              <th key={index}>{el}</th>
+                              <th key={index+1}>{el}</th>
                             ))}
                             {editMode && <th key="5">Postavke</th>}
                           </tr>
@@ -523,7 +523,7 @@ const FormAddMember = ({
                           {memberInfo.payments.map((el, index) => {
                             return (
                               <tr>
-                                <td>{index}</td>
+                                <td>{index+1}</td>
                                 <td style={{ minWidth: '70px' }}>
                                   {el.dateOfPayment.split('T')[0]}
                                 </td>

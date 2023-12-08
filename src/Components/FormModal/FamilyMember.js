@@ -256,7 +256,7 @@ const FamilyMember = ({
                 <thead>
                   <tr>
                     {tableColumns.map((el, index) => (
-                      <th key={index}>{el}</th>
+                      <th key={index+1}>{el}</th>
                     ))}
                   </tr>
                 </thead>
@@ -264,7 +264,7 @@ const FamilyMember = ({
                   {familyMembers?.map((el, index) => {
                     return (
                       <tr>
-                        <td>{index}</td>
+                        <td>{index+1}</td>
                         <td>{el.firstName}</td>
                         <td>{el.lastName}</td>
                         <td style={{ minWidth: '130px' }}>
