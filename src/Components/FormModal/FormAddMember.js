@@ -529,9 +529,9 @@ const FormAddMember = ({
                                 </td>
                                 <td>{el.amount}KM</td>
                                 <td>
-                                  {el.supervisor.FirstName +
+                                  {el.supervisorFirstName +
                                     ' ' +
-                                    el.supervisor.LastName}
+                                    el.supervisorLastName}
                                 </td>
                                 {editMode && (
                                   <td>

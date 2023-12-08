@@ -531,8 +531,8 @@ const ActiveSpreadsheetPage = () => {
                           size="sm"
                         >
                           <strong>
-                            {m.latestPayment
-                              ? m.latestPayment.DateOfPayment.split('T')[0]
+                            {m.payments.length > 0
+                              ? m.payments[0].dateOfPayment.split('T')[0]
                               : 'Nema uplata'}
                           </strong>
                         </Button>
