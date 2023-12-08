@@ -45,7 +45,7 @@ const FormAddMember = ({
     setAddress(memberInfo.member.address);
     setEmail(memberInfo.member.email);
     setStatus(memberInfo.member.status);
-    setFamilyMembers(memberInfo.member.familyMembers["$values"]);
+    setFamilyMembers(memberInfo.member.familyMembers['$values']);
   };
 
   const tableColumns = ['#', 'Datum uplate', 'Iznos', 'Nadležni'];
@@ -434,7 +434,7 @@ const FormAddMember = ({
                 )}
 
                 {viewMode &&
-                  memberInfo.member.familyMembers["$values"].length < 1 &&
+                  memberInfo.member.familyMembers['$values'].length < 1 &&
                   !editMode && (
                     <Button
                       style={{
@@ -451,7 +451,7 @@ const FormAddMember = ({
                     </Button>
                   )}
                 {viewMode &&
-                  memberInfo.member.familyMembers["$values"].length > 0 &&
+                  memberInfo.member.familyMembers['$values'].length > 0 &&
                   !editMode && (
                     <React.Fragment>
                       <h4>Članovi porodice</h4>
@@ -471,7 +471,7 @@ const FormAddMember = ({
                             </tr>
                           </thead>
                           <tbody>
-                            {memberInfo.member.familyMembers["$values"].map(
+                            {memberInfo.member.familyMembers['$values'].map(
                               (el, index) => {
                                 return (
                                   <tr>
@@ -481,7 +481,16 @@ const FormAddMember = ({
                                     <td style={{ minWidth: '70px' }}>
                                       {el.dateOfBirth.split('T')[0]}
                                     </td>
-                                    <td>{el.status}</td>
+                                    <td>
+                                      {' '}
+                                      {el.status === 0
+                                        ? 'Muž'
+                                        : el.status === 1
+                                        ? 'Žena'
+                                        : el.status === 2
+                                        ? 'Sin'
+                                        : 'Kćerka'}
+                                    </td>
                                   </tr>
                                 );
                               }
@@ -491,22 +500,24 @@ const FormAddMember = ({
                       </div>
                     </React.Fragment>
                   )}
-                {viewMode && memberInfo.payments["$values"].length < 1 && !editMode && (
-                  <Button
-                    style={{
-                      display: 'block',
-                      marginBottom: '15px',
-                      minWidth: '370px'
-                    }}
-                    variant="warning"
-                    disabled
-                  >
-                    <h6 style={{ marginTop: '5px' }}>
-                      Nema uplata za otvorenu bazu
-                    </h6>
-                  </Button>
-                )}
-                {viewMode && memberInfo.payments["$values"].length > 0 && (
+                {viewMode &&
+                  memberInfo.payments['$values'].length < 1 &&
+                  !editMode && (
+                    <Button
+                      style={{
+                        display: 'block',
+                        marginBottom: '15px',
+                        minWidth: '370px'
+                      }}
+                      variant="warning"
+                      disabled
+                    >
+                      <h6 style={{ marginTop: '5px' }}>
+                        Nema uplata za otvorenu bazu
+                      </h6>
+                    </Button>
+                  )}
+                {viewMode && memberInfo.payments['$values'].length > 0 && (
                   <React.Fragment>
                     <h4>Uplate za otvorenu bazu</h4>
                     <div style={{ marginTop: '20px', marginBottom: '20px' }}>
@@ -514,16 +525,16 @@ const FormAddMember = ({
                         <thead>
                           <tr>
                             {tableColumns.map((el, index) => (
-                              <th key={index+1}>{el}</th>
+                              <th key={index + 1}>{el}</th>
                             ))}
                             {editMode && <th key="5">Postavke</th>}
                           </tr>
                         </thead>
                         <tbody>
-                          {memberInfo.payments["$values"].map((el, index) => {
+                          {memberInfo.payments['$values'].map((el, index) => {
                             return (
                               <tr>
-                                <td>{index+1}</td>
+                                <td>{index + 1}</td>
                                 <td style={{ minWidth: '70px' }}>
                                   {el.dateOfPayment.split('T')[0]}
                                 </td>
