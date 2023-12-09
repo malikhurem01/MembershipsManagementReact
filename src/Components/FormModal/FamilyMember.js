@@ -21,7 +21,7 @@ const FamilyMember = ({
     selectedMember
   } = useContext(ActiveSpreadsheetContext);
   const [familyMembers, setFamilyMembers] = useState(
-    editMode ? selectedMember.FamilyMembers : memberToAddFamilyMembers
+    editMode ? selectedMember.familyMembers : memberToAddFamilyMembers
   );
   const [familyMemberName, setFamilyMemberName] = useState('');
   const [familyMemberLastName, setFamilyMemberLastName] = useState('');
@@ -33,7 +33,7 @@ const FamilyMember = ({
     if (editMode) {
       const token = JSON.parse(localStorage.getItem('user_jwt'));
       memberService
-        .getFamilyMembers(token, selectedMember.member.Id)
+        .getFamilyMembers(token, selectedMember.member.id)
         .then(res => {
           setFamilyMembers(res.data.data['$values']);
         })
@@ -58,7 +58,7 @@ const FamilyMember = ({
       });
       memberService
         .addFamilyMember(token, {
-          memberId: selectedMember.member.Id,
+          memberId: selectedMember.member.id,
           firstName: familyMemberName,
           lastName: familyMemberLastName,
           dateOfBirth: familyMemberDateOfBirth,
@@ -117,11 +117,11 @@ const FamilyMember = ({
       memberService
         .deleteFamilyMember(token, {
           id: selectedFamilyMember.id,
-          memberId: selectedFamilyMember.memberId
+          memberId: selectedMember.member.id
         })
         .then(res => {
           handleUpdateActiveSpreadsheet();
-          handleFetchFamilyMembers(selectedMember.member.Id);
+          handleFetchFamilyMembers(selectedMember.member.id);
           handleSetResponse({
             message: res.data.message,
             statusCode: res.status,
@@ -256,7 +256,7 @@ const FamilyMember = ({
                 <thead>
                   <tr>
                     {tableColumns.map((el, index) => (
-                      <th key={index}>{el}</th>
+                      <th key={index+1}>{el}</th>
                     ))}
                   </tr>
                 </thead>
@@ -264,7 +264,7 @@ const FamilyMember = ({
                   {familyMembers?.map((el, index) => {
                     return (
                       <tr>
-                        <td>{index}</td>
+                        <td>{index+1}</td>
                         <td>{el.firstName}</td>
                         <td>{el.lastName}</td>
                         <td style={{ minWidth: '130px' }}>

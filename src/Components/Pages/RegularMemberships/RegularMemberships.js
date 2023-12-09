@@ -53,7 +53,7 @@ const RegularMemberships = () => {
             </NavLink>
           </div>
           <div className={classes.gridItem}>
-            <NavLink to="/logout">
+            <NavLink to="/clanarine/izradi-izvjestaj">
               <div>
                 <img src={reportLogo} alt="Odjava" />
                 <p className={classes.menuOptionText}>Izradi izvještaj</p>
