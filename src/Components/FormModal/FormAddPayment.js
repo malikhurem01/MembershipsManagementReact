@@ -7,7 +7,9 @@ import styles from './FormModal.module.css';
 
 const FormAddPayment = ({ handleShowAddPayment, handleAddPayment }) => {
   const [amount, setAmount] = useState('');
-  const [dateOfPayment, setDateOfPayment] = useState('');
+  const [dateOfPayment, setDateOfPayment] = useState(
+    new Date().toISOString().split('T')[0]
+  );
 
   const { response } = useContext(ActiveSpreadsheetContext);
 

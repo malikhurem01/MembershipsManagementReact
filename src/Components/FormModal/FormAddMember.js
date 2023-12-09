@@ -17,6 +17,7 @@ const FormAddMember = ({
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [fathersName, setFathersName] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
   const [email, setEmail] = useState('');
@@ -41,6 +42,9 @@ const FormAddMember = ({
     setFirstName(memberInfo.member.firstName);
     setLastName(memberInfo.member.lastName);
     setFathersName(memberInfo.member.fathersName);
+    setDateOfBirth(
+      new Date(memberInfo.member.dateOfBirth).toISOString().split('T')[0]
+    );
     setPhoneNumber(memberInfo.member.phoneNumber);
     setAddress(memberInfo.member.address);
     setEmail(memberInfo.member.email);
@@ -59,6 +63,7 @@ const FormAddMember = ({
       firstName,
       lastName,
       fathersName,
+      dateOfBirth,
       phoneNumber,
       address,
       email,
@@ -254,6 +259,7 @@ const FormAddMember = ({
                       />
                     </FloatingLabel>
                   </Col>
+
                   <Col lg={3} md="auto" sm={8}>
                     <FloatingLabel
                       controlId="floatingLastName"
@@ -314,6 +320,28 @@ const FormAddMember = ({
                       />
                     </FloatingLabel>
                   </Col>
+                  <Col lg="auto" md="auto" sm={8}>
+                    <FloatingLabel
+                      controlId="floatingDateOfBirth"
+                      label="Datum rođenja"
+                      className="mb-3"
+                    >
+                      <Form.Control
+                        value={
+                          !viewMode || editMode
+                            ? dateOfBirth
+                            : new Date(memberInfo.member.dateOfBirth)
+                                .toISOString()
+                                .split('T')[0]
+                        }
+                        onChange={ev => setDateOfBirth(ev.target.value)}
+                        type="date"
+                        placeholder="Datum rođenja"
+                        required
+                        disabled={viewMode && !editMode}
+                      />
+                    </FloatingLabel>
+                  </Col>
                 </Row>
                 <h4>Kontakt podaci</h4>
 
@@ -333,7 +361,6 @@ const FormAddMember = ({
                         onChange={ev => setPhoneNumber(ev.target.value)}
                         type="text"
                         placeholder="Broj telefona"
-                        required
                         disabled={viewMode && !editMode}
                       />
                     </FloatingLabel>
@@ -373,7 +400,6 @@ const FormAddMember = ({
                         onChange={ev => setEmail(ev.target.value)}
                         type="email"
                         placeholder="Email adresa"
-                        required
                         disabled={viewMode && !editMode}
                       />
                     </FloatingLabel>

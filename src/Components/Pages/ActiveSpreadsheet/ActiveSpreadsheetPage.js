@@ -447,7 +447,7 @@ const ActiveSpreadsheetPage = () => {
                   return (
                     <tr>
                       {' '}
-                      <td>{index+1}</td>
+                      <td>{index + 1}</td>
                       <td>
                         <strong> {m.member.evNumber}</strong>
                       </td>
@@ -530,8 +530,10 @@ const ActiveSpreadsheetPage = () => {
                           size="sm"
                         >
                           <strong>
-                            {m.payments["$values"].length > 0
-                              ? m.payments["$values"][0].dateOfPayment.split('T')[0]
+                            {m.payments['$values'].length > 0
+                              ? m.payments['$values'][0].dateOfPayment.split(
+                                  'T'
+                                )[0]
                               : 'Nema uplata'}
                           </strong>
                         </Button>

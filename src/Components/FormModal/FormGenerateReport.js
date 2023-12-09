@@ -98,20 +98,36 @@ const FormGenerateReport = ({
           {waitingResponse &&
             response?.statusCode >= 200 &&
             response?.statusCode < 300 && (
-              <Button className={classes.responseButton} variant="success">
-                <PDFDownloadLink
+              <React.Fragment>
+                <Button
                   className={classes.responseButton}
-                  style={{ color: 'white', width: '100%' }}
-                  document={
-                    <SpreadsheetReportTemplate reportData={reportData} />
-                  }
-                  fileName={`Izvještaj_Članarine_Godina_${year}`}
+                  style={{ marginBottom: '15px' }}
+                  variant="success"
                 >
-                  {({ blob, url, loading, error }) =>
-                    loading ? 'Učitavam PDF dokument...' : 'Preuzmi izvještaj'
-                  }
-                </PDFDownloadLink>
-              </Button>
+                  <PDFDownloadLink
+                    className={classes.responseButton}
+                    style={{
+                      color: 'white',
+                      width: '100%'
+                    }}
+                    document={
+                      <SpreadsheetReportTemplate reportData={reportData} />
+                    }
+                    fileName={`Izvještaj_Članarine_Godina_${year}`}
+                  >
+                    {({ blob, url, loading, error }) =>
+                      loading ? 'Učitavam PDF dokument...' : 'Preuzmi izvještaj'
+                    }
+                  </PDFDownloadLink>
+                </Button>
+                <Button
+                  className={classes.responseButton}
+                  variant="danger"
+                  onClick={handleNavigateBack}
+                >
+                  Nazad
+                </Button>
+              </React.Fragment>
             )}
           {!waitingResponse && (
             <React.Fragment>

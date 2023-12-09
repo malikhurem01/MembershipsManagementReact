@@ -40,13 +40,19 @@ const SpreadsheetReportTemplate = ({ reportData }) => {
             <Text>Brak: {reportData.marriageStatusMembersCount}</Text>
             <Text>Udovac: {reportData.widowerStatusMembersCount}</Text>
             <Text>Granična dob: {reportData.ageLimitStatusMembersCount}</Text>
+            <Text>
+              Ukupno:{' '}
+              {reportData.marriageStatusMembersCount +
+                reportData.widowerStatusMembersCount +
+                reportData.ageLimitStatusMembersCount}
+            </Text>
           </View>
           <View style={styles.sectionHeader}>
             <Text>Budžet džemata</Text>
           </View>
           <View style={styles.sectionBody}>
-            <Text>Budžet: {reportData.budget}</Text>
-            <Text>Ukupno uplaćeno: {reportData.totalPaymentsAmount}</Text>
+            <Text>Budžet: {reportData.budget} km</Text>
+            <Text>Ukupno uplaćeno: {reportData.totalPaymentsAmount} km</Text>
           </View>
           <View style={styles.sectionHeader}>
             <Text>
