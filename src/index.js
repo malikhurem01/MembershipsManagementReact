@@ -23,6 +23,7 @@ import './index.css';
 import ErrorElement from './Components/Pages/ErrorPage/ErrorElement';
 import IndexPage from './Components/Pages/IndexPage/IndexPage';
 import { ActiveSpreadsheetContextProvider } from './Store/active-spreadsheet-context';
+import GenerateReportPage from './Components/Pages/GenerateReportPage/GenerateReportPage';
 
 const router = createBrowserRouter([
   {
@@ -57,7 +58,8 @@ const router = createBrowserRouter([
   { path: '/clanarine', element: <RegularMemberships /> },
   { path: '/clanarine/kreiraj-bazu', element: <CreateSpreadsheetPage /> },
   { path: '/clanarine/aktivna-baza', element: <ActiveSpreadsheetPage /> },
-  { path: '/clanarine/arhiva-baza', element: <ArchiveSpreadsheets /> }
+  { path: '/clanarine/arhiva-baza', element: <ArchiveSpreadsheets /> },
+  { path: '/clanarine/izradi-izvjestaj', element: <GenerateReportPage /> }
 ]);
 
 const initialize = async () => {

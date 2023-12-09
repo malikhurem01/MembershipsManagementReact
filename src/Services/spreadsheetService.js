@@ -16,6 +16,15 @@ const getAllSpreadsheets = (token, dzematId) => {
   );
 };
 
+const getSpreadsheetReport = (token, spreadsheetYear) => {
+  return axios.get(
+    `${serverURL}${routes.getSpreadsheetReport}?spreadsheetYear=${spreadsheetYear}`,
+    {
+      headers: { Authorization: 'Bearer ' + token }
+    }
+  );
+};
+
 const getActiveSpreadsheet = token => {
   return axios.get(`${serverURL}${routes.getActiveSpreadsheet}`, {
     headers: { Authorization: 'Bearer ' + token }
@@ -31,6 +40,7 @@ const archiveSpreadsheet = (token, data) => {
 const spreadsheetService = {
   createSpreadsheet,
   getAllSpreadsheets,
+  getSpreadsheetReport,
   archiveSpreadsheet,
   getActiveSpreadsheet
 };

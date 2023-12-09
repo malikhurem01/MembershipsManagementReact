@@ -5,6 +5,7 @@ const routes = {
   currentUser: 'Authentication/current/user',
   createSpreadsheet: 'Spreadsheet/create',
   getAllSpreadsheets: 'Spreadsheet/get/all',
+  getSpreadsheetReport: 'Spreadsheet/get/report',
   archiveSpreadsheet: 'Spreadsheet/archive',
   getActiveSpreadsheet: 'Spreadsheet/get/active',
   addNewMember: 'Member/add',
