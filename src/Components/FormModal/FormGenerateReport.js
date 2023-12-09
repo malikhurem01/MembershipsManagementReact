@@ -108,7 +108,7 @@ const FormGenerateReport = ({
                   fileName={`Izvještaj_Članarine_Godina_${year}`}
                 >
                   {({ blob, url, loading, error }) =>
-                    loading ? 'Loading document...' : 'Preuzmi izvještaj'
+                    loading ? 'Učitavam PDF dokument...' : 'Preuzmi izvještaj'
                   }
                 </PDFDownloadLink>
               </Button>
