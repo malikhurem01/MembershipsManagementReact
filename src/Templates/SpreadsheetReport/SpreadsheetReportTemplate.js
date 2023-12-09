@@ -51,7 +51,7 @@ const SpreadsheetReportTemplate = ({ reportData }) => {
             <Text>Budžet džemata</Text>
           </View>
           <View style={styles.sectionBody}>
-            <Text>Budžet: {reportData.budget} km</Text>
+            <Text>Budžet: {reportData.totalPaymentsAmount} km</Text>
             <Text>Ukupno uplaćeno: {reportData.totalPaymentsAmount} km</Text>
           </View>
           <View style={styles.sectionHeader}>
