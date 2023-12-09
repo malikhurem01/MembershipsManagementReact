@@ -51,8 +51,8 @@ const SpreadsheetReportTemplate = ({ reportData }) => {
             <Text>Budžet džemata</Text>
           </View>
           <View style={styles.sectionBody}>
-            <Text>Budžet: {reportData.totalPaymentsAmount} km</Text>
-            <Text>Ukupno uplaćeno: {reportData.totalPaymentsAmount} km</Text>
+            <Text>Budžet: {reportData.totalPaymentsAmount} KM</Text>
+            <Text>Ukupno uplaćeno: {reportData.totalPaymentsAmount} KM</Text>
           </View>
           <View style={styles.sectionHeader}>
             <Text>
@@ -81,7 +81,7 @@ const SpreadsheetReportTemplate = ({ reportData }) => {
                     <Text style={styles.tableCell}>{el.fullName}</Text>
                   </View>
                   <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>{el.totalAmount} km</Text>
+                    <Text style={styles.tableCell}>{el.totalAmount} KM</Text>
                   </View>
                 </View>
               );
@@ -114,7 +114,7 @@ const SpreadsheetReportTemplate = ({ reportData }) => {
                     <Text style={styles.tableCell}>{el.totalAmount}</Text>
                   </View>
                   <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>{el.debt} km</Text>
+                    <Text style={styles.tableCell}>{el.debt} KM</Text>
                   </View>
                 </View>
               );
