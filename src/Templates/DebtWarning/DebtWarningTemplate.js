@@ -50,16 +50,23 @@ const DebtWarningTemplate = ({ data }) => {
               <Text>OPOMENA</Text>
             </View>
             <View style={styles.body}>
-              <Text>Poštovani,{'\n\n'}</Text>
+              <Text hyphenationCallback={hyphenationCallback}>
+                Poštovani,{'\n\n'}
+              </Text>
               <Text hyphenationCallback={hyphenationCallback}>
                 Uvidom u stanje uplata dana{' '}
                 <Text style={styles.emphasize}>{`${factorDate()}.`}</Text>{' '}
                 godine, uvidili smo da imate neizmirene obaveze za plaćanje
                 redovnih članarina u iznosu od{' '}
-                <Text style={styles.emphasize}>{el.debt} KM</Text>. Molimo Vas
-                da ih do kraja kalendarske godine izmirite. Ukoliko imate nekih
-                nedoumica slobodno nas kontaktirajte, mi Vam stojimo na
-                raspolaganju.
+                <Text
+                  hyphenationCallback={hyphenationCallback}
+                  style={styles.emphasize}
+                >
+                  {el.debt} KM
+                </Text>
+                . Molimo Vas da ih do kraja kalendarske godine izmirite. Ukoliko
+                imate nekih nedoumica slobodno nas kontaktirajte, mi Vam stojimo
+                na raspolaganju.
               </Text>
             </View>
             <View style={styles.footer}>
