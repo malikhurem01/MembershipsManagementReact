@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     position: 'relative',
-    top: '30vh'
+    top: '13vh'
   },
   signatureContainer: {
     display: 'flex',

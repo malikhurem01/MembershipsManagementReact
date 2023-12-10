@@ -23,6 +23,7 @@ const FormAddMember = ({
   const [address, setAddress] = useState('');
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState('');
+  const [note, setNote] = useState('');
   const [debt, setDebt] = useState(0);
   const [editMode, setEditMode] = useState(false);
   const [familyMembers, setFamilyMembers] = useState([]);
@@ -52,6 +53,7 @@ const FormAddMember = ({
     setAddress(memberInfo.member.address);
     setEmail(memberInfo.member.email);
     setStatus(memberInfo.member.status);
+    setNote(memberInfo.member.note);
     setFamilyMembers(memberInfo.member.familyMembers['$values']);
   };
 
@@ -71,6 +73,7 @@ const FormAddMember = ({
       address,
       email,
       status: +status,
+      note,
       familyMembers,
       debt,
       active: true,
@@ -446,6 +449,19 @@ const FormAddMember = ({
                         <option value="1">Udovac/Udovica</option>
                         <option value="2">Granična dob</option>
                       </Form.Select>
+                    </FloatingLabel>
+                  </Col>
+                  <Col lg={4} md="auto" sm={8}>
+                    <FloatingLabel controlId="floatingNote" label="Napomena">
+                      <Form.Control
+                        onChange={ev => setNote(ev.target.value)}
+                        disabled={viewMode && !editMode}
+                        value={
+                          !viewMode || editMode ? note : memberInfo.member.note
+                        }
+                        as="textarea"
+                        rows={3}
+                      />
                     </FloatingLabel>
                   </Col>
                 </Row>

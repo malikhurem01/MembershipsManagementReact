@@ -67,6 +67,7 @@ const DebtWarningTemplate = ({ data }) => {
                 Molimo Vas da ih do kraja kalendarske godine izmirite. Ukoliko
                 imate nekih nedoumica slobodno nas kontaktirajte, mi Vam stojimo
                 na raspolaganju.
+                {'\n\n'}S poštovanjem,
               </Text>
             </View>
             <View style={styles.footer}>
