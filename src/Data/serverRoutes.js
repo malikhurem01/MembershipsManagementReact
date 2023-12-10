@@ -7,6 +7,7 @@ const routes = {
   createSpreadsheet: 'Spreadsheet/create',
   getAllSpreadsheets: 'Spreadsheet/get/all',
   getSpreadsheetReport: 'Spreadsheet/get/report',
+  getDebtWarningReports: 'Spreadsheet/get/debt-warning',
   archiveSpreadsheet: 'Spreadsheet/archive',
   getActiveSpreadsheet: 'Spreadsheet/get/active',
   addNewMember: 'Member/add',

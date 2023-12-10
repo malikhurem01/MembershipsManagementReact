@@ -45,7 +45,7 @@ const RegularMemberships = () => {
         </div>
         <div className={classes.gridRow}>
           <div className={classes.gridItem}>
-            <NavLink to="/logout">
+            <NavLink to="/clanarine/izradi-opomene">
               <div>
                 <img src={debtWarning} alt="Odjava" />
                 <p className={classes.menuOptionText}>Opomena za dug</p>

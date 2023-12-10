@@ -25,6 +25,12 @@ const getSpreadsheetReport = (token, spreadsheetYear) => {
   );
 };
 
+const getDebtWarningReports = token => {
+  return axios.get(`${serverURL}${routes.getDebtWarningReports}`, {
+    headers: { Authorization: 'Bearer ' + token }
+  });
+};
+
 const getActiveSpreadsheet = token => {
   return axios.get(`${serverURL}${routes.getActiveSpreadsheet}`, {
     headers: { Authorization: 'Bearer ' + token }
@@ -41,6 +47,7 @@ const spreadsheetService = {
   createSpreadsheet,
   getAllSpreadsheets,
   getSpreadsheetReport,
+  getDebtWarningReports,
   archiveSpreadsheet,
   getActiveSpreadsheet
 };

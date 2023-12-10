@@ -21,6 +21,7 @@ import ErrorElement from './Components/Pages/ErrorPage/ErrorElement';
 import IndexPage from './Components/Pages/IndexPage/IndexPage';
 import { ActiveSpreadsheetContextProvider } from './Store/active-spreadsheet-context';
 import GenerateReportPage from './Components/Pages/GenerateReportPage/GenerateReportPage';
+import GenerateDebtWarningPage from './Components/Pages/GenerateDebtWarningPage/GenerateDebtWarningPage';
 
 const router = createBrowserRouter([
   {
@@ -51,7 +52,8 @@ const router = createBrowserRouter([
   { path: '/clanarine/kreiraj-bazu', element: <CreateSpreadsheetPage /> },
   { path: '/clanarine/aktivna-baza', element: <ActiveSpreadsheetPage /> },
   { path: '/clanarine/arhiva-baza', element: <ArchiveSpreadsheets /> },
-  { path: '/clanarine/izradi-izvjestaj', element: <GenerateReportPage /> }
+  { path: '/clanarine/izradi-izvjestaj', element: <GenerateReportPage /> },
+  { path: '/clanarine/izradi-opomene', element: <GenerateDebtWarningPage /> }
 ]);
 
 const initialize = async () => {
