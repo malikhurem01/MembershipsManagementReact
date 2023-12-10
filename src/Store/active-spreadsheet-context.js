@@ -10,6 +10,9 @@ const ActiveSpreadsheetContext = React.createContext({
   searchFirstName: null,
   searchLastName: null,
   searchFathersName: null,
+  pageInfo: {},
+  pageSize: null,
+  handleSetPageInfo: () => {},
   handleSetMembersInfo: () => {},
   handleSetSelectedMember: () => {},
   handleSetActiveSpreadsheet: () => {},
@@ -18,6 +21,7 @@ const ActiveSpreadsheetContext = React.createContext({
   handleSetSearchLastName: () => {},
   handleSetSearchFathersName: () => {},
   handleRemoveFilters: () => {},
+  handleSetPageSize: () => {},
   handleSetPageNumber: () => {},
   handleSetResponse: () => {},
   handleUpdateActiveSpreadsheet: () => {},
@@ -29,11 +33,13 @@ export default ActiveSpreadsheetContext;
 export const ActiveSpreadsheetContextProvider = ({ children }) => {
   const [activeSpreadsheet, setActiveSpreadsheet] = useState(null);
   const [membersInfo, setMembersInfo] = useState([]);
+  const [pageInfo, setPageInfo] = useState('');
   const [selectedMember, setSelectedMember] = useState(null);
   const [searchFirstName, setSearchFirstName] = useState('');
   const [searchLastName, setSearchLastName] = useState('');
   const [searchFathersName, setSearchFathersName] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [response, setResponse] = useState({
     message: false,
     statusCode: false,
@@ -46,6 +52,10 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
 
   const handleSetMembersInfo = useCallback(data => {
     setMembersInfo(data);
+  }, []);
+
+  const handleSetPageInfo = useCallback(data => {
+    setPageInfo(data);
   }, []);
 
   const handleSetSelectedMember = useCallback(data => {
@@ -72,6 +82,11 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
 
   const handleSetPageNumber = number => {
     setPageNumber(number);
+  };
+
+  const handleSetPageSize = number => {
+    setPageNumber(1);
+    setPageSize(number);
   };
 
   const handleSetResponse = useCallback(data => {
@@ -101,18 +116,29 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
         searchLastName,
         searchFathersName,
         pageNumber,
+        pageSize,
         activeSpreadsheet?.id
       )
       .then(res => {
-        handleSetMembersInfo(res.data.data["$values"]);
+        const pageInformation = {
+          totalCount: res.data.data.totalCount,
+          page: res.data.data.page,
+          pageSize: res.data.data.pageSize,
+          hasNextPage: res.data.data.hasNextPage,
+          hasPreviousPage: res.data.data.hasPreviousPage
+        };
+        handleSetPageInfo(pageInformation);
+        handleSetMembersInfo(res.data.data.items['$values']);
       })
       .catch(err => console.log(err));
   }, [
     handleSetMembersInfo,
+    handleSetPageInfo,
     searchFirstName,
     searchLastName,
     searchFathersName,
     pageNumber,
+    pageSize,
     activeSpreadsheet
   ]);
 
@@ -154,6 +180,10 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
         searchLastName,
         searchFathersName,
         response,
+        pageInfo,
+        pageSize,
+        handleSetPageSize,
+        handleSetPageInfo,
         handleSetMembersInfo,
         handleSetSelectedMember,
         handleSetActiveSpreadsheet,

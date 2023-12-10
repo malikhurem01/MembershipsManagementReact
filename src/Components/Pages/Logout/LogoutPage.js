@@ -12,7 +12,7 @@ const LogoutPage = () => {
   useEffect(() => {
     userService.logoutUser();
     ctx.handleLogoutUser();
-    setTimeout(() => navigate('/login/dzemat'), 100);
+    setTimeout(() => navigate('/'), 100);
   }, [ctx, navigate]);
 
   return;

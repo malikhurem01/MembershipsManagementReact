@@ -7,6 +7,7 @@ import FamilyMember from './FamilyMember';
 
 import ActiveSpreadsheetContext from '../../Store/active-spreadsheet-context';
 import paymentService from '../../Services/paymentService';
+import AuthContext from '../../Store/auth-context-api';
 
 const FormAddMember = ({
   handleFormSubmit,
@@ -36,6 +37,8 @@ const FormAddMember = ({
     activeSpreadsheet,
     response
   } = useContext(ActiveSpreadsheetContext);
+
+  const ctx = useContext(AuthContext);
 
   const handeEnterEditMode = () => {
     setEvNumber(memberInfo.member.evNumber);
@@ -72,7 +75,7 @@ const FormAddMember = ({
       debt,
       active: true,
       addToSpreadsheet: true,
-      dzematId: JSON.parse(localStorage.getItem('dzemat_id'))
+      dzematId: ctx.userDataState.dzematId
     };
     const token = JSON.parse(localStorage.getItem('user_jwt'));
     handleFormSubmit(token, member);

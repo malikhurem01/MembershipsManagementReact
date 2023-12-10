@@ -1,5 +1,4 @@
-import { useNavigate } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 
 import userService from '../../../Services/userService';
 
@@ -7,14 +6,12 @@ import LoginFormComponent from '../LoginFormComponent/LoginFormComponent';
 import AuthContext from '../../../Store/auth-context-api';
 
 const LoginUserPage = () => {
-  const { handleSetResponse, temporaryDzemat } = useContext(AuthContext);
+  const { handleSetResponse } = useContext(AuthContext);
 
-  const navigate = useNavigate();
-
-  const handleFormSubmit = (email, password) => {
+  const handleFormSubmit = (email, dzematUserName, password) => {
     handleSetResponse({ loading: true, success: false });
     userService
-      .supervisorLogin({ email, password, dzematId: temporaryDzemat.id })
+      .supervisorLogin({ email, dzematUserName, password })
       .then(res => {
         localStorage.setItem('user_jwt', JSON.stringify(res.data.data.token));
         handleSetResponse({ loading: 'done', success: true });
@@ -26,15 +23,7 @@ const LoginUserPage = () => {
       });
   };
 
-  useEffect(() => {
-    if (!temporaryDzemat) {
-      navigate('/login/dzemat');
-    }
-  }, [temporaryDzemat, navigate]);
-
-  return (
-    <LoginFormComponent onFormSubmit={handleFormSubmit} loginStage={'second'} />
-  );
+  return <LoginFormComponent onFormSubmit={handleFormSubmit} />;
 };
 
 export default LoginUserPage;

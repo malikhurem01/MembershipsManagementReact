@@ -6,9 +6,6 @@ import { AuthContextProvider } from './Store/auth-context-api';
 
 import userService from './Services/userService';
 
-import LoginDzematPage, {
-  loader as dzematLoginLoader
-} from './Components/Pages/LoginDzemat/LoginDzematPage';
 import LoginUserPage from './Components/Pages/LoginUser/LoginUserPage';
 import MainPage from './Components/Pages/Main/MainPage';
 import EmailPage from './Components/Pages/Email/EmailPage';
@@ -40,11 +37,6 @@ const router = createBrowserRouter([
     ),
     errorElement: <ErrorElement />,
     children: [
-      {
-        path: 'dzemat',
-        loader: dzematLoginLoader,
-        element: <LoginDzematPage />
-      },
       {
         path: 'korisnik',
         element: <LoginUserPage />

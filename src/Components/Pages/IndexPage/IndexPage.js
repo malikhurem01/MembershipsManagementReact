@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const IndexPage = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate('/login/dzemat');
+    navigate('/login/korisnik');
   }, [navigate]);
   return;
 };

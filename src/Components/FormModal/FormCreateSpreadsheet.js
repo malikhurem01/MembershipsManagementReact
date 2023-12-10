@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ import creationFailed from '../../Assets/Pictures/creationFailed.svg';
 import creationSuccess from '../../Assets/Pictures/creationSuccess.svg';
 
 import classes from './FormModal.module.css';
+import AuthContext from '../../Store/auth-context-api';
 
 const FormCreateSpreadsheet = ({
   handleCreateDatabase,
@@ -23,12 +24,14 @@ const FormCreateSpreadsheet = ({
 
   const navigate = useNavigate();
 
+  const ctx = useContext(AuthContext);
+
   const handleSubmit = ev => {
     ev.preventDefault();
 
     const data = {
       year,
-      dzematId: JSON.parse(localStorage.getItem('dzemat_id')),
+      dzematId: ctx.userDataState.dzematId,
       marriageFee,
       widowerFee,
       ageLimitFee,
@@ -150,7 +153,7 @@ const FormCreateSpreadsheet = ({
             response?.statusCode < 300 && (
               <Button
                 className={classes.responseButton}
-                onClick={handleClearSubmit}
+                onClick={handleNavigateBack}
                 variant="success"
               >
                 Nazad

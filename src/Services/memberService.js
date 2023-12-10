@@ -19,10 +19,11 @@ const filterMembers = (
   lastName,
   fathersName,
   pageNumber,
+  pageSize,
   spreadsheetId
 ) => {
   return axios.get(
-    `${serverURL}${routes.filterMembers}?spreadsheetId=${spreadsheetId}&firstName=${firstName}&lastName=${lastName}&fathersName=${fathersName}&pageNumber=${pageNumber}`,
+    `${serverURL}${routes.filterMembers}?spreadsheetId=${spreadsheetId}&firstName=${firstName}&lastName=${lastName}&fathersName=${fathersName}&pageNumber=${pageNumber}&pageSize=${pageSize}`,
     {
       headers: { Authorization: 'Bearer ' + token }
     }

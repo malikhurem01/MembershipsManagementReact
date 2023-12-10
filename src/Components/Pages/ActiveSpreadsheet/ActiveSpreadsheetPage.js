@@ -9,7 +9,15 @@ import styles from '../../FormModal/FormModal.module.css';
 
 import noSpreadsheetLogo from '../../../Assets/Pictures/creationFailed.svg';
 
-import { Container, Button, Table, Form, Row, Col } from 'react-bootstrap';
+import {
+  Container,
+  Button,
+  Table,
+  Form,
+  Row,
+  Col,
+  FloatingLabel
+} from 'react-bootstrap';
 
 import FormAddMember from '../../FormModal/FormAddMember';
 import FormAddPayment from '../../FormModal/FormAddPayment';
@@ -18,6 +26,7 @@ import ResponseModal from '../../ResponseModal/ResponseModal';
 import memberService from '../../../Services/memberService';
 import spreadsheetService from '../../../Services/spreadsheetService';
 import paymentService from '../../../Services/paymentService';
+import AuthContext from '../../../Store/auth-context-api';
 
 const ActiveSpreadsheetPage = () => {
   const [showAddMember, setShowAddMember] = useState(false);
@@ -35,6 +44,10 @@ const ActiveSpreadsheetPage = () => {
     handleSetSearchFathersName,
     handleRemoveFilters,
     handleSetResponse,
+    handleSetPageNumber,
+    handleSetPageSize,
+    pageInfo,
+    pageSize,
     activeSpreadsheet,
     selectedMember,
     membersInfo,
@@ -43,6 +56,8 @@ const ActiveSpreadsheetPage = () => {
     searchFathersName,
     response
   } = useContext(ActiveSpreadsheetContext);
+
+  const ctx = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -142,7 +157,6 @@ const ActiveSpreadsheetPage = () => {
   const handleArchiveSpreadsheet = () => {
     handleSetArchiveSpreadsheet();
     const token = JSON.parse(localStorage.getItem('user_jwt'));
-    const dzematId = JSON.parse(localStorage.getItem('dzemat_id'));
     handleSetResponse({
       message: 'Arhiviram...',
       statusCode: null,
@@ -150,7 +164,7 @@ const ActiveSpreadsheetPage = () => {
     });
     spreadsheetService
       .archiveSpreadsheet(token, {
-        dzematId,
+        dzematId: ctx.userDataState.dzematId,
         spreadsheetId: activeSpreadsheet.id
       })
       .then(res => {
@@ -329,7 +343,19 @@ const ActiveSpreadsheetPage = () => {
       {activeSpreadsheet && !response.loading && (
         <div className={classes.mainContainer}>
           <Container fluid="md">
-            <Row style={{ marginTop: '2vh' }}>
+            <Row
+              style={{
+                marginTop: '2vh',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'baseline'
+              }}
+            >
+              <Col className={classes.optionButtons} lg="auto" md="auto" xs={7}>
+                <Button size="md" variant="dark" disabled>
+                  {`Baza za godinu ${activeSpreadsheet.year}.`}
+                </Button>
+              </Col>
               <Col className={classes.optionButtons} lg="auto" md="auto" xs={7}>
                 <Button
                   size="md"
@@ -347,6 +373,38 @@ const ActiveSpreadsheetPage = () => {
                 >
                   Arhiviraj bazu
                 </Button>
+              </Col>
+              <Col className={classes.optionButtons} lg="auto" md="auto" xs={7}>
+                <Button
+                  onClick={() => {
+                    navigate('/clanarine/izradi-izvjestaj');
+                  }}
+                  size="md"
+                  variant="success"
+                >
+                  Izradi izvještaj
+                </Button>
+              </Col>
+              <Col lg="auto" md="auto" xs={7}>
+                <FloatingLabel
+                  controlId="floatingPageSize"
+                  label="Broj članova po stranici"
+                >
+                  <Form.Select
+                    style={{ width: '200px' }}
+                    value={pageSize}
+                    onChange={ev => {
+                      handleSetPageSize(ev.target.value);
+                    }}
+                    aria-label="PageSize"
+                  >
+                    <option value="1">1</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                  </Form.Select>
+                </FloatingLabel>
               </Col>
             </Row>
             <Table style={{ marginTop: '2vh' }} hover striped responsive>
@@ -552,6 +610,40 @@ const ActiveSpreadsheetPage = () => {
                 })}
               </tbody>
             </Table>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between'
+              }}
+            >
+              <div>
+                {pageInfo.hasPreviousPage && (
+                  <Button
+                    variant="primary"
+                    style={{ marginRight: '10px' }}
+                    onClick={() => {
+                      handleSetPageNumber(prevState => prevState - 1);
+                    }}
+                  >
+                    Prethodna stranica
+                  </Button>
+                )}
+                {pageInfo.hasNextPage && (
+                  <Button
+                    variant="primary"
+                    onClick={() => {
+                      handleSetPageNumber(prevState => prevState + 1);
+                    }}
+                  >
+                    Naredna stranica
+                  </Button>
+                )}
+              </div>
+              <Button variant="secondary" disabled>
+                Ukupan broj članova: {pageInfo.totalCount}
+              </Button>
+            </div>
           </Container>
         </div>
       )}
