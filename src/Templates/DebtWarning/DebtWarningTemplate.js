@@ -62,9 +62,9 @@ const DebtWarningTemplate = ({ data }) => {
                   hyphenationCallback={hyphenationCallback}
                   style={styles.emphasize}
                 >
-                  {el.debt} KM
+                  {el.debt} KM.{' '}
                 </Text>
-                . Molimo Vas da ih do kraja kalendarske godine izmirite. Ukoliko
+                Molimo Vas da ih do kraja kalendarske godine izmirite. Ukoliko
                 imate nekih nedoumica slobodno nas kontaktirajte, mi Vam stojimo
                 na raspolaganju.
               </Text>
