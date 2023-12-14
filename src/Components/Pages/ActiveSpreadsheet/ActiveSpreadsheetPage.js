@@ -367,22 +367,22 @@ const ActiveSpreadsheetPage = () => {
               </Col>
               <Col className={classes.optionButtons} lg="auto" md="auto" xs={7}>
                 <Button
+                  onClick={() => {
+                    navigate('/clanarine/izradi-izvjestaj');
+                  }}
+                  size="md"
+                  variant="primary"
+                >
+                  Izradi izvještaj
+                </Button>
+              </Col>
+              <Col className={classes.optionButtons} lg="auto" md="auto" xs={7}>
+                <Button
                   onClick={handleSetArchiveSpreadsheet}
                   size="md"
                   variant="danger"
                 >
                   Arhiviraj bazu
-                </Button>
-              </Col>
-              <Col className={classes.optionButtons} lg="auto" md="auto" xs={7}>
-                <Button
-                  onClick={() => {
-                    navigate('/clanarine/izradi-izvjestaj');
-                  }}
-                  size="md"
-                  variant="success"
-                >
-                  Izradi izvještaj
                 </Button>
               </Col>
               <Col lg="auto" md="auto" xs={7}>
@@ -640,9 +640,11 @@ const ActiveSpreadsheetPage = () => {
                   </Button>
                 )}
               </div>
-              <Button variant="secondary" disabled>
-                Ukupan broj članova: {pageInfo.totalCount}
-              </Button>
+              {membersInfo && (
+                <Button variant="secondary" disabled>
+                  Ukupan broj članova: {pageInfo.totalCount}
+                </Button>
+              )}
             </div>
           </Container>
         </div>
