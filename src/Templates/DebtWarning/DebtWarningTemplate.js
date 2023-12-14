@@ -1,10 +1,10 @@
 import React from 'react';
 import { Document, Page, Text, View, Font } from '@react-pdf/renderer';
 
-import robotoBlack from '../../Fonts/Roboto/Roboto-Black.ttf';
-import robotoLight from '../../Fonts/Roboto/Roboto-Light.ttf';
-import robotoBold from '../../Fonts/Roboto/Roboto-Bold.ttf';
-import robotoMedium from '../../Fonts/Roboto/Roboto-Medium.ttf';
+import robotoBlack from '../../Assets/Fonts/Roboto/Roboto-Black.ttf';
+import robotoLight from '../../Assets/Fonts/Roboto/Roboto-Light.ttf';
+import robotoBold from '../../Assets/Fonts/Roboto/Roboto-Bold.ttf';
+import robotoMedium from '../../Assets/Fonts/Roboto/Roboto-Medium.ttf';
 
 import styles from './Styles';
 
