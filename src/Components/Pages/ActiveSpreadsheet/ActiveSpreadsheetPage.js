@@ -582,7 +582,7 @@ const ActiveSpreadsheetPage = () => {
                       <td>
                         <Button
                           style={{ minWidth: '120px' }}
-                          variant="success"
+                          variant="primary"
                           disabled
                           size="sm"
                         >
