@@ -537,7 +537,6 @@ const ActiveSpreadsheetPage = () => {
                         </Button>
                       </td>
                       <td>
-                        {' '}
                         <Button
                           style={{ minWidth: '80px' }}
                           variant="primary"
@@ -640,7 +639,7 @@ const ActiveSpreadsheetPage = () => {
                   </Button>
                 )}
               </div>
-              {membersInfo.length > 1 && (
+              {pageInfo.totalCount > 1 && (
                 <Button variant="secondary" disabled>
                   Ukupan broj članova: {pageInfo.totalCount}
                 </Button>
