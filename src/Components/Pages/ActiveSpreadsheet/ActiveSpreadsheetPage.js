@@ -639,7 +639,7 @@ const ActiveSpreadsheetPage = () => {
                   </Button>
                 )}
               </div>
-              {pageInfo.totalCount > 1 && (
+              {pageInfo.totalCount && (
                 <Button variant="secondary" disabled>
                   Ukupan broj članova: {pageInfo.totalCount}
                 </Button>
