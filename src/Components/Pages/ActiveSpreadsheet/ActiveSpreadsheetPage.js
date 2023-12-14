@@ -640,7 +640,7 @@ const ActiveSpreadsheetPage = () => {
                   </Button>
                 )}
               </div>
-              {membersInfo && (
+              {membersInfo.length > 1 && (
                 <Button variant="secondary" disabled>
                   Ukupan broj članova: {pageInfo.totalCount}
                 </Button>
