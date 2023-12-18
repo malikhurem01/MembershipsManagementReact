@@ -4,6 +4,8 @@ const serverURL = 'https://budgetmanagementiz.azurewebsites.net/api/';
 const routes = {
   supervisorLogin: 'Authentication/login/supervisor',
   currentUser: 'Authentication/current/user',
+  modifyUser: 'Authentication/user/modify',
+  changeUserPassword: 'Authentication/user/password',
   createSpreadsheet: 'Spreadsheet/create',
   getAllSpreadsheets: 'Spreadsheet/get/all',
   getSpreadsheetById: 'Spreadsheet/get/single',

@@ -21,13 +21,13 @@ const PageWrapperComponent = ({ returnArrow, children }) => {
         handleSetUser(res.data.data);
       })
       .catch(() => {
-        window.location.replace('/login/dzemat');
+        window.location.replace('/login/korisnik');
       });
   }, [handleSetUser]);
 
   const handleSetDzematInfo = title => {
     if (!userDataState) {
-      return navigate('/login/dzemat');
+      return navigate('/login/korisnik');
     } else {
       if (title === 'medzlis') {
         return userDataState.dzemat.medzlis.name;

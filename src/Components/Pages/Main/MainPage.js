@@ -10,8 +10,11 @@ import expensesLogo from '../../../Assets/Pictures/expensesLogo.svg';
 import odjavaLogo from '../../../Assets/Pictures/odjavaLogo.svg';
 
 import classes from './MainPage.module.css';
+import { useContext } from 'react';
+import AuthContext from '../../../Store/auth-context-api';
 
 const MainPage = () => {
+  const { userDataState } = useContext(AuthContext);
   return (
     <PageWrapperComponent>
       <div className={classes.container}>
@@ -76,7 +79,7 @@ const MainPage = () => {
             </NavLink>
           </div>
           <div className={classes.gridItem}>
-            <NavLink to="/logout">
+            <NavLink to={`/racun/${userDataState.id}`}>
               <div>
                 {' '}
                 <img src={accountLogo} alt="Odjava" />

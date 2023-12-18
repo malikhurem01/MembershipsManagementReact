@@ -23,6 +23,7 @@ import { SpreadsheetContextProvider } from './Store/spreadsheet-context';
 import GenerateReportPage from './Components/Pages/GenerateReportPage/GenerateReportPage';
 import GenerateDebtWarningPage from './Components/Pages/GenerateDebtWarningPage/GenerateDebtWarningPage';
 import ArchivedSpreadsheetPage from './Components/Pages/ArchivedSpreadsheetPage/ArchivedSpreadsheetPage';
+import AccountPage from './Components/Pages/AccountPage/AccountPage';
 
 const router = createBrowserRouter([
   {
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
       }
     ]
   },
-
+  { path: '/racun/:userId', element: <AccountPage /> },
   { path: '/logout', element: <LogoutPage /> },
   { path: '/email', element: <EmailPage /> },
   { path: '/naslovna', element: <MainPage /> },
