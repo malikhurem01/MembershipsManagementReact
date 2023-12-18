@@ -1,5 +1,5 @@
-//const serverURL = 'https://budgetmanagementiz.azurewebsites.net/api/';
-const serverURL = 'https://localhost:7136/api/';
+const serverURL = 'https://budgetmanagementiz.azurewebsites.net/api/';
+//const serverURL = 'https://localhost:7136/api/';
 
 const routes = {
   supervisorLogin: 'Authentication/login/supervisor',
