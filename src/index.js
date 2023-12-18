@@ -19,9 +19,10 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
 import ErrorElement from './Components/Pages/ErrorPage/ErrorElement';
 import IndexPage from './Components/Pages/IndexPage/IndexPage';
-import { ActiveSpreadsheetContextProvider } from './Store/active-spreadsheet-context';
+import { SpreadsheetContextProvider } from './Store/spreadsheet-context';
 import GenerateReportPage from './Components/Pages/GenerateReportPage/GenerateReportPage';
 import GenerateDebtWarningPage from './Components/Pages/GenerateDebtWarningPage/GenerateDebtWarningPage';
+import ArchivedSpreadsheetPage from './Components/Pages/ArchivedSpreadsheetPage/ArchivedSpreadsheetPage';
 
 const router = createBrowserRouter([
   {
@@ -51,7 +52,12 @@ const router = createBrowserRouter([
   { path: '/clanarine', element: <RegularMemberships /> },
   { path: '/clanarine/kreiraj-bazu', element: <CreateSpreadsheetPage /> },
   { path: '/clanarine/aktivna-baza', element: <ActiveSpreadsheetPage /> },
+
   { path: '/clanarine/arhiva-baza', element: <ArchiveSpreadsheets /> },
+  {
+    path: '/clanarine/arhiva-baza/pregled/:spreadsheetId',
+    element: <ArchivedSpreadsheetPage />
+  },
   { path: '/clanarine/izradi-izvjestaj', element: <GenerateReportPage /> },
   { path: '/clanarine/izradi-opomene', element: <GenerateDebtWarningPage /> }
 ]);
@@ -78,9 +84,9 @@ const startApplication = user => {
   root.render(
     <React.StrictMode>
       <AuthContextProvider userData={user}>
-        <ActiveSpreadsheetContextProvider>
+        <SpreadsheetContextProvider>
           <RouterProvider router={router} />
-        </ActiveSpreadsheetContextProvider>
+        </SpreadsheetContextProvider>
       </AuthContextProvider>
     </React.StrictMode>
   );

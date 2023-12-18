@@ -3,7 +3,7 @@ import classes from './FormModal.module.css';
 
 import { Row, Col, FloatingLabel, Form, Button, Table } from 'react-bootstrap';
 import memberService from '../../Services/memberService';
-import ActiveSpreadsheetContext from '../../Store/active-spreadsheet-context';
+import SpreadsheetContext from '../../Store/spreadsheet-context';
 
 const FamilyMember = ({
   handleDeleteFamilyMemberFromState,
@@ -14,12 +14,8 @@ const FamilyMember = ({
   memberToAddFamilyMembers,
   editMode
 }) => {
-  let {
-    handleUpdateActiveSpreadsheet,
-    handleSetResponse,
-    response,
-    selectedMember
-  } = useContext(ActiveSpreadsheetContext);
+  let { handleUpdateSpreadsheet, handleSetResponse, response, selectedMember } =
+    useContext(SpreadsheetContext);
   const [familyMembers, setFamilyMembers] = useState(
     editMode ? selectedMember.familyMembers : memberToAddFamilyMembers
   );
@@ -65,7 +61,7 @@ const FamilyMember = ({
           status: +familyMemberStatus
         })
         .then(res => {
-          handleUpdateActiveSpreadsheet();
+          handleUpdateSpreadsheet();
           handleFetchFamilyMembers(selectedMember.member.Id);
           handleSetResponse({
             message: res.data.message,
@@ -120,7 +116,7 @@ const FamilyMember = ({
           memberId: selectedMember.member.id
         })
         .then(res => {
-          handleUpdateActiveSpreadsheet();
+          handleUpdateSpreadsheet();
           handleFetchFamilyMembers(selectedMember.member.id);
           handleSetResponse({
             message: res.data.message,

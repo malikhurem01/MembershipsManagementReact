@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Button } from 'react-bootstrap';
 
-import ActiveSpreadsheetContext from '../../Store/active-spreadsheet-context';
+import ActiveSpreadsheetContext from '../../Store/spreadsheet-context';
 
 import loadingSvg from '../../Assets/Pictures/loadingSvg.svg';
 import creationFailed from '../../Assets/Pictures/creationFailed.svg';

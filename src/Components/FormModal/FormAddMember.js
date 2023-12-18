@@ -5,7 +5,7 @@ import { FloatingLabel, Form, Button, Row, Col, Table } from 'react-bootstrap';
 import classes from './FormModal.module.css';
 import FamilyMember from './FamilyMember';
 
-import ActiveSpreadsheetContext from '../../Store/active-spreadsheet-context';
+import SpreadsheetContext from '../../Store/spreadsheet-context';
 import paymentService from '../../Services/paymentService';
 import AuthContext from '../../Store/auth-context-api';
 
@@ -32,12 +32,12 @@ const FormAddMember = ({
   const [sureDeletePayment, setSureDeletePayment] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState();
   let {
-    handleUpdateActiveSpreadsheet,
+    handleUpdateSpreadsheet,
     handleSetResponse,
     selectedMember: memberInfo,
-    activeSpreadsheet,
+    spreadsheet,
     response
-  } = useContext(ActiveSpreadsheetContext);
+  } = useContext(SpreadsheetContext);
 
   const ctx = useContext(AuthContext);
 
@@ -100,7 +100,6 @@ const FormAddMember = ({
       const updatedState = prevState.filter(
         fm => fm.firstName !== data.firstName
       );
-      console.log(updatedState);
       return updatedState;
     });
   };
@@ -139,10 +138,10 @@ const FormAddMember = ({
       .deletePayment(token, {
         id: selectedPayment.id,
         memberId: memberInfo.member.id,
-        spreadsheetId: activeSpreadsheet.id
+        spreadsheetId: spreadsheet.id
       })
       .then(res => {
-        handleUpdateActiveSpreadsheet();
+        handleUpdateSpreadsheet();
         handleSetResponse({
           message: res.data.message,
           statusCode: res.status,
@@ -192,7 +191,7 @@ const FormAddMember = ({
             <h6>{`Datum uplate: ${
               selectedPayment.dateOfPayment.split('T')[0]
             }`}</h6>
-            <h6>{`Baza za godinu: ${activeSpreadsheet.year}`}</h6>
+            <h6>{`Baza za godinu: ${spreadsheet.year}`}</h6>
           </div>
           <div
             style={{ margin: '15px 15px', fontSize: '16px', fontWeight: '700' }}
@@ -422,7 +421,7 @@ const FormAddMember = ({
                         type="number"
                         placeholder="Dug"
                         required
-                        disabled={viewMode && !editMode}
+                        disabled={viewMode || editMode}
                       />
                     </FloatingLabel>
                   </Col>

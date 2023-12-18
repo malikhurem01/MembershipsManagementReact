@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Form, Row, Col, FloatingLabel, Button } from 'react-bootstrap';
 
-import ActiveSpreadsheetContext from '../../Store/active-spreadsheet-context';
+import SpreadsheetContext from '../../Store/spreadsheet-context';
 
 import styles from './FormModal.module.css';
 
@@ -11,7 +11,7 @@ const FormAddPayment = ({ handleShowAddPayment, handleAddPayment }) => {
     new Date().toISOString().split('T')[0]
   );
 
-  const { response } = useContext(ActiveSpreadsheetContext);
+  const { response } = useContext(SpreadsheetContext);
 
   const handlePaymentSubmit = ev => {
     ev.preventDefault();

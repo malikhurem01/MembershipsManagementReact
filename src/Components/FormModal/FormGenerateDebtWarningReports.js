@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { FloatingLabel, Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 
 import loadingSvg from '../../Assets/Pictures/loadingSvg.svg';
 import creationFailed from '../../Assets/Pictures/creationFailed.svg';
@@ -8,9 +8,8 @@ import creationSuccess from '../../Assets/Pictures/creationSuccess.svg';
 
 import classes from './FormModal.module.css';
 import { useNavigate } from 'react-router-dom';
-import SpreadsheetReportTemplate from '../../Templates/SpreadsheetReport/SpreadsheetReportTemplate';
-import { PDFDownloadLink } from '@react-pdf/renderer';
 import DebtWarningTemplate from '../../Templates/DebtWarning/DebtWarningTemplate';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 
 const FormGenerateDebtWarningReports = ({
   handleSubmit,

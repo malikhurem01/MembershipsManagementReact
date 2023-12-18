@@ -72,10 +72,8 @@ const DebtWarningTemplate = ({ data }) => {
             </View>
             <View style={styles.footer}>
               <Text>Džematski odbor dana {`${factorDate()}. godine, `}</Text>
-              <View style={styles.signatureContainer}>
-                <Text>Potpis:{'\n\n'}</Text>
-                <Text>_______________________________</Text>
-              </View>
+
+              <Text>_______________________________</Text>
             </View>
           </Page>
         );

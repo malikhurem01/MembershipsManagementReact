@@ -7,6 +7,15 @@ const createSpreadsheet = (token, data) => {
   });
 };
 
+const getSpreadsheetById = (token, spreadsheetId) => {
+  return axios.get(
+    `${serverURL}${routes.getSpreadsheetById}?spreadsheetId=${spreadsheetId}`,
+    {
+      headers: { Authorization: 'Bearer ' + token }
+    }
+  );
+};
+
 const getAllSpreadsheets = (token, dzematId) => {
   return axios.get(
     `${serverURL}${routes.getAllSpreadsheets}?dzematId=${dzematId}`,
@@ -49,7 +58,8 @@ const spreadsheetService = {
   getSpreadsheetReport,
   getDebtWarningReports,
   archiveSpreadsheet,
-  getActiveSpreadsheet
+  getActiveSpreadsheet,
+  getSpreadsheetById
 };
 
 export default spreadsheetService;

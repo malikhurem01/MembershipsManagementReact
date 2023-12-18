@@ -29,11 +29,12 @@ const styles = StyleSheet.create({
     fontStyle: 'bold'
   },
   footer: {
-    display: 'flex',
-    flexDirection: 'row',
+    disply: 'flex',
+    flexDirection: 'column',
     justifyContent: 'space-between',
     position: 'relative',
-    top: '13vh'
+    top: '13vh',
+    height: '7vh'
   },
   signatureContainer: {
     display: 'flex',

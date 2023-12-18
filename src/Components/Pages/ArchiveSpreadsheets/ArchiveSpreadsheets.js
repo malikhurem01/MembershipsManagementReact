@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Button, Row, Col } from 'react-bootstrap';
 
@@ -98,9 +98,11 @@ const ArchiveSpreadsheets = () => {
               </Col>
               <Col>
                 {s.archived && (
-                  <Button name={s.id} variant="success">
-                    Pregled
-                  </Button>
+                  <Link to={`pregled/${s.id}`}>
+                    <Button name={s.id} variant="success">
+                      Pregled{' '}
+                    </Button>
+                  </Link>
                 )}
                 {!s.archived && (
                   <Button

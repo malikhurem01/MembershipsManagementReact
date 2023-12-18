@@ -2,8 +2,8 @@ import React, { useCallback, useState } from 'react';
 import spreadsheetService from '../Services/spreadsheetService';
 import memberService from '../Services/memberService';
 
-const ActiveSpreadsheetContext = React.createContext({
-  activeSpreadsheet: null,
+const SpreadsheetContext = React.createContext({
+  spreadsheet: null,
   membersInfo: [],
   selectedMember: null,
   response: null,
@@ -15,8 +15,8 @@ const ActiveSpreadsheetContext = React.createContext({
   handleSetPageInfo: () => {},
   handleSetMembersInfo: () => {},
   handleSetSelectedMember: () => {},
-  handleSetActiveSpreadsheet: () => {},
-  handleFetchActiveSpreadsheet: () => {},
+  handleSetSpreadsheet: () => {},
+  handleFetchSpreadsheet: () => {},
   handleSetSearchFirstName: () => {},
   handleSetSearchLastName: () => {},
   handleSetSearchFathersName: () => {},
@@ -24,14 +24,14 @@ const ActiveSpreadsheetContext = React.createContext({
   handleSetPageSize: () => {},
   handleSetPageNumber: () => {},
   handleSetResponse: () => {},
-  handleUpdateActiveSpreadsheet: () => {},
-  handleFilterActiveSpreadsheetMembers: () => {}
+  handleUpdateSpreadsheet: () => {},
+  handleFilterSpreadsheetMembers: () => {}
 });
 
-export default ActiveSpreadsheetContext;
+export default SpreadsheetContext;
 
-export const ActiveSpreadsheetContextProvider = ({ children }) => {
-  const [activeSpreadsheet, setActiveSpreadsheet] = useState(null);
+export const SpreadsheetContextProvider = ({ children }) => {
+  const [spreadsheet, setSpreadsheet] = useState(null);
   const [membersInfo, setMembersInfo] = useState([]);
   const [pageInfo, setPageInfo] = useState('');
   const [selectedMember, setSelectedMember] = useState(null);
@@ -46,8 +46,8 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
     loading: false
   });
 
-  const handleSetActiveSpreadsheet = useCallback(data => {
-    setActiveSpreadsheet(data);
+  const handleSetSpreadsheet = useCallback(data => {
+    setSpreadsheet(data);
   }, []);
 
   const handleSetMembersInfo = useCallback(data => {
@@ -93,56 +93,60 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
     setResponse(data);
   }, []);
 
-  const handleUpdateActiveSpreadsheet = () => {
+  const handleUpdateSpreadsheet = () => {
     const token = JSON.parse(localStorage.getItem('user_jwt'));
     spreadsheetService
       .getActiveSpreadsheet(token)
       .then(res => {
         const responseParsed = JSON.parse(res.data.data);
-        handleSetActiveSpreadsheet(responseParsed.spreadsheet);
-        handleFilterActiveSpreadsheetMembers();
+        handleSetSpreadsheet(responseParsed.spreadsheet);
+        handleFilterSpreadsheetMembers();
       })
       .catch(() => {
-        handleSetActiveSpreadsheet(null);
+        handleSetSpreadsheet(null);
       });
   };
 
-  const handleFilterActiveSpreadsheetMembers = useCallback(() => {
-    const token = JSON.parse(localStorage.getItem('user_jwt'));
-    memberService
-      .filterMembers(
-        token,
-        searchFirstName,
-        searchLastName,
-        searchFathersName,
-        pageNumber,
-        pageSize,
-        activeSpreadsheet?.id
-      )
-      .then(res => {
-        const pageInformation = {
-          totalCount: res.data.data.totalCount,
-          page: res.data.data.page,
-          pageSize: res.data.data.pageSize,
-          hasNextPage: res.data.data.hasNextPage,
-          hasPreviousPage: res.data.data.hasPreviousPage
-        };
-        handleSetPageInfo(pageInformation);
-        handleSetMembersInfo(res.data.data.items['$values']);
-      })
-      .catch(err => console.log(err));
-  }, [
-    handleSetMembersInfo,
-    handleSetPageInfo,
-    searchFirstName,
-    searchLastName,
-    searchFathersName,
-    pageNumber,
-    pageSize,
-    activeSpreadsheet
-  ]);
+  const handleFilterSpreadsheetMembers = useCallback(
+    archivedSpreadsheetId => {
+      if (!spreadsheet && !archivedSpreadsheetId) return;
+      const token = JSON.parse(localStorage.getItem('user_jwt'));
+      memberService
+        .filterMembers(
+          token,
+          searchFirstName,
+          searchLastName,
+          searchFathersName,
+          pageNumber,
+          pageSize,
+          archivedSpreadsheetId ? archivedSpreadsheetId : spreadsheet.id
+        )
+        .then(res => {
+          const pageInformation = {
+            totalCount: res.data.data.totalCount,
+            page: res.data.data.page,
+            pageSize: res.data.data.pageSize,
+            hasNextPage: res.data.data.hasNextPage,
+            hasPreviousPage: res.data.data.hasPreviousPage
+          };
+          handleSetPageInfo(pageInformation);
+          handleSetMembersInfo(res.data.data.items['$values']);
+        })
+        .catch(err => console.log(err));
+    },
+    [
+      handleSetMembersInfo,
+      handleSetPageInfo,
+      searchFirstName,
+      searchLastName,
+      searchFathersName,
+      pageNumber,
+      pageSize,
+      spreadsheet
+    ]
+  );
 
-  const handleFetchActiveSpreadsheet = useCallback(() => {
+  const handleFetchSpreadsheet = useCallback(() => {
     handleSetResponse({
       message: 'Učitavam bazu',
       statusCode: null,
@@ -153,7 +157,7 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
       .getActiveSpreadsheet(token)
       .then(res => {
         const responseParsed = JSON.parse(res.data.data);
-        handleSetActiveSpreadsheet(responseParsed.spreadsheet);
+        handleSetSpreadsheet(responseParsed.spreadsheet);
         handleSetResponse({
           message: 'Učitano...',
           statusCode: null,
@@ -161,19 +165,19 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
         });
       })
       .catch(() => {
-        handleSetActiveSpreadsheet(null);
+        handleSetSpreadsheet(null);
         handleSetResponse({
           message: 'Greška...',
           statusCode: null,
           loading: false
         });
       });
-  }, [handleSetActiveSpreadsheet, handleSetResponse]);
+  }, [handleSetSpreadsheet, handleSetResponse]);
 
   return (
-    <ActiveSpreadsheetContext.Provider
+    <SpreadsheetContext.Provider
       value={{
-        activeSpreadsheet,
+        spreadsheet,
         membersInfo,
         selectedMember,
         searchFirstName,
@@ -186,19 +190,19 @@ export const ActiveSpreadsheetContextProvider = ({ children }) => {
         handleSetPageInfo,
         handleSetMembersInfo,
         handleSetSelectedMember,
-        handleSetActiveSpreadsheet,
-        handleFetchActiveSpreadsheet,
+        handleSetSpreadsheet,
+        handleFetchSpreadsheet,
         handleSetSearchFirstName,
         handleSetSearchLastName,
         handleSetSearchFathersName,
         handleRemoveFilters,
         handleSetPageNumber,
         handleSetResponse,
-        handleUpdateActiveSpreadsheet,
-        handleFilterActiveSpreadsheetMembers
+        handleUpdateSpreadsheet,
+        handleFilterSpreadsheetMembers
       }}
     >
       {children}
-    </ActiveSpreadsheetContext.Provider>
+    </SpreadsheetContext.Provider>
   );
 };
