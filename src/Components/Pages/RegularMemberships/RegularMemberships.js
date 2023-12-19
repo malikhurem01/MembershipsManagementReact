@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
 
@@ -7,6 +7,7 @@ import activeDatabase from '../../../Assets/Pictures/activeDatabase.svg';
 import archivedDatabases from '../../../Assets/Pictures/archivedDatabases.svg';
 import debtWarning from '../../../Assets/Pictures/opomenaDug.svg';
 import reportLogo from '../../../Assets/Pictures/izvjestaj.svg';
+import homeIcon from '../../../Assets/Pictures/home-icon.svg';
 
 import classes from './RegularMemberships.module.css';
 
@@ -57,6 +58,14 @@ const RegularMemberships = () => {
               <div>
                 <img src={reportLogo} alt="Odjava" />
                 <p className={classes.menuOptionText}>Izradi izvještaj</p>
+              </div>
+            </NavLink>
+          </div>
+          <div className={classes.gridItem}>
+            <NavLink to="/naslovna">
+              <div>
+                <img src={homeIcon} alt="naslovna stranica" />
+                <p className={classes.menuOptionText}>Naslovna stranica</p>
               </div>
             </NavLink>
           </div>

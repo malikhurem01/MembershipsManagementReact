@@ -16,9 +16,11 @@ const FormGenerateReport = ({
   response,
   waitingResponse,
   clearSubmit,
-  reportData
+  reportData,
+  searchParams,
+  reportGenerated
 }) => {
-  const [year, setYear] = useState('');
+  const [year, setYear] = useState(searchParams.get('godina'));
 
   const navigate = useNavigate();
 
@@ -47,31 +49,33 @@ const FormGenerateReport = ({
               paddingBottom: '5px'
             }}
           >
-            Izradi izvještaj:
+            {reportGenerated ? 'Preuzmi izvještaj' : 'Izradi izvještaj'}
           </h4>
-          <Row className="g-2">
-            <Col lg={5} md="auto" sm={10}>
-              <h6 style={{ marginTop: '10px' }}>
-                Upišite godinu za koju želite izraditi izvještaj:{' '}
-              </h6>
-            </Col>
-            <Col lg={5} md={10} sm={10}>
-              <FloatingLabel
-                controlId="floatingYear"
-                label="Godina"
-                className="mb-3"
-              >
-                <Form.Control
-                  value={year}
-                  onChange={ev => setYear(ev.target.value)}
-                  type="number"
-                  placeholder="Godina"
-                  label="Baza za godinu:"
-                  required
-                />
-              </FloatingLabel>
-            </Col>
-          </Row>
+          {!reportGenerated && (
+            <Row className="g-2">
+              <Col lg={5} md="auto" sm={10}>
+                <h6 style={{ marginTop: '10px' }}>
+                  Upišite godinu za koju želite izraditi izvještaj:{' '}
+                </h6>
+              </Col>
+              <Col lg={5} md={10} sm={10}>
+                <FloatingLabel
+                  controlId="floatingYear"
+                  label="Godina"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    value={year}
+                    onChange={ev => setYear(ev.target.value)}
+                    type="number"
+                    placeholder="Godina"
+                    label="Baza za godinu:"
+                    required
+                  />
+                </FloatingLabel>
+              </Col>
+            </Row>
+          )}
           {waitingResponse && (
             <div className={classes.responseModal}>
               {response.statusCode == null && (
@@ -116,7 +120,7 @@ const FormGenerateReport = ({
                     fileName={`Izvještaj_Članarine_Godina_${year}`}
                   >
                     {({ blob, url, loading, error }) =>
-                      loading ? 'Učitavam PDF dokument...' : 'Preuzmi izvještaj'
+                      loading ? 'Učitavam PDF dokument...' : 'Preuzmi'
                     }
                   </PDFDownloadLink>
                 </Button>

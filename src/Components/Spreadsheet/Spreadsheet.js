@@ -8,9 +8,11 @@ import {
   FloatingLabel
 } from 'react-bootstrap';
 import classes from '../Pages/ActiveSpreadsheet/ActiveSpreadsheetPage.module.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import SpreadsheetContext from '../../Store/spreadsheet-context';
+import { Line } from '@react-pdf/renderer';
+import AuthContext from '../../Store/auth-context-api';
 
 const Spreadsheet = ({
   isViewMode,
@@ -35,10 +37,42 @@ const Spreadsheet = ({
     searchLastName,
     searchFathersName
   } = useContext(SpreadsheetContext);
+
+  const { userDataState } = useContext(AuthContext);
+
   const navigate = useNavigate();
   return (
     <div className={classes.mainContainer}>
       <Container fluid="md">
+        <div className="row font-weight-bold">
+          <div className="col">
+            <nav
+              aria-label="breadcrumb"
+              className="bg-light rounded-3 p-3 mb-4"
+            >
+              <ol className="breadcrumb mb-0">
+                <li className="breadcrumb-item">
+                  <Link to="/naslovna">Naslovna stranica</Link>
+                </li>
+                <li className="breadcrumb-item">
+                  <Link to="/clanarine">Redovne članarine</Link>
+                </li>
+                <li className="breadcrumb-item">
+                  {!isViewMode && (
+                    <Link to="/clanarine/aktivna-baza">Aktivna baza</Link>
+                  )}
+                  {isViewMode && (
+                    <Link
+                      to={`/clanarine/arhiva-baza/pregled/${spreadsheet.id}`}
+                    >
+                      Arhiva baza
+                    </Link>
+                  )}
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
         <Row
           style={{
             marginTop: '2vh',
@@ -68,7 +102,9 @@ const Spreadsheet = ({
           <Col className={classes.optionButtons} lg="auto" md="auto" xs={7}>
             <Button
               onClick={() => {
-                navigate('/clanarine/izradi-izvjestaj');
+                navigate(
+                  '/clanarine/izradi-izvjestaj?godina=' + spreadsheet.year
+                );
               }}
               size="md"
               variant="primary"
@@ -82,6 +118,7 @@ const Spreadsheet = ({
                 onClick={handleSetArchiveSpreadsheet}
                 size="md"
                 variant="danger"
+                disabled={userDataState.position !== 1}
               >
                 Arhiviraj bazu
               </Button>

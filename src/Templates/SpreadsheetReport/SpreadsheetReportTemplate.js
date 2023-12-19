@@ -71,11 +71,13 @@ const SpreadsheetReportTemplate = ({ reportData }) => {
                 <Text style={styles.tableCell}>UPLAĆENO (ukupno)</Text>
               </View>
             </View>
-            {reportData.membersPayed['$values'].map(el => {
+            {reportData?.membersPayed['$values']?.map(el => {
               return (
                 <View style={styles.tableRow}>
                   <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>{el.supervisor}</Text>
+                    <Text style={styles.tableCell}>
+                      {[...new Set(el.supervisors['$values'])].map(el => el)}
+                    </Text>
                   </View>
                   <View style={styles.tableCol}>
                     <Text style={styles.tableCell}>{el.fullName}</Text>

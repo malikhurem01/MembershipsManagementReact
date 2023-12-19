@@ -5,8 +5,12 @@ import classes from './AccountPage.module.css';
 import { useContext, useState } from 'react';
 import AuthContext from '../../../Store/auth-context-api';
 import loadingSvg from '../../../Assets/Pictures/loadingSvg.svg';
+import editIcon from '../../../Assets/Pictures/editIcon.png';
+
+import profilePicture from '../../../Assets/Pictures/profilePicture.png';
 
 import userService from '../../../Services/userService';
+import { Link } from 'react-router-dom';
 
 const AccountPage = () => {
   const { userDataState, handleSetUser } = useContext(AuthContext);
@@ -25,6 +29,8 @@ const AccountPage = () => {
   const [oldPassword, setOldPassword] = useState();
   const [newPassword, setNewPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
+  const [isEditing, setIsEditing] = useState(false);
+  const [isEditingPassword, setIsEditingPassword] = useState(false);
   const [isUpdating, setIsUpdating] = useState();
   const [isPasswordUpdating, setIsPasswordUpdating] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
@@ -53,6 +59,7 @@ const AccountPage = () => {
           .then(res => {
             handleSetUser(res.data.data);
             setIsUpdating(false);
+            setIsEditing(false);
           })
           .catch(() => {
             window.location.replace('/login/korisnik');
@@ -82,6 +89,7 @@ const AccountPage = () => {
       .changeUserPassword(token, data)
       .then(() => {
         setIsPasswordUpdating(false);
+        setIsEditingPassword(false);
         setPasswordError();
         setOldPassword();
         setNewPassword();
@@ -96,217 +104,454 @@ const AccountPage = () => {
   return (
     <PageWrapperComponent>
       <div className={classes.container}>
-        <Container>
-          <div className={classes.heading}>
-            <h2>Vaš korisnički račun</h2>
-          </div>
-          <Form onSubmit={handleFormSubmit}>
-            <div className={classes.section}>
-              <h4>Lični podaci</h4>
-              <Row>
-                <Col xl={4} md={5} xs={10}>
-                  <Form.Group controlId="Name">
-                    <Form.Label>Ime</Form.Label>
-                    <Form.Control
-                      value={firstName}
-                      onChange={ev => setFirstName(ev.target.value)}
-                      type="text"
-                      placeholder="John"
-                    />
-                  </Form.Group>
-                </Col>
-                <Col xl={4} md={5} xs={10}>
-                  <Form.Group controlId="FathersName">
-                    <Form.Label>Ime oca</Form.Label>
-                    <Form.Control
-                      value={fathersName}
-                      onChange={ev => setFathersName(ev.target.value)}
-                      type="text"
-                      placeholder="Steven"
-                    />
-                  </Form.Group>
-                </Col>
-                <Col xl={4} md={5} xs={10}>
-                  <Form.Group controlId="LastName">
-                    <Form.Label>Prezime</Form.Label>
-                    <Form.Control
-                      value={lastName}
-                      onChange={ev => setLastName(ev.target.value)}
-                      type="text"
-                      placeholder="Doe"
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
+        <section style={{ backgroundColor: '#eee' }}>
+          <div className="container">
+            <div style={{ marginTop: '-30px' }} className="row">
+              <div className="col">
+                <nav
+                  aria-label="breadcrumb"
+                  className="bg-light rounded-3 p-3 mb-4"
+                >
+                  <ol className="breadcrumb mb-0">
+                    <li className="breadcrumb-item">
+                      <Link to="/naslovna">Naslovna stranica</Link>
+                    </li>
+                    <li className="breadcrumb-item">
+                      <Link href={`/racun/${userDataState.id}`}>Moj račun</Link>
+                    </li>
+                  </ol>
+                </nav>
+              </div>
             </div>
-            <div className={classes.section}>
-              <h4>Podaci prebivališta</h4>
-              <Row>
-                <Col xl={4} md={5} xs={10}>
-                  <Form.Group controlId="PlaceOfResidence">
-                    <Form.Label>Prebivalište</Form.Label>
-                    <Form.Control
-                      value={placeOfResidence}
-                      onChange={ev => setPlaceOfResidence(ev.target.value)}
-                      type="text"
-                      placeholder="Sarajevo"
+            <div className="row">
+              <div className="col-lg-4">
+                <div className="card mb-4">
+                  <div className="card-body text-center">
+                    <img
+                      src={profilePicture}
+                      alt="avatar"
+                      className="rounded-circle img-fluid"
+                      style={{ width: 150 }}
                     />
-                  </Form.Group>
-                </Col>
-                <Col xl={4} md={5} xs={10}>
-                  <Form.Group controlId="Address">
-                    <Form.Label>Adresa</Form.Label>
-                    <Form.Control
-                      value={address}
-                      onChange={ev => setAddress(ev.target.value)}
-                      type="text"
-                      placeholder="Vratnik bb"
-                    />
-                  </Form.Group>
-                </Col>
-                <Col xl={4} md={5} xs={10}>
-                  <Form.Group controlId="ZipCode">
-                    <Form.Label>Broj pošte</Form.Label>
-                    <Form.Control
-                      value={zipCode}
-                      onChange={ev => setZipCode(ev.target.value)}
-                      type="number"
-                      placeholder="10250"
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-            </div>
-            <div className={classes.section}>
-              <h4>Kontakt podaci</h4>
-              <Row>
-                <Col xl={4} md={5} xs={10}>
-                  <Form.Group controlId="Email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                      value={email}
-                      onChange={ev => setEmail(ev.target.value)}
-                      type="email"
-                      placeholder="johndoe@gmail.com"
-                    />
-                  </Form.Group>
-                </Col>
-                <Col xl={4} md={5} xs={10}>
-                  <Form.Group controlId="Username">
-                    <Form.Label>Korisničko ime</Form.Label>
-                    <Form.Control
-                      value={userName}
-                      onChange={ev => setUserName(ev.target.value)}
-                      type="text"
-                      placeholder="johndoe"
-                    />
-                  </Form.Group>
-                </Col>
-                <Col xl={4} md={5} xs={10}>
-                  <Form.Group controlId="PhoneNumber">
-                    <Form.Label>Broj telefona</Form.Label>
-                    <Form.Control
-                      value={phoneNumber}
-                      onChange={ev => setPhoneNumber(ev.target.value)}
-                      type="string"
-                      placeholder="+387 62 222 443"
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-            </div>
-            <div className={classes.button}>
-              <Button size="sm" variant="dark" type="submit">
-                {!isUpdating ? (
-                  'Ažuriraj podatke'
-                ) : (
-                  <img
-                    width={15}
-                    height={15}
-                    src={loadingSvg}
-                    alt="loading svg element"
-                  />
-                )}
-              </Button>
-            </div>
-          </Form>
+                    <h5 className="my-3">{`${userDataState.firstName} (${userDataState.fathersName}) ${userDataState.lastName}`}</h5>
+                    <p className="text-muted mb-1">
+                      Nadležnost:{' '}
+                      <strong>
+                        {userDataState.position === 1
+                          ? 'Imam'
+                          : userDataState.position === 2
+                          ? 'Blagajnik'
+                          : userDataState.position === 3
+                          ? 'Mutevelija'
+                          : ''}
+                      </strong>
+                    </p>
+                    <p className="text-muted mb-4">
+                      {userDataState.address}, {userDataState.zipCode}
+                    </p>
+                    <div className="d-flex justify-content-center mb-2">
+                      <Button
+                        style={{ marginRight: '15px' }}
+                        size="sm"
+                        type="button"
+                        variant="primary"
+                      >
+                        Uredi sliku profila
+                      </Button>
+                      <Button size="sm" type="button" variant="warning">
+                        Lista nadležnih
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                <div className="card mb-4 mb-lg-0">
+                  <div className="card-body p-0">
+                    <ul className="list-group list-group-flush rounded-3">
+                      <li className="list-group-item d-flex justify-content-between align-items-center p-3">
+                        <p className="mb-0">Medžlis</p>
+                        <p className="mb-0">
+                          {userDataState.dzemat.medzlis.name}
+                        </p>{' '}
+                      </li>
+                      <li className="list-group-item d-flex justify-content-between align-items-center p-3">
+                        <p className="mb-0">Džemat</p>
+                        <p className="mb-0">{userDataState.dzemat.name}</p>
+                      </li>
+                      <li className="list-group-item d-flex justify-content-between align-items-center p-3">
+                        <p className="mb-0">Adresa (Džemat)</p>
+                        <p className="mb-0">
+                          {userDataState.dzemat.address}
+                        </p>{' '}
+                      </li>
+                      <li className="list-group-item d-flex justify-content-between align-items-center p-3">
+                        <p className="mb-0">Lokacija (Džemat)</p>
+                        <p className="mb-0">
+                          {userDataState.dzemat.location}
+                        </p>{' '}
+                      </li>
+                      <li className="list-group-item d-flex justify-content-between align-items-center p-3">
+                        <p className="mb-0">Broj pošte (Džemat)</p>
+                        <p className="mb-0">
+                          {userDataState.dzemat.zipCode}
+                        </p>{' '}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <p style={{ marginLeft: '5px', fontStyle: 'italic' }}>
+                  {' '}
+                  *Za sve promjene informacija vezanih za džemat, molimo
+                  kontaktirajte podršku
+                </p>{' '}
+              </div>
 
-          <div className={classes.section}>
-            <h4>Promjena lozinke</h4>
-            <Form onSubmit={handleChangePasswordSubmit}>
-              <Row>
-                <Col xl={4} md={5} xs={10}>
-                  <Form.Group controlId="Trenutna lozinka">
-                    <Form.Label>Trenutna lozinka</Form.Label>
-                    <Form.Control
-                      value={oldPassword}
-                      onChange={ev => setOldPassword(ev.target.value)}
-                      type="password"
-                      placeholder="********"
-                      required
-                    />
-                  </Form.Group>
-                </Col>
-                <Col xl={4} md={5} xs={10}>
-                  <Form.Group controlId="Nova lozinka">
-                    <Form.Label>Nova lozinka</Form.Label>
-                    <Form.Control
-                      value={newPassword}
-                      onChange={ev => setNewPassword(ev.target.value)}
-                      type="password"
-                      placeholder="********"
-                      required
-                    />
-                  </Form.Group>
-                </Col>
-                <Col xl={4} md={5} xs={10}>
-                  <Form.Group controlId="Potvrdite novu lozinku">
-                    <Form.Label>Potvrdite novu lozinku</Form.Label>
-                    <Form.Control
-                      value={confirmPassword}
-                      onChange={ev => setConfirmPassword(ev.target.value)}
-                      type="password"
-                      placeholder="********"
-                      required
-                    />
-                  </Form.Group>
-                </Col>
-                <div className={classes.button}>
-                  <Button
-                    size="sm"
-                    variant="dark"
-                    type="submit"
-                    style={{ marginTop: '20px', marginRight: '15px' }}
-                    disabled={
-                      (!newPassword && !confirmPassword) ||
-                      newPassword !== confirmPassword
-                    }
-                  >
-                    {!isPasswordUpdating ? (
-                      'Promijeni'
-                    ) : (
-                      <img
-                        width={15}
-                        height={15}
-                        src={loadingSvg}
-                        alt="loading svg element"
-                      />
-                    )}
-                  </Button>
-                  {passwordError && !isPasswordUpdating && (
+              <div className="col-lg-8">
+                <div className="card mb-4">
+                  <div className="card-body">
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Ime</p>
+                      </div>
+                      <div className="col-sm-8">
+                        {!isEditing && (
+                          <p className="text-muted mb-0">
+                            {userDataState.firstName}
+                          </p>
+                        )}
+                        {isEditing && (
+                          <Form.Control
+                            value={firstName}
+                            onChange={ev => setFirstName(ev.target.value)}
+                            type="text"
+                            placeholder="John"
+                            size="sm"
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Prezime</p>
+                      </div>
+                      <div className="col-sm-8">
+                        {!isEditing && (
+                          <p className="text-muted mb-0">
+                            {userDataState.lastName}
+                          </p>
+                        )}
+                        {isEditing && (
+                          <Form.Control
+                            value={lastName}
+                            onChange={ev => setLastName(ev.target.value)}
+                            type="text"
+                            placeholder="John"
+                            size="sm"
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Ime oca</p>
+                      </div>
+                      <div className="col-sm-8">
+                        {!isEditing && (
+                          <p className="text-muted mb-0">
+                            {userDataState.fathersName}
+                          </p>
+                        )}
+                        {isEditing && (
+                          <Form.Control
+                            value={fathersName}
+                            onChange={ev => setFathersName(ev.target.value)}
+                            type="text"
+                            placeholder="John"
+                            size="sm"
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Email</p>
+                      </div>
+                      <div className="col-sm-8">
+                        {!isEditing && (
+                          <p className="text-muted mb-0">
+                            {userDataState.email}
+                          </p>
+                        )}
+                        {isEditing && (
+                          <Form.Control
+                            value={email}
+                            onChange={ev => setEmail(ev.target.value)}
+                            type="email"
+                            placeholder="John"
+                            size="sm"
+                          />
+                        )}{' '}
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Korisničko ime</p>
+                      </div>
+                      <div className="col-sm-8">
+                        {!isEditing && (
+                          <p className="text-muted mb-0">
+                            {userDataState.userName}
+                          </p>
+                        )}
+                        {isEditing && (
+                          <Form.Control
+                            value={userName}
+                            onChange={ev => setUserName(ev.target.value)}
+                            type="text"
+                            placeholder="John"
+                            size="sm"
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Broj telefona</p>
+                      </div>
+                      <div className="col-sm-8">
+                        {!isEditing && (
+                          <p className="text-muted mb-0">
+                            {userDataState.phoneNumber}
+                          </p>
+                        )}
+                        {isEditing && (
+                          <Form.Control
+                            value={phoneNumber}
+                            onChange={ev => setPhoneNumber(ev.target.value)}
+                            type="text"
+                            placeholder="John"
+                            size="sm"
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Prebivalište (Grad)</p>
+                      </div>
+                      <div className="col-sm-8">
+                        {!isEditing && (
+                          <p className="text-muted mb-0">
+                            {userDataState.placeOfResidence}
+                          </p>
+                        )}
+                        {isEditing && (
+                          <Form.Control
+                            value={placeOfResidence}
+                            onChange={ev =>
+                              setPlaceOfResidence(ev.target.value)
+                            }
+                            type="text"
+                            placeholder="John"
+                            size="sm"
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Adresa</p>
+                      </div>
+                      <div className="col-sm-8">
+                        {!isEditing && (
+                          <p className="text-muted mb-0">
+                            {userDataState.address}
+                          </p>
+                        )}
+                        {isEditing && (
+                          <Form.Control
+                            value={address}
+                            onChange={ev => setAddress(ev.target.value)}
+                            type="text"
+                            placeholder="John"
+                            size="sm"
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Broj pošte</p>
+                      </div>
+                      <div className="col-sm-8">
+                        {!isEditing && (
+                          <p className="text-muted mb-0">
+                            {userDataState.zipCode}
+                          </p>
+                        )}
+                        {isEditing && (
+                          <Form.Control
+                            value={zipCode}
+                            onChange={ev => setZipCode(ev.target.value)}
+                            type="text"
+                            placeholder="John"
+                            size="sm"
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style={{ marginTop: '-15px', marginBottom: '10px' }}>
+                  {isEditing && (
                     <Button
+                      style={{ marginRight: '10px' }}
+                      variant="dark"
                       size="sm"
+                      onClick={handleFormSubmit}
+                    >
+                      Ažuriraj
+                    </Button>
+                  )}
+                  {!isUpdating && (
+                    <Button
+                      variant={isEditing ? 'danger' : 'success'}
+                      size="sm"
+                      onClick={() => {
+                        if (isEditing) setIsEditing(false);
+                        else {
+                          setIsEditingPassword(false);
+                          setPasswordError();
+                          setIsEditing(true);
+                        }
+                      }}
+                    >
+                      {isEditing ? 'Prekid' : 'Uredi'}
+                    </Button>
+                  )}
+                </div>
+
+                <div className="card mb-4">
+                  <div className="card-body">
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Trenutna lozinka</p>
+                      </div>
+                      <div className="col-sm-4">
+                        {!isEditingPassword && (
+                          <p className="text-muted mb-0">********</p>
+                        )}
+                        {isEditingPassword && (
+                          <Form.Control
+                            value={oldPassword}
+                            onChange={ev => setOldPassword(ev.target.value)}
+                            placeholder="********"
+                            type="password"
+                            size="sm"
+                          />
+                        )}{' '}
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Nova lozinka</p>
+                      </div>
+                      <div className="col-sm-4">
+                        {!isEditingPassword && (
+                          <p className="text-muted mb-0">******** </p>
+                        )}
+                        {isEditingPassword && (
+                          <Form.Control
+                            value={newPassword}
+                            onChange={ev => setNewPassword(ev.target.value)}
+                            placeholder="********"
+                            type="password"
+                            size="sm"
+                          />
+                        )}{' '}
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <p className="mb-0">Potvrdite novu lozinku</p>
+                      </div>
+                      <div className="col-sm-4">
+                        {!isEditingPassword && (
+                          <p className="text-muted mb-0">******* </p>
+                        )}
+                        {isEditingPassword && (
+                          <Form.Control
+                            value={confirmPassword}
+                            placeholder="********"
+                            onChange={ev => setConfirmPassword(ev.target.value)}
+                            type="password"
+                            size="sm"
+                          />
+                        )}{' '}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style={{ marginTop: '-15px', marginBottom: '10px' }}>
+                  {isEditingPassword && (
+                    <Button
+                      style={{ marginRight: '10px', marginBottom: '10px' }}
+                      variant="dark"
+                      size="sm"
+                      disabled={
+                        (!newPassword && !confirmPassword) ||
+                        newPassword !== confirmPassword
+                      }
+                      onClick={handleChangePasswordSubmit}
+                    >
+                      {isPasswordUpdating ? 'Ažuriram...' : 'Ažuriraj lozinku'}
+                    </Button>
+                  )}
+                  {!isPasswordUpdating && (
+                    <Button
+                      style={{ marginRight: '10px', marginBottom: '10px' }}
+                      variant={isEditingPassword ? 'danger' : 'success'}
+                      size="sm"
+                      onClick={() => {
+                        if (isEditingPassword) {
+                          setIsEditingPassword(false);
+                          setPasswordError();
+                          setOldPassword();
+                          setNewPassword();
+                          setConfirmPassword();
+                        } else {
+                          setIsEditing(false);
+                          setIsEditingPassword(true);
+                        }
+                      }}
+                    >
+                      {isEditingPassword ? 'Prekid' : 'Promijeni lozinku'}
+                    </Button>
+                  )}
+                  {passwordError && (
+                    <Button
+                      style={{ marginRight: '10px', marginBottom: '10px' }}
                       variant="danger"
-                      style={{ marginTop: '20px' }}
+                      size="sm"
+                      disabled
                     >
                       {passwordError}
                     </Button>
                   )}
                 </div>
-              </Row>
-            </Form>
+              </div>
+            </div>
           </div>
-        </Container>
+        </section>
       </div>
     </PageWrapperComponent>
   );

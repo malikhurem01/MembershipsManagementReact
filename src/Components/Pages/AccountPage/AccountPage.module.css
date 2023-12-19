@@ -1,8 +1,7 @@
 .container {
-  height: 89.5vh;
-  background-color: #ffffff;
   width: 100%;
-  overflow: auto;
+  padding-top: 4.8vh;
+  background-color: #eee;
 }
 
 .container input::placeholder {
@@ -33,13 +32,6 @@
   margin-bottom: 20px;
 }
 
-@media (max-width: 550px) {
-  .container {
-    height: 91.1vh;
-    padding-left: 50px;
-    overflow-y: auto;
-  }
-  label {
-    margin-top: 15px;
-  }
+.container label {
+  margin-top: 15px;
 }
