@@ -245,7 +245,7 @@ const AccountPage = () => {
                             value={lastName}
                             onChange={ev => setLastName(ev.target.value)}
                             type="text"
-                            placeholder="John"
+                            placeholder="Doe"
                             size="sm"
                           />
                         )}
@@ -267,7 +267,7 @@ const AccountPage = () => {
                             value={fathersName}
                             onChange={ev => setFathersName(ev.target.value)}
                             type="text"
-                            placeholder="John"
+                            placeholder="Martin"
                             size="sm"
                           />
                         )}
@@ -289,7 +289,7 @@ const AccountPage = () => {
                             value={email}
                             onChange={ev => setEmail(ev.target.value)}
                             type="email"
-                            placeholder="John"
+                            placeholder="john@gmail.com"
                             size="sm"
                           />
                         )}{' '}
@@ -311,7 +311,7 @@ const AccountPage = () => {
                             value={userName}
                             onChange={ev => setUserName(ev.target.value)}
                             type="text"
-                            placeholder="John"
+                            placeholder="johndoe123"
                             size="sm"
                           />
                         )}
@@ -333,7 +333,7 @@ const AccountPage = () => {
                             value={phoneNumber}
                             onChange={ev => setPhoneNumber(ev.target.value)}
                             type="text"
-                            placeholder="John"
+                            placeholder="+387 00 000 00 00"
                             size="sm"
                           />
                         )}
@@ -357,7 +357,7 @@ const AccountPage = () => {
                               setPlaceOfResidence(ev.target.value)
                             }
                             type="text"
-                            placeholder="John"
+                            placeholder="New York"
                             size="sm"
                           />
                         )}
@@ -379,7 +379,7 @@ const AccountPage = () => {
                             value={address}
                             onChange={ev => setAddress(ev.target.value)}
                             type="text"
-                            placeholder="John"
+                            placeholder="Brooklyn, New York, USA"
                             size="sm"
                           />
                         )}
@@ -401,7 +401,7 @@ const AccountPage = () => {
                             value={zipCode}
                             onChange={ev => setZipCode(ev.target.value)}
                             type="text"
-                            placeholder="John"
+                            placeholder="10000"
                             size="sm"
                           />
                         )}

@@ -81,15 +81,13 @@ const Spreadsheet = ({
             alignItems: 'baseline'
           }}
         >
-          <Col className={classes.optionButtons} lg="auto" md="auto" xs={7}>
-            <Button size="md" variant="dark" disabled>
-              {`${isViewMode ? 'Pregled' : 'Baza'} za godinu ${
-                spreadsheet.year
-              }.`}
+          <Col className={classes.optionButtons} lg="auto" md="auto" xs={8}>
+            <Button className="btn btn-block" size="md" variant="dark" disabled>
+              {`Baza za ${spreadsheet.year}. godinu`}
             </Button>
           </Col>
           {!isViewMode && (
-            <Col className={classes.optionButtons} lg="auto" md="auto" xs={7}>
+            <Col className={classes.optionButtons} lg="auto" md="auto" xs={8}>
               <Button
                 size="md"
                 variant="primary"
@@ -99,7 +97,7 @@ const Spreadsheet = ({
               </Button>
             </Col>
           )}
-          <Col className={classes.optionButtons} lg="auto" md="auto" xs={7}>
+          <Col className={classes.optionButtons} lg="auto" md="auto" xs={8}>
             <Button
               onClick={() => {
                 navigate(
@@ -113,7 +111,7 @@ const Spreadsheet = ({
             </Button>
           </Col>
           {!isViewMode && (
-            <Col className={classes.optionButtons} lg="auto" md="auto" xs={7}>
+            <Col className={classes.optionButtons} lg="auto" md="auto" xs={8}>
               <Button
                 onClick={handleSetArchiveSpreadsheet}
                 size="md"
@@ -124,7 +122,7 @@ const Spreadsheet = ({
               </Button>
             </Col>
           )}
-          <Col lg="auto" md="auto" xs={7}>
+          <Col lg="auto" md="auto" xs={10}>
             <FloatingLabel
               controlId="floatingPageSize"
               label="Broj članova po stranici"
@@ -360,36 +358,48 @@ const Spreadsheet = ({
             justifyContent: 'space-between'
           }}
         >
-          <div>
+          <div className={classes.paginationButtons}>
             {pageInfo.hasPreviousPage && (
               <Button
+                size="sm"
                 variant="primary"
                 style={{ marginRight: '10px' }}
                 onClick={() => {
                   handleSetPageNumber(prevState => prevState - 1);
                 }}
               >
-                Prethodna stranica
+                Prethodna
               </Button>
             )}
             {pageInfo.hasNextPage && (
               <Button
+                size="sm"
                 variant="primary"
                 onClick={() => {
                   handleSetPageNumber(prevState => prevState + 1);
                 }}
               >
-                Naredna stranica
+                Sljedeća
               </Button>
             )}
           </div>
           {pageInfo.totalCount > 0 && (
-            <Button variant="secondary" disabled>
+            <Button
+              style={{ marginTop: '10px' }}
+              size="sm"
+              variant="secondary"
+              disabled
+            >
               {`Ukupan broj članova: ${pageInfo.totalCount}`}
             </Button>
           )}
           {pageInfo.totalCount === 0 && (
-            <Button variant="secondary" disabled>
+            <Button
+              style={{ marginTop: '10px' }}
+              size="sm"
+              variant="secondary"
+              disabled
+            >
               Nema članova za pregled
             </Button>
           )}

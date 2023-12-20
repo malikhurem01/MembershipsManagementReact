@@ -1,7 +1,7 @@
 .mainContainer {
   padding-top: 15px;
   background-color: #f7f3f3e5;
-  min-height: 89.5vh;
+  min-height: 91.5vh;
 }
 
 .optionButtons {
@@ -26,4 +26,8 @@ tr th * {
 
 .inputs input {
   margin-bottom: 10px;
+}
+
+.paginationButtons {
+  margin-top: 10px;
 }

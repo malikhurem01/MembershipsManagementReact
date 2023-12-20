@@ -47,10 +47,16 @@ const FormGenerateDebtWarningReports = ({
           >
             Izradi izvještaj:
           </h4>
-          <h5 style={{ marginTop: '10px', marginBottom: '15px' }}>
-            Izraditi će se opomene za sve članove koji nisu izmirili svoje
+          <h6
+            style={{
+              marginTop: '10px',
+              marginBottom: '15px',
+              fontStyle: 'italic'
+            }}
+          >
+            *Izraditi će se opomene za sve članove koji nisu izmirili svoje
             obaveze
-          </h5>
+          </h6>
           {waitingResponse && (
             <div className={classes.responseModal}>
               {response.statusCode == null && (

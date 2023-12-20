@@ -53,12 +53,12 @@ const FormGenerateReport = ({
           </h4>
           {!reportGenerated && (
             <Row className="g-2">
-              <Col lg={5} md="auto" sm={10}>
+              <Col lg={8} md="auto" sm={10}>
                 <h6 style={{ marginTop: '10px' }}>
                   Upišite godinu za koju želite izraditi izvještaj:{' '}
                 </h6>
               </Col>
-              <Col lg={5} md={10} sm={10}>
+              <Col lg={3} md={10} sm={5}>
                 <FloatingLabel
                   controlId="floatingYear"
                   label="Godina"

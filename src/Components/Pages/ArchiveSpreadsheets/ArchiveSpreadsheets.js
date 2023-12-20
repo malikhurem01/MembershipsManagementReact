@@ -94,7 +94,9 @@ const ArchiveSpreadsheets = () => {
                               : '/clanarine/aktivna-baza'
                           }
                         >
-                          <Button variant="primary">Pregled</Button>
+                          <Button variant={s.archived ? 'success' : 'primary'}>
+                            Pregled
+                          </Button>
                         </Link>
                       </p>
                     </li>
