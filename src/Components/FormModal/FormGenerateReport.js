@@ -18,9 +18,12 @@ const FormGenerateReport = ({
   clearSubmit,
   reportData,
   searchParams,
-  reportGenerated
+  reportGenerated,
+  spreadsheets
 }) => {
-  const [year, setYear] = useState(searchParams.get('godina'));
+  const [year, setYear] = useState(
+    searchParams.get('godina') || (spreadsheets ? spreadsheets[0].year : -1)
+  );
 
   const navigate = useNavigate();
 
@@ -52,29 +55,33 @@ const FormGenerateReport = ({
             {reportGenerated ? 'Preuzmi izvještaj' : 'Izradi izvještaj'}
           </h4>
           {!reportGenerated && (
-            <Row className="g-2">
-              <Col lg={8} md="auto" sm={10}>
-                <h6 style={{ marginTop: '18px' }}>
-                  Upišite godinu za koju želite izraditi izvještaj:{' '}
-                </h6>
-              </Col>
-              <Col lg={3} md={10} sm={5}>
-                <FloatingLabel
-                  controlId="floatingYear"
-                  label="Godina"
-                  className="mb-3"
+            <div style={{ margin: '15px 0' }}>
+              {' '}
+              <h6 style={{ margin: '18px 0' }}>
+                Odaberite godinu baze za koju želite izraditi izvještaj
+              </h6>
+              <FloatingLabel
+                controlId="floatingStatus"
+                label="Lista godina svih baza"
+              >
+                <Form.Select
+                  onChange={ev => setYear(ev.target.value)}
+                  aria-label="SpreadsheetYears"
+                  required
+                  value={year}
                 >
-                  <Form.Control
-                    value={year}
-                    onChange={ev => setYear(ev.target.value)}
-                    type="number"
-                    placeholder="Godina"
-                    label="Baza za godinu:"
-                    required
-                  />
-                </FloatingLabel>
-              </Col>
-            </Row>
+                  {spreadsheets?.map(el => {
+                    return (
+                      <option value={el.year}>
+                        {el.archived
+                          ? `( ${el.year}.) Arhiva`
+                          : `( ${el.year}.) Aktivna`}
+                      </option>
+                    );
+                  })}
+                </Form.Select>
+              </FloatingLabel>
+            </div>
           )}
           {waitingResponse && (
             <div className={classes.responseModal}>

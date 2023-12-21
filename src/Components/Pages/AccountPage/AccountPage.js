@@ -108,6 +108,7 @@ const AccountPage = () => {
         <section style={{ backgroundColor: '#eee' }}>
           <div className="container">
             <NavBar
+              style={{ marginTop: '-15px' }}
               routes={[
                 { route: `/racun/${userDataState.id}`, name: 'Moj račun' }
               ]}

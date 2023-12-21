@@ -1,12 +1,15 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const NavBar = ({ routes }) => {
   return (
-    <div className="row font-weight-bold">
+    <div className="row font-weight-bold mt-3">
       <div className="col">
-        <nav aria-label="breadcrumb" className="bg-light rounded-3 p-3 mb-4">
+        <nav
+          aria-label="breadcrumb"
+          className="bg-light rounded-3 p-3"
+          style={{ marginTop: '-16px ', marginBottom: '10px' }}
+        >
           <ol className="breadcrumb mb-0">
             <li>
               <Link to="/naslovna">Naslovna stranica</Link>
