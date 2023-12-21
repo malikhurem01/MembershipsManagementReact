@@ -7,6 +7,8 @@ import robotoBold from '../../Assets/Fonts/Roboto/Roboto-Bold.ttf';
 import robotoMedium from '../../Assets/Fonts/Roboto/Roboto-Medium.ttf';
 
 import styles from './Styles';
+import { factorDate } from '../../Utils/factorDate';
+import { hyphenationCallback } from '../../Utils/hyphenationCallback';
 
 Font.register({
   family: 'Roboto',
@@ -19,22 +21,6 @@ Font.register({
 });
 
 const DebtWarningTemplate = ({ data }) => {
-  const hyphenationCallback = word => {
-    return [word];
-  };
-
-  const factorDate = () => {
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    let mm = today.getMonth() + 1;
-    let dd = today.getDate();
-
-    if (dd < 10) dd = '0' + dd;
-    if (mm < 10) mm = '0' + mm;
-
-    return dd + '.' + mm + '.' + yyyy;
-  };
-
   return (
     <Document>
       {data.map(el => {

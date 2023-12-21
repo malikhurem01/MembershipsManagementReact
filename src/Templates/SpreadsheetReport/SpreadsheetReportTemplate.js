@@ -7,6 +7,7 @@ import robotoBold from '../../Assets/Fonts/Roboto/Roboto-Bold.ttf';
 import robotoMedium from '../../Assets/Fonts/Roboto/Roboto-Medium.ttf';
 
 import styles from './Styles';
+import { factorDate } from '../../Utils/factorDate';
 
 Font.register({
   family: 'Roboto',
@@ -29,7 +30,7 @@ const SpreadsheetReportTemplate = ({ reportData }) => {
             <Text>Džemat {reportData.dzematName}</Text>
           </View>
           <View style={styles.reportDate}>
-            <Text>{new Date().toISOString().split('T')[0]}</Text>
+            <Text>{factorDate(new Date().toISOString().split('T')[0])}</Text>
           </View>
         </View>
         <View style={styles.main}>

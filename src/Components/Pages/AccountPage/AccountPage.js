@@ -11,6 +11,7 @@ import profilePicture from '../../../Assets/Pictures/profilePicture.png';
 
 import userService from '../../../Services/userService';
 import { Link } from 'react-router-dom';
+import NavBar from '../../NavBar/NavBar';
 
 const AccountPage = () => {
   const { userDataState, handleSetUser } = useContext(AuthContext);
@@ -106,23 +107,11 @@ const AccountPage = () => {
       <div className={classes.container}>
         <section style={{ backgroundColor: '#eee' }}>
           <div className="container">
-            <div style={{ marginTop: '-30px' }} className="row">
-              <div className="col">
-                <nav
-                  aria-label="breadcrumb"
-                  className="bg-light rounded-3 p-3 mb-4"
-                >
-                  <ol className="breadcrumb mb-0">
-                    <li className="breadcrumb-item">
-                      <Link to="/naslovna">Naslovna stranica</Link>
-                    </li>
-                    <li className="breadcrumb-item">
-                      <Link href={`/racun/${userDataState.id}`}>Moj račun</Link>
-                    </li>
-                  </ol>
-                </nav>
-              </div>
-            </div>
+            <NavBar
+              routes={[
+                { route: `/racun/${userDataState.id}`, name: 'Moj račun' }
+              ]}
+            />
             <div className="row">
               <div className="col-lg-4">
                 <div className="card mb-4">

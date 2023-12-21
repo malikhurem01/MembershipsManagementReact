@@ -34,10 +34,13 @@ const styles = StyleSheet.create({
     padding: '10px 54px'
   },
   sectionHeader: {
-    fontSize: '25px',
+    fontSize: '16px',
     marginBottom: '10px',
     marginTop: '20px',
     fontStyle: 'medium'
+  },
+  sectionBody: {
+    fontSize: '13px'
   },
   table: {
     display: 'table',

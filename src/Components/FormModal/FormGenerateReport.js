@@ -54,7 +54,7 @@ const FormGenerateReport = ({
           {!reportGenerated && (
             <Row className="g-2">
               <Col lg={8} md="auto" sm={10}>
-                <h6 style={{ marginTop: '10px' }}>
+                <h6 style={{ marginTop: '18px' }}>
                   Upišite godinu za koju želite izraditi izvještaj:{' '}
                 </h6>
               </Col>

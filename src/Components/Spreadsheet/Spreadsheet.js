@@ -13,6 +13,7 @@ import { useContext } from 'react';
 import SpreadsheetContext from '../../Store/spreadsheet-context';
 import { Line } from '@react-pdf/renderer';
 import AuthContext from '../../Store/auth-context-api';
+import NavBar from '../NavBar/NavBar';
 
 const Spreadsheet = ({
   isViewMode,
@@ -44,35 +45,17 @@ const Spreadsheet = ({
   return (
     <div className={classes.mainContainer}>
       <Container fluid="md">
-        <div className="row font-weight-bold">
-          <div className="col">
-            <nav
-              aria-label="breadcrumb"
-              className="bg-light rounded-3 p-3 mb-4"
-            >
-              <ol className="breadcrumb mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/naslovna">Naslovna stranica</Link>
-                </li>
-                <li className="breadcrumb-item">
-                  <Link to="/clanarine">Redovne članarine</Link>
-                </li>
-                <li className="breadcrumb-item">
-                  {!isViewMode && (
-                    <Link to="/clanarine/aktivna-baza">Aktivna baza</Link>
-                  )}
-                  {isViewMode && (
-                    <Link
-                      to={`/clanarine/arhiva-baza/pregled/${spreadsheet.id}`}
-                    >
-                      Arhiva baza
-                    </Link>
-                  )}
-                </li>
-              </ol>
-            </nav>
-          </div>
-        </div>
+        <NavBar
+          routes={[
+            { route: '/clanarine', name: 'Redovne članarine' },
+            {
+              route: `/clanarine/${
+                isViewMode ? 'arhiva-baza' : 'aktivna-baza'
+              }`,
+              name: `${isViewMode ? 'Arhiva baza' : 'Aktivna baza'}`
+            }
+          ]}
+        />
         <Row
           style={{
             marginTop: '2vh',
