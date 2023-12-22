@@ -19,6 +19,12 @@ const createExpenseItem = (token, data) => {
   });
 };
 
+const deleteExpenseItem = (token, data) => {
+  return axios.post(`${serverURL}${routes.deleteExpenseItem}`, data, {
+    headers: { Authorization: 'Bearer ' + token }
+  });
+};
+
 /*const addIncome = (token, data) => {
   return axios.post(`${serverURL}${routes.addIncome}`, data, {
     headers: { Authorization: 'Bearer ' + token }
@@ -47,6 +53,7 @@ const projectServices = {
   getActiveExpenseItems,
   getArchivedExpenseItems,
   createExpenseItem,
+  deleteExpenseItem,
   addExpense,
   deleteExpense
 };

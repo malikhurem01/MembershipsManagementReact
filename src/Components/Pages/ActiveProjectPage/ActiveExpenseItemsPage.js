@@ -9,6 +9,7 @@ import {
   Row
 } from 'react-bootstrap';
 import NavBar from '../../NavBar/NavBar';
+
 import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
 
 import classes from './ActiveExpenseItemsPage.module.css';
@@ -23,6 +24,7 @@ const ActiveExpenseItemsPage = () => {
   const [showAddExpense, setShowAddExpense] = useState(false);
   const [showAddExpenseItem, setShowAddExpenseItem] = useState(false);
   const [showDeleteExpense, setShowDeleteExpense] = useState(false);
+  const [showDeleteExpenseItem, setShowDeleteExpenseItem] = useState(false);
   const [selected, setSelected] = useState();
   const [isLoading, setIsLoading] = useState();
   const [amount, setAmount] = useState();
@@ -44,6 +46,10 @@ const ActiveExpenseItemsPage = () => {
 
   const handleShowDeleteExpense = () => {
     setShowDeleteExpense(prevState => !prevState);
+  };
+
+  const handleShowDeleteExpenseItem = () => {
+    setShowDeleteExpenseItem(prevState => !prevState);
   };
 
   const handleFetchActiveExpenseItems = useCallback(() => {
@@ -78,15 +84,7 @@ const ActiveExpenseItemsPage = () => {
         note
       })
       .then(res => {
-        setItems(prevState => {
-          const index = prevState.expenseItems['$values'].findIndex(
-            ei => ei.id === res.data.data.expenseItemId
-          );
-          prevState.expenseItems['$values'][index]['expenses'].push(
-            res.data.data
-          );
-          return prevState;
-        });
+        handleFetchActiveExpenseItems();
         setIsLoading(false);
         handleShowAddExpense();
       })
@@ -137,6 +135,27 @@ const ActiveExpenseItemsPage = () => {
         setIsLoading(false);
       });
   };
+
+  const handleDeleteExpenseItem = ev => {
+    ev.preventDefault();
+    setIsLoading(true);
+    const token = JSON.parse(localStorage.getItem('user_jwt'));
+    expenseItemsService
+      .deleteExpenseItem(token, {
+        id: selected.id,
+        dzematId: userDataState.dzematId
+      })
+      .then(() => {
+        handleFetchActiveExpenseItems();
+        setIsLoading(false);
+        handleShowDeleteExpenseItem();
+      })
+      .catch(() => {
+        setItems(null);
+        setIsLoading(false);
+      });
+  };
+
   return (
     <React.Fragment>
       {!items && (
@@ -194,6 +213,40 @@ const ActiveExpenseItemsPage = () => {
                 </Button>
                 <Button type="submit" variant="danger">
                   {isLoading ? '...' : 'Izbriši trošak'}
+                </Button>
+              </Modal.Footer>
+            </Form>
+          </Modal>
+          <Modal
+            show={showDeleteExpenseItem}
+            onHide={handleShowDeleteExpenseItem}
+            backdrop="static"
+            keyboard={false}
+            centered
+          >
+            <Form onSubmit={handleDeleteExpenseItem}>
+              {' '}
+              <Modal.Header closeButton>
+                <Modal.Title>
+                  Želite li ukloniti stavku {`${selected?.name}`}?
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Container>
+                  <p style={{ fontStyle: 'italic' }}>
+                    *Ova radnja se ne može poništiti
+                  </p>
+                </Container>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  variant="secondary"
+                  onClick={handleShowDeleteExpenseItem}
+                >
+                  Nazad
+                </Button>
+                <Button type="submit" variant="danger">
+                  {isLoading ? '...' : 'Izbriši stavku'}
                 </Button>
               </Modal.Footer>
             </Form>
@@ -449,19 +502,27 @@ const ActiveExpenseItemsPage = () => {
                                     <li className="list-group-item d-flex justify-content-between align-items-center p-1"></li>
                                   </ul>
                                 )}
-                                <div className="row">
-                                  <div className="col-sm-8">
-                                    <Button
-                                      variant="danger"
-                                      size="sm"
-                                      onClick={() => {
-                                        handleShowAddExpense();
-                                        setSelected(el);
-                                      }}
-                                    >
-                                      Dodaj trošak
-                                    </Button>
-                                  </div>
+                                <div className="d-flex justify-content-between align-items-center">
+                                  <Button
+                                    variant="danger"
+                                    size="sm"
+                                    onClick={() => {
+                                      handleShowAddExpense();
+                                      setSelected(el);
+                                    }}
+                                  >
+                                    Dodaj trošak
+                                  </Button>
+                                  <Button
+                                    variant="dark"
+                                    size="sm"
+                                    onClick={() => {
+                                      handleShowDeleteExpenseItem();
+                                      setSelected(el);
+                                    }}
+                                  >
+                                    Ukloni stavku
+                                  </Button>
                                 </div>
                               </div>
                             </Accordion.Body>

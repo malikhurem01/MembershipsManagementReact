@@ -24,6 +24,7 @@ const routes = {
   getActiveExpenseItems: 'ExpenseItem/active',
   getArchivedExpenseItems: 'ExpenseItem/archived',
   createExpenseItem: 'ExpenseItem/create',
+  deleteExpenseItem: 'ExpenseItem/delete',
   //addIncome: 'Project/add/income',
   addExpense: 'ExpenseItem/add/expense',
   //deleteIncome: 'Project/delete/income',
