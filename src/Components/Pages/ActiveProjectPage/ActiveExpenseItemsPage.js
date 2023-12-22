@@ -285,7 +285,7 @@ const ActiveExpenseItemsPage = () => {
                     <p className="text-muted mb-1">
                       Broj aktivnih stavki:{' '}
                       <strong>
-                        {items?.expenseItems['$values']?.length || -1}
+                        {items?.expenseItems['$values']?.length || 0}
                       </strong>
                     </p>
                     <p className="text-muted mb-4">
