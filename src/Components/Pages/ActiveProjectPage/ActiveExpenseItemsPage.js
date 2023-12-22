@@ -464,7 +464,7 @@ const ActiveExpenseItemsPage = () => {
                                           </div>
                                           <div className="col-sm-8">
                                             <p className="text-muted mb-0">
-                                              <strong>{exp.amount}</strong>
+                                              <strong>{exp.amount}KM</strong>
                                             </p>
                                           </div>
                                           <div className="col-sm-4">
