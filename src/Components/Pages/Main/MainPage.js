@@ -35,6 +35,18 @@ const MainPage = () => {
             </NavLink>
           </div>
           <div className={classes.gridItem}>
+            <NavLink to="/troskovi">
+              <div>
+                {' '}
+                <img src={expensesLogo} alt="troskovi" />
+                <p className={classes.menuOptionText}>
+                  Pregled stanja budžeta
+                  <br />- troškovi -
+                </p>
+              </div>
+            </NavLink>
+          </div>
+          <div className={classes.gridItem}>
             <NavLink to="/logout">
               <div>
                 {' '}
@@ -49,6 +61,8 @@ const MainPage = () => {
               </div>
             </NavLink>
           </div>
+        </div>
+        <div className={classes.gridRow}>
           <div className={classes.gridItem}>
             <NavLink to="/logout">
               <div>
@@ -60,20 +74,6 @@ const MainPage = () => {
                 <p className={classes.menuOptionText}>
                   Pregled stanja budžeta
                   <br />- ostali prihodi -
-                </p>
-              </div>
-            </NavLink>
-          </div>
-        </div>
-        <div className={classes.gridRow}>
-          <div className={classes.gridItem}>
-            <NavLink to="/logout">
-              <div>
-                {' '}
-                <img src={expensesLogo} alt="Odjava" />
-                <p className={classes.menuOptionText}>
-                  Pregled stanja budžeta
-                  <br />- troškovi -
                 </p>
               </div>
             </NavLink>

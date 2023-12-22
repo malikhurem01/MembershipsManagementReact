@@ -1,0 +1,38 @@
+.container {
+  width: 100%;
+  min-height: 89.5vh;
+  padding-top: 1.8vh;
+  background-color: #eee;
+}
+
+.container input::placeholder {
+  font-style: italic;
+}
+
+.container input {
+  font-weight: 500;
+}
+
+.heading {
+  padding: 15px;
+  padding-left: 0;
+  margin: 15px 0;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.section h4 {
+  display: inline-block;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #000000;
+}
+
+.button {
+  margin-bottom: 20px;
+}
+
+.container label {
+  margin-top: 15px;
+}

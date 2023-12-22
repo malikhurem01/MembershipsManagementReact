@@ -30,7 +30,7 @@ const SpreadsheetReportTemplate = ({ reportData }) => {
             <Text>Džemat {reportData.dzematName}</Text>
           </View>
           <View style={styles.reportDate}>
-            <Text>{factorDate(new Date().toISOString().split('T')[0])}</Text>
+            <Text>{factorDate(new Date().toISOString())}</Text>
           </View>
         </View>
         <View style={styles.main}>

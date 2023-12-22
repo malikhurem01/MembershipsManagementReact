@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { Button, Row, Col, Container } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 
 import spreadsheetService from '../../../Services/spreadsheetService';
 
@@ -40,28 +40,6 @@ const ArchiveSpreadsheets = () => {
   return (
     <PageWrapperComponent>
       <Container>
-        <div style={{ marginTop: '2vh' }}>
-          <div className="row font-weight-bold">
-            <div className="col">
-              <nav
-                aria-label="breadcrumb"
-                className="bg-light rounded-3 p-3 mb-4"
-              >
-                <ol className="breadcrumb mb-0">
-                  <li className="breadcrumb-item">
-                    <Link to="/naslovna">Naslovna stranica</Link>
-                  </li>
-                  <li className="breadcrumb-item">
-                    <Link to="/clanarine">Redovne članarine</Link>
-                  </li>
-                  <li className="breadcrumb-item">
-                    <Link to="/clanarine/arhiva-baza">Arhiva baza</Link>
-                  </li>
-                </ol>
-              </nav>
-            </div>
-          </div>
-        </div>
         <div className={styles.modal} style={{ minWidth: '20%' }}>
           <h4
             style={{

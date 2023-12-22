@@ -20,7 +20,14 @@ const routes = {
   deleteMemberFamily: 'Member/family/delete',
   getMemberFamily: 'Member/get/family',
   addPayment: 'Payment/add',
-  deletePayment: 'Payment/delete'
+  deletePayment: 'Payment/delete',
+  getActiveExpenseItems: 'ExpenseItem/active',
+  getArchivedExpenseItems: 'ExpenseItem/archived',
+  createExpenseItem: 'ExpenseItem/create',
+  //addIncome: 'Project/add/income',
+  addExpense: 'ExpenseItem/add/expense',
+  //deleteIncome: 'Project/delete/income',
+  deleteExpense: 'ExpenseItem/delete/expense'
 };
 
 module.exports = { serverURL, routes };

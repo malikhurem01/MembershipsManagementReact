@@ -1,11 +1,47 @@
-export const factorDate = () => {
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  let mm = today.getMonth() + 1;
-  let dd = today.getDate();
-
-  if (dd < 10) dd = '0' + dd;
-  if (mm < 10) mm = '0' + mm;
-
-  return dd + '.' + mm + '.' + yyyy;
+export const factorDate = date => {
+  let [year, month, day] = date.split('-');
+  day = day.split('T')[0];
+  let monthName;
+  switch (month) {
+    case '01':
+      monthName = 'Januar';
+      break;
+    case '02':
+      monthName = 'Februar';
+      break;
+    case '03':
+      monthName = 'Mart';
+      break;
+    case '04':
+      monthName = 'April';
+      break;
+    case '05':
+      monthName = 'Maj';
+      break;
+    case '06':
+      monthName = 'Juni';
+      break;
+    case '07':
+      monthName = 'Juli';
+      break;
+    case '08':
+      monthName = 'August';
+      break;
+    case '09':
+      monthName = 'Septembar';
+      break;
+    case '10':
+      monthName = 'Octobar';
+      break;
+    case '11':
+      monthName = 'Novembar';
+      break;
+    case '12':
+      monthName = 'Decembar';
+      break;
+    default:
+      monthName = 'UNDEFINED';
+  }
+  let string = `${day}. ${monthName} ${year}`;
+  return string;
 };
