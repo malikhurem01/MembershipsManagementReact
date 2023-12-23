@@ -309,11 +309,7 @@ const ActiveExpenseItemsPage = () => {
                         label="Napomena"
                         className="mb-3"
                       >
-                        <Form.Control
-                          type="text"
-                          placeholder="Napomena"
-                          required
-                        />
+                        <Form.Control type="text" placeholder="Napomena" />
                       </FloatingLabel>
                     </Col>
                   </Row>
