@@ -22,7 +22,8 @@ const FormGenerateReport = ({
   spreadsheets
 }) => {
   const [year, setYear] = useState(
-    searchParams.get('godina') || (spreadsheets ? spreadsheets[0].year : -1)
+    searchParams.get('godina') ||
+      (spreadsheets.length > 0 ? spreadsheets[0].year : -1)
   );
 
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ const FormGenerateReport = ({
           >
             {reportGenerated ? 'Preuzmi izvještaj' : 'Izradi izvještaj'}
           </h4>
-          {!reportGenerated && (
+          {!reportGenerated && spreadsheets.length > 0 && (
             <div style={{ margin: '15px 0' }}>
               {' '}
               <h6 style={{ margin: '18px 0' }}>
@@ -70,18 +71,24 @@ const FormGenerateReport = ({
                   required
                   value={year}
                 >
-                  {spreadsheets?.map(el => {
-                    return (
-                      <option value={el.year}>
-                        {el.archived
-                          ? `( ${el.year}.) Arhiva`
-                          : `( ${el.year}.) Aktivna`}
-                      </option>
-                    );
-                  })}
+                  {spreadsheets.length > 0 &&
+                    spreadsheets.map(el => {
+                      return (
+                        <option value={el.year}>
+                          {el.archived
+                            ? `( ${el.year}.) Arhiva`
+                            : `( ${el.year}.) Aktivna`}
+                        </option>
+                      );
+                    })}
                 </Form.Select>
               </FloatingLabel>
             </div>
+          )}
+          {!reportGenerated && spreadsheets.length < 1 && (
+            <p style={{ margin: '18px 0', fontStyle: 'italic' }}>
+              *Lista baza je prazna, molimo kreirajte bazu
+            </p>
           )}
           {waitingResponse && (
             <div className={classes.responseModal}>
@@ -142,13 +149,15 @@ const FormGenerateReport = ({
             )}
           {!waitingResponse && (
             <React.Fragment>
-              <Button
-                style={{ marginRight: '20px' }}
-                type="submit"
-                variant="primary"
-              >
-                Izradi izvještaj
-              </Button>
+              {spreadsheets.length > 0 && (
+                <Button
+                  style={{ marginRight: '20px' }}
+                  type="submit"
+                  variant="primary"
+                >
+                  Izradi izvještaj
+                </Button>
+              )}
               <Button variant="danger" onClick={handleNavigateBack}>
                 Odustani
               </Button>

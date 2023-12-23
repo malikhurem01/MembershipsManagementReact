@@ -15,15 +15,12 @@ import {
 import loadingSvg from '../../Assets/Pictures/loadingSvg.svg';
 import creationFailed from '../../Assets/Pictures/creationFailed.svg';
 import creationSuccess from '../../Assets/Pictures/creationSuccess.svg';
-
-import classes from './FormModal.module.css';
 import AuthContext from '../../Store/auth-context-api';
 
 const FormCreateSpreadsheet = ({
   handleCreateDatabase,
   response,
-  waitingResponse,
-  clearSubmit
+  waitingResponse
 }) => {
   const [year, setYear] = useState(new Date().getFullYear());
   const [marriageFee, setMarriageFee] = useState('');
@@ -51,10 +48,6 @@ const FormCreateSpreadsheet = ({
 
   const handleNavigateBack = () => {
     navigate('/clanarine');
-  };
-
-  const handleClearSubmit = () => {
-    clearSubmit();
   };
 
   return (
