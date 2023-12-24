@@ -25,10 +25,17 @@ const routes = {
   getArchivedExpenseItems: 'ExpenseItem/archived',
   createExpenseItem: 'ExpenseItem/create',
   deleteExpenseItem: 'ExpenseItem/delete',
-  //addIncome: 'Project/add/income',
   addExpense: 'ExpenseItem/add/expense',
-  //deleteIncome: 'Project/delete/income',
-  deleteExpense: 'ExpenseItem/delete/expense'
+  deleteExpense: 'ExpenseItem/delete/expense',
+  //
+  getActiveIncomeItems: 'IncomeItem/active',
+  getArchivedIncomeItems: 'IncomeItem/archived',
+  createIncomeItem: 'IncomeItem/create',
+  deleteIncomeItem: 'IncomeItem/delete',
+  addIncome: 'IncomeItem/add/income',
+  deleteIncome: 'IncomeItem/delete/income',
+  addDonator: 'IncomeItem/donator',
+  getDonators: 'IncomeItem/donators'
 };
 
 module.exports = { serverURL, routes };

@@ -17,6 +17,8 @@ import ArchivedSpreadsheetPage from '../Components/Pages/ArchivedSpreadsheetPage
 import AccountPage from '../Components/Pages/AccountPage/AccountPage';
 import ExpensesPage from '../Components/Pages/ExpensesPage/ExpensesPage';
 import ActiveExpenseItemsPage from '../Components/Pages/ActiveProjectPage/ActiveExpenseItemsPage';
+import DonationsPage from '../Components/Pages/DonationsPage/DonationsPage';
+import ActiveDonationsPage from '../Components/Pages/ActiveDonationsPage/ActiveDonationsPage';
 
 export const router = createBrowserRouter([
   {
@@ -55,5 +57,7 @@ export const router = createBrowserRouter([
   { path: '/clanarine/izradi-izvjestaj', element: <GenerateReportPage /> },
   { path: '/clanarine/izradi-opomene', element: <GenerateDebtWarningPage /> },
   { path: '/troskovi', element: <ExpensesPage /> },
-  { path: '/troskovi/aktivni-projekti', element: <ActiveExpenseItemsPage /> }
+  { path: '/troskovi/aktivni-projekti', element: <ActiveExpenseItemsPage /> },
+  { path: '/donacije', element: <DonationsPage /> },
+  { path: '/donacije/aktivne-donacije', element: <ActiveDonationsPage /> }
 ]);

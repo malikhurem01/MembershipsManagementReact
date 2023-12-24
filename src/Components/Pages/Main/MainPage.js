@@ -47,7 +47,7 @@ const MainPage = () => {
             </NavLink>
           </div>
           <div className={classes.gridItem}>
-            <NavLink to="/logout">
+            <NavLink to="/donacije">
               <div>
                 {' '}
                 <img

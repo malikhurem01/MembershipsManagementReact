@@ -25,23 +25,11 @@ const deleteExpenseItem = (token, data) => {
   });
 };
 
-/*const addIncome = (token, data) => {
-  return axios.post(`${serverURL}${routes.addIncome}`, data, {
-    headers: { Authorization: 'Bearer ' + token }
-  });
-};*/
-
 const addExpense = (token, data) => {
   return axios.post(`${serverURL}${routes.addExpense}`, data, {
     headers: { Authorization: 'Bearer ' + token }
   });
 };
-
-/*const deleteIncome = (token, data) => {
-  return axios.post(`${serverURL}${routes.deleteIncome}`, data, {
-    headers: { Authorization: 'Bearer ' + token }
-  });
-};*/
 
 const deleteExpense = (token, data) => {
   return axios.post(`${serverURL}${routes.deleteExpense}`, data, {
