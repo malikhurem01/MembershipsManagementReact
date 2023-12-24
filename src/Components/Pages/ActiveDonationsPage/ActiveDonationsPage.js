@@ -392,6 +392,7 @@ const ActiveDonationsPage = () => {
                           <FloatingLabel
                             controlId="floatingDonator"
                             label="Odaberi donatora"
+                            required
                           >
                             <Form.Select
                               value={selectedDonator}
@@ -401,7 +402,7 @@ const ActiveDonationsPage = () => {
                               aria-label="Donator"
                               required
                             >
-                              <option>Odaberite donatora</option>
+                              <option value="">Odaberite donatora</option>
                               {donators?.length > 0 &&
                                 donators.map(el => {
                                   return (
@@ -687,7 +688,7 @@ const ActiveDonationsPage = () => {
                                           return (
                                             <tr>
                                               <td>{index + 1}</td>
-                                              <td>{`${inc.donator.firstName} ${inc.donator.lastName}`}</td>
+                                              <td>{`${inc.donator?.firstName} ${inc.donator?.lastName}`}</td>
                                               <td>{inc.amount}KM</td>
                                               <td className="col-sm-3">
                                                 {factorDate(inc.date)}
