@@ -1,43 +1,44 @@
 export const factorDate = date => {
   let [year, month, day] = date.split('-');
+  //POPRAVITI
   day = day.split('T')[0];
   let monthName;
   switch (month) {
     case '01':
-      monthName = 'Januar';
+      monthName = 'januar';
       break;
     case '02':
-      monthName = 'Februar';
+      monthName = 'februar';
       break;
     case '03':
-      monthName = 'Mart';
+      monthName = 'mart';
       break;
     case '04':
-      monthName = 'April';
+      monthName = 'april';
       break;
     case '05':
-      monthName = 'Maj';
+      monthName = 'maj';
       break;
     case '06':
-      monthName = 'Juni';
+      monthName = 'juni';
       break;
     case '07':
-      monthName = 'Juli';
+      monthName = 'juli';
       break;
     case '08':
-      monthName = 'August';
+      monthName = 'august';
       break;
     case '09':
-      monthName = 'Septembar';
+      monthName = 'septembar';
       break;
     case '10':
-      monthName = 'Octobar';
+      monthName = 'octobar';
       break;
     case '11':
-      monthName = 'Novembar';
+      monthName = 'novembar';
       break;
     case '12':
-      monthName = 'Decembar';
+      monthName = 'decembar';
       break;
     default:
       monthName = 'UNDEFINED';

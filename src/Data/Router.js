@@ -19,6 +19,8 @@ import ExpensesPage from '../Components/Pages/ExpensesPage/ExpensesPage';
 import ActiveExpenseItemsPage from '../Components/Pages/ActiveProjectPage/ActiveExpenseItemsPage';
 import DonationsPage from '../Components/Pages/DonationsPage/DonationsPage';
 import ActiveDonationsPage from '../Components/Pages/ActiveDonationsPage/ActiveDonationsPage';
+import IncomesPage from '../Components/Pages/IncomesPage/IncomesPage';
+import ActiveIncomesPage from '../Components/Pages/ActiveIncomesPage/ActiveIncomesPage';
 
 export const router = createBrowserRouter([
   {
@@ -59,5 +61,7 @@ export const router = createBrowserRouter([
   { path: '/troskovi', element: <ExpensesPage /> },
   { path: '/troskovi/aktivni-projekti', element: <ActiveExpenseItemsPage /> },
   { path: '/donacije', element: <DonationsPage /> },
-  { path: '/donacije/aktivne-donacije', element: <ActiveDonationsPage /> }
+  { path: '/donacije/aktivne-donacije', element: <ActiveDonationsPage /> },
+  { path: '/prihodi', element: <IncomesPage /> },
+  { path: '/prihodi/aktivni-prihodi', element: <ActiveIncomesPage /> }
 ]);

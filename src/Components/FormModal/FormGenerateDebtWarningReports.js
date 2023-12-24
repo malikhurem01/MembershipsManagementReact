@@ -45,7 +45,7 @@ const FormGenerateDebtWarningReports = ({
               paddingBottom: '5px'
             }}
           >
-            Izradi izvještaj:
+            Izradi opomene:
           </h4>
           <h6
             style={{

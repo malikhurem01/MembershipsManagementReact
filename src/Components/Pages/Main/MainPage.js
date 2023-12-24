@@ -64,7 +64,7 @@ const MainPage = () => {
         </div>
         <div className={classes.gridRow}>
           <div className={classes.gridItem}>
-            <NavLink to="/logout">
+            <NavLink to="/prihodi">
               <div>
                 {' '}
                 <img

@@ -1,6 +1,18 @@
 import axios from 'axios';
 import { routes, serverURL } from '../Data/serverRoutes';
 
+const getActiveDonationIncomeItems = token => {
+  return axios.get(`${serverURL}${routes.getActiveDonationIncomeItems}`, {
+    headers: { Authorization: 'Bearer ' + token }
+  });
+};
+
+const getArchivedDonationIncomeItems = token => {
+  return axios.get(`${serverURL}${routes.getArchivedDonationIncomeItems}`, {
+    headers: { Authorization: 'Bearer ' + token }
+  });
+};
+
 const getActiveIncomeItems = token => {
   return axios.get(`${serverURL}${routes.getActiveIncomeItems}`, {
     headers: { Authorization: 'Bearer ' + token }
@@ -50,6 +62,8 @@ const deleteIncome = (token, data) => {
 };
 
 const incomeItemService = {
+  getActiveDonationIncomeItems,
+  getArchivedDonationIncomeItems,
   getActiveIncomeItems,
   getArchivedIncomeItems,
   createIncomeItem,

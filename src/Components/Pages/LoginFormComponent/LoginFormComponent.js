@@ -35,26 +35,26 @@ const LoginFormComponent = ({ onFormSubmit, loginStage }) => {
       <Form className={classes.formContainer} onSubmit={handleFormSubmit}>
         <FloatingLabel
           controlId="floatingUsername"
-          label="Korisničko ime (Nadležni)"
+          label="Email (Nadležni)"
           className="mb-3"
         >
           <Form.Control
             value={username}
             onChange={ev => setUsername(ev.target.value)}
             type="text"
-            placeholder="Korisničko ime (Nadležni)"
+            placeholder="Email (Nadležni)"
           />
         </FloatingLabel>
         <FloatingLabel
           controlId="floatingDzematUserName"
-          label="Korisničko ime (Džemat)"
+          label="Korisničko ime"
           className="mb-3"
         >
           <Form.Control
             value={dzematUserName}
             onChange={ev => setDzematUserName(ev.target.value)}
             type="text"
-            placeholder="Korisničko ime (Džemat)"
+            placeholder="Korisničko ime"
           />
         </FloatingLabel>
         <FloatingLabel
