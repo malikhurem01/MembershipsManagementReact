@@ -671,7 +671,7 @@ const ActiveDonationsPage = () => {
                             <Accordion.Body>
                               <div className="card-body">
                                 {el.income['$values'] && (
-                                  <Table striped bordered hover>
+                                  <Table striped bordered hover responsive>
                                     <thead>
                                       <tr>
                                         <th>#</th>
