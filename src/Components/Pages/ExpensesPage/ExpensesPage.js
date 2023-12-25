@@ -12,7 +12,7 @@ const ExpensesPage = () => {
       <div className={classes.container}>
         <div className={classes.gridRow}>
           <div className={classes.gridItem}>
-            <NavLink to="aktivni-projekti">
+            <NavLink to="aktivni-troskovi">
               <div>
                 <img src={expense} alt="stanje budžeta redovne članarine" />
                 <p className={classes.menuOptionText}>Aktivni troškovi</p>
@@ -20,7 +20,7 @@ const ExpensesPage = () => {
             </NavLink>
           </div>
           <div className={classes.gridItem}>
-            <NavLink to="/logout">
+            <NavLink to="/clanarine/arhiva-baza?redirectTo=expenses">
               <div>
                 {' '}
                 <img src={archived} alt="stanje budžeta donacije" />

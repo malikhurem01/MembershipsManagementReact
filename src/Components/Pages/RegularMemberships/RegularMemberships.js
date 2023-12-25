@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
 
@@ -33,7 +33,7 @@ const RegularMemberships = () => {
             </NavLink>
           </div>
           <div className={classes.gridItem}>
-            <NavLink to="/clanarine/arhiva-baza">
+            <NavLink to="/clanarine/arhiva-baza?redirectTo=spreadsheet">
               <div>
                 <img
                   src={archivedDatabases}

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 import { Button, Container } from 'react-bootstrap';
 
@@ -12,6 +12,10 @@ import AuthContext from '../../../Store/auth-context-api';
 
 const ArchiveSpreadsheets = () => {
   const [spreadsheets, setSpreadsheets] = useState([]);
+
+  const [params] = useSearchParams();
+
+  const redirectTo = params.get('redirectTo');
 
   const navigate = useNavigate();
   const ctx = useContext(AuthContext);
@@ -33,8 +37,20 @@ const ArchiveSpreadsheets = () => {
     handleFetchSpreadsheets();
   }, [handleFetchSpreadsheets]);
 
-  const handleNavigateToMain = () => {
-    navigate('/clanarine');
+  const handleNavigate = () => {
+    navigate(
+      `${
+        redirectTo === 'donation'
+          ? '/donacije'
+          : redirectTo === 'expenses'
+          ? '/troskovi'
+          : redirectTo === 'incomes'
+          ? '/prihodi'
+          : redirectTo === 'spreadsheet'
+          ? '/clanarine'
+          : '/not-found'
+      }`
+    );
   };
 
   return (
@@ -48,7 +64,17 @@ const ArchiveSpreadsheets = () => {
               paddingBottom: '5px'
             }}
           >
-            {spreadsheets.length < 1 ? 'Nema kreiranih baza' : 'Lista baza'}
+            {spreadsheets.length < 1
+              ? 'Nema kreiranih baza'
+              : `Lista baza ${
+                  redirectTo === 'donation'
+                    ? '(Donacije)'
+                    : redirectTo === 'expenses'
+                    ? '(Troškovi)'
+                    : redirectTo === 'incomes'
+                    ? '(Prihodi)'
+                    : ''
+                }`}
           </h4>
           {spreadsheets.map((s, i) => {
             return (
@@ -67,9 +93,23 @@ const ArchiveSpreadsheets = () => {
                       <p className="mb-0">
                         <Link
                           to={
-                            s.archived
-                              ? `pregled/${s.id}`
-                              : '/clanarine/aktivna-baza'
+                            redirectTo === 'spreadsheet'
+                              ? s.archived
+                                ? `pregled/${s.id}`
+                                : '/clanarine/aktivna-baza'
+                              : redirectTo === 'donation'
+                              ? s.archived
+                                ? `/donacije/arhivirane-donacije/${s.id}?archiveType=donation`
+                                : '/donacije/aktivne-donacije'
+                              : redirectTo === 'expenses'
+                              ? s.archived
+                                ? `/troskovi/arhivirani-troskovi/${s.id}?archiveType=expenses`
+                                : `/troskovi/aktivni-troskovi`
+                              : redirectTo === 'incomes'
+                              ? s.archived
+                                ? `/prihodi/arhivirani-prihodi/${s.id}?archiveType=incomes`
+                                : `/prihodi/aktivni-prihodi`
+                              : '/not-found'
                           }
                         >
                           <Button variant={s.archived ? 'success' : 'primary'}>
@@ -84,7 +124,7 @@ const ArchiveSpreadsheets = () => {
             );
           })}
           <Button
-            onClick={handleNavigateToMain}
+            onClick={handleNavigate}
             style={{ margin: '15px 0', width: '100%' }}
             variant="danger"
           >

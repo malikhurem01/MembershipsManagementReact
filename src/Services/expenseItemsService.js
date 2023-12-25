@@ -7,10 +7,13 @@ const getActiveExpenseItems = token => {
   });
 };
 
-const getArchivedExpenseItems = token => {
-  return axios.get(`${serverURL}${routes.getArchivedExpenseItems}`, {
-    headers: { Authorization: 'Bearer ' + token }
-  });
+const getArchivedExpenseItems = (token, spreadsheetId) => {
+  return axios.get(
+    `${serverURL}${routes.getArchivedExpenseItems}?spreadsheetId=${spreadsheetId}`,
+    {
+      headers: { Authorization: 'Bearer ' + token }
+    }
+  );
 };
 
 const createExpenseItem = (token, data) => {

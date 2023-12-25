@@ -7,10 +7,13 @@ const getActiveDonationIncomeItems = token => {
   });
 };
 
-const getArchivedDonationIncomeItems = token => {
-  return axios.get(`${serverURL}${routes.getArchivedDonationIncomeItems}`, {
-    headers: { Authorization: 'Bearer ' + token }
-  });
+const getArchivedDonationIncomeItems = (token, spreadsheetId) => {
+  return axios.get(
+    `${serverURL}${routes.getArchivedDonationIncomeItems}?spreadsheetId=${spreadsheetId}`,
+    {
+      headers: { Authorization: 'Bearer ' + token }
+    }
+  );
 };
 
 const getActiveIncomeItems = token => {
@@ -19,10 +22,13 @@ const getActiveIncomeItems = token => {
   });
 };
 
-const getArchivedIncomeItems = token => {
-  return axios.get(`${serverURL}${routes.getArchivedIncomeItems}`, {
-    headers: { Authorization: 'Bearer ' + token }
-  });
+const getArchivedIncomeItems = (token, spreadsheetId) => {
+  return axios.get(
+    `${serverURL}${routes.getArchivedIncomeItems}?spreadsheetId=${spreadsheetId}`,
+    {
+      headers: { Authorization: 'Bearer ' + token }
+    }
+  );
 };
 
 const createIncomeItem = (token, data) => {

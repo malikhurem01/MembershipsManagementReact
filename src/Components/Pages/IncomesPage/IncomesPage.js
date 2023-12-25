@@ -20,7 +20,7 @@ const IncomesPage = () => {
             </NavLink>
           </div>
           <div className={classes.gridItem}>
-            <NavLink to="/logout">
+            <NavLink to="/clanarine/arhiva-baza?redirectTo=incomes">
               <div>
                 {' '}
                 <img src={archived} alt="stanje budžeta donacije" />

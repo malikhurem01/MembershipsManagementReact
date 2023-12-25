@@ -21,6 +21,7 @@ import DonationsPage from '../Components/Pages/DonationsPage/DonationsPage';
 import ActiveDonationsPage from '../Components/Pages/ActiveDonationsPage/ActiveDonationsPage';
 import IncomesPage from '../Components/Pages/IncomesPage/IncomesPage';
 import ActiveIncomesPage from '../Components/Pages/ActiveIncomesPage/ActiveIncomesPage';
+import ArchivedFinance from '../Components/Pages/ArchivedFinance/ArchivedFinance';
 
 export const router = createBrowserRouter([
   {
@@ -59,10 +60,22 @@ export const router = createBrowserRouter([
   { path: '/clanarine/izradi-izvjestaj', element: <GenerateReportPage /> },
   { path: '/clanarine/izradi-opomene', element: <GenerateDebtWarningPage /> },
   { path: '/troskovi', element: <ExpensesPage /> },
-  { path: '/troskovi/aktivni-projekti', element: <ActiveExpenseItemsPage /> },
+  { path: '/troskovi/aktivni-troskovi', element: <ActiveExpenseItemsPage /> },
+  {
+    path: '/troskovi/arhivirani-troskovi/:spreadsheetId',
+    element: <ArchivedFinance />
+  },
   { path: '/donacije', element: <DonationsPage /> },
   { path: '/donacije/aktivne-donacije', element: <ActiveDonationsPage /> },
+  {
+    path: '/donacije/arhivirane-donacije/:spreadsheetId',
+    element: <ArchivedFinance />
+  },
   { path: '/prihodi', element: <IncomesPage /> },
   { path: '/prihodi/aktivni-prihodi', element: <ActiveIncomesPage /> },
+  {
+    path: '/prihodi/arhivirani-prihodi/:spreadsheetId',
+    element: <ArchivedFinance />
+  },
   { path: '/email-zahvale', element: <EmailPage /> }
 ]);

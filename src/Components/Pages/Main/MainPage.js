@@ -22,7 +22,6 @@ const MainPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="/clanarine">
               <div>
-                {' '}
                 <img
                   src={budgetBalance}
                   alt="stanje budžeta redovne članarine"
@@ -37,7 +36,6 @@ const MainPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="/troskovi">
               <div>
-                {' '}
                 <img src={expensesLogo} alt="troskovi" />
                 <p className={classes.menuOptionText}>
                   Pregled stanja budžeta
@@ -49,7 +47,6 @@ const MainPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="/donacije">
               <div>
-                {' '}
                 <img
                   src={budgetBalanceDonations}
                   alt="stanje budžeta donacije"
@@ -66,7 +63,6 @@ const MainPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="/prihodi">
               <div>
-                {' '}
                 <img
                   src={budgetBalanceOtherIncome}
                   alt="stanje budžeta ostali prihodi"
@@ -81,7 +77,6 @@ const MainPage = () => {
           <div className={classes.gridItem}>
             <NavLink to={`/racun/${userDataState.id}`}>
               <div>
-                {' '}
                 <img src={accountLogo} alt="Odjava" />
                 <p className={classes.menuOptionText}>Moj račun</p>
               </div>
@@ -90,7 +85,6 @@ const MainPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="/logout">
               <div>
-                {' '}
                 <img src={odjavaLogo} alt="Odjava" />
                 <p className={classes.menuOptionText}>Odjava</p>
               </div>
