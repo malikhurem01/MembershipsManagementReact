@@ -164,21 +164,33 @@ const ArchivedFinance = () => {
                     <div className="card mb-4 mb-lg-0">
                       <div className="card-body p-0">
                         <ul className="list-group list-group-flush rounded-3">
-                          <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                            <p className="mb-0">
-                              Ukupno prihoda za <strong>tekuću</strong> godinu
-                            </p>
-                            <p className="mb-0">
-                              <strong></strong>
-                              <strong>KM</strong>
-                            </p>{' '}
-                          </li>
-                          <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                            <p className="mb-0">
-                              Ukupno troškova za <strong>tekuću</strong> godinu
-                            </p>
-                            <p className="mb-0">NAPRAVITI</p>
-                          </li>
+                          {(archiveType === 'donation' ||
+                            archiveType === 'incomes') && (
+                            <li className="list-group-item d-flex justify-content-between align-items-center p-3">
+                              <p className="mb-0">
+                                Ukupno prihoda za{' '}
+                                <strong> {items.spreadsheetYear}.</strong>{' '}
+                                godinu
+                              </p>
+                              <p className="mb-0">
+                                <strong>{items.totalIncomeAmount}</strong>
+                                <strong>KM</strong>
+                              </p>{' '}
+                            </li>
+                          )}
+                          {archiveType === 'expenses' && (
+                            <li className="list-group-item d-flex justify-content-between align-items-center p-3">
+                              <p className="mb-0">
+                                Ukupno troškova za{' '}
+                                <strong> {items.spreadsheetYear}.</strong>{' '}
+                                godinu
+                              </p>
+                              <p className="mb-0">
+                                <strong>{items.totalExpensesAmount}</strong>
+                                <strong>KM</strong>
+                              </p>{' '}
+                            </li>
+                          )}
                         </ul>
                       </div>
                     </div>
