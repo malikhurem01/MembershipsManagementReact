@@ -1,4 +1,4 @@
-import { Button, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 
 import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
 
