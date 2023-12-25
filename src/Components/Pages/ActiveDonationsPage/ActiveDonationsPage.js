@@ -34,6 +34,7 @@ const ActiveDonationsPage = () => {
   const [note, setNote] = useState();
   const [name, setName] = useState();
   const [donatorFirstName, setDonatorFirstName] = useState();
+  const [donatorFathersName, setDonatorFathersName] = useState();
   const [donatorLastName, setDonatorLastName] = useState();
   const [donatorAddress, setDonatorAddress] = useState();
   const [donatorPhoneNumber, setDonatorPhoneNumber] = useState();
@@ -158,6 +159,7 @@ const ActiveDonationsPage = () => {
       .addDonator(token, {
         dzematId: userDataState.dzematId,
         firstName: donatorFirstName,
+        fathersName: donatorFathersName,
         lastName: donatorLastName,
         address: donatorAddress,
         phoneNumber: donatorPhoneNumber,
@@ -449,7 +451,7 @@ const ActiveDonationsPage = () => {
                     *Upišite ime, prezime i kontakt podatke donatora
                   </p>
                   <Row>
-                    <Col lg={6} md="auto" sm={8}>
+                    <Col lg={4} md="auto" sm={8}>
                       <FloatingLabel
                         controlId="floatingFirstName"
                         label="*Ime"
@@ -464,7 +466,24 @@ const ActiveDonationsPage = () => {
                         />
                       </FloatingLabel>
                     </Col>
-                    <Col lg={6} md="auto" sm={8}>
+                    <Col lg={4} md="auto" sm={8}>
+                      <FloatingLabel
+                        controlId="floatingFathersName"
+                        label="*Ime oca"
+                        className="mb-3"
+                      >
+                        <Form.Control
+                          value={donatorFathersName}
+                          onChange={ev =>
+                            setDonatorFathersName(ev.target.value)
+                          }
+                          type="text"
+                          placeholder="Prezime"
+                          required
+                        />
+                      </FloatingLabel>
+                    </Col>
+                    <Col lg={4} md="auto" sm={8}>
                       <FloatingLabel
                         controlId="floatingLastName"
                         label="*Prezime"
@@ -615,6 +634,7 @@ const ActiveDonationsPage = () => {
                           >
                             Kreiraj stavku
                           </Button>
+
                           <Button
                             style={{ marginRight: '15px' }}
                             size="sm"
@@ -688,7 +708,7 @@ const ActiveDonationsPage = () => {
                                           return (
                                             <tr>
                                               <td>{index + 1}</td>
-                                              <td>{`${inc.donator?.firstName} ${inc.donator?.lastName}`}</td>
+                                              <td>{`${inc.donator?.firstName} (${inc.donator?.fathersName}) ${inc.donator?.lastName}`}</td>
                                               <td>{inc.amount}KM</td>
                                               <td className="col-sm-3">
                                                 {factorDate(inc.date)}

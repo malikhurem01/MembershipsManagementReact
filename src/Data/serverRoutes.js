@@ -27,7 +27,6 @@ const routes = {
   deleteExpenseItem: 'ExpenseItem/delete',
   addExpense: 'ExpenseItem/add/expense',
   deleteExpense: 'ExpenseItem/delete/expense',
-  //
   getActiveDonationIncomeItems: 'IncomeItem/active/donation',
   getArchivedDonationIncomeItems: 'IncomeItem/archived/donation',
   getActiveIncomeItems: 'IncomeItem/active',

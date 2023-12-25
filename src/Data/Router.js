@@ -63,5 +63,6 @@ export const router = createBrowserRouter([
   { path: '/donacije', element: <DonationsPage /> },
   { path: '/donacije/aktivne-donacije', element: <ActiveDonationsPage /> },
   { path: '/prihodi', element: <IncomesPage /> },
-  { path: '/prihodi/aktivni-prihodi', element: <ActiveIncomesPage /> }
+  { path: '/prihodi/aktivni-prihodi', element: <ActiveIncomesPage /> },
+  { path: '/email-zahvale', element: <EmailPage /> }
 ]);

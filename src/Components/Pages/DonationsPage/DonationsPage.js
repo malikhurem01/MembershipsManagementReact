@@ -1,6 +1,7 @@
 import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
-import activeDatabase from '../../../Assets/Pictures/activeDatabase.svg';
-import archivedDatabases from '../../../Assets/Pictures/archivedDatabases.svg';
+import donation from '../../../Assets/Pictures/donation.svg';
+import archived from '../../../Assets/Pictures/archived.svg';
+import emailLogo from '../../../Assets/Pictures/emailLogo.svg';
 import homeIcon from '../../../Assets/Pictures/home-icon.svg';
 
 import classes from '../Main/MainPage.module.css';
@@ -14,10 +15,7 @@ const DonationsPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="aktivne-donacije">
               <div>
-                <img
-                  src={activeDatabase}
-                  alt="stanje budžeta redovne članarine"
-                />
+                <img src={donation} alt="stanje budžeta redovne članarine" />
                 <p className={classes.menuOptionText}>Aktivne donacije</p>
               </div>
             </NavLink>
@@ -26,13 +24,22 @@ const DonationsPage = () => {
             <NavLink to="/logout">
               <div>
                 {' '}
-                <img src={archivedDatabases} alt="stanje budžeta donacije" />
+                <img src={archived} alt="stanje budžeta donacije" />
                 <p className={classes.menuOptionText}>Arhivirane donacije</p>
               </div>
             </NavLink>
           </div>
         </div>
         <div className={classes.gridRow}>
+          <div className={classes.gridItem}>
+            <NavLink to="/email-zahvale">
+              <div>
+                {' '}
+                <img src={emailLogo} alt="stanje budžeta donacije" />
+                <p className={classes.menuOptionText}>E-mail zahvale</p>
+              </div>
+            </NavLink>
+          </div>
           <div className={classes.gridItem}>
             <NavLink to="/naslovna">
               <div>

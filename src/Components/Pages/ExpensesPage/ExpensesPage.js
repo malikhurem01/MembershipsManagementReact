@@ -1,6 +1,6 @@
 import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
-import activeDatabase from '../../../Assets/Pictures/activeDatabase.svg';
-import archivedDatabases from '../../../Assets/Pictures/archivedDatabases.svg';
+import expense from '../../../Assets/Pictures/expense.svg';
+import archived from '../../../Assets/Pictures/archived.svg';
 import homeIcon from '../../../Assets/Pictures/home-icon.svg';
 
 import classes from '../Main/MainPage.module.css';
@@ -14,10 +14,7 @@ const ExpensesPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="aktivni-projekti">
               <div>
-                <img
-                  src={activeDatabase}
-                  alt="stanje budžeta redovne članarine"
-                />
+                <img src={expense} alt="stanje budžeta redovne članarine" />
                 <p className={classes.menuOptionText}>Aktivni troškovi</p>
               </div>
             </NavLink>
@@ -26,7 +23,7 @@ const ExpensesPage = () => {
             <NavLink to="/logout">
               <div>
                 {' '}
-                <img src={archivedDatabases} alt="stanje budžeta donacije" />
+                <img src={archived} alt="stanje budžeta donacije" />
                 <p className={classes.menuOptionText}>Arhivirani troškovi</p>
               </div>
             </NavLink>
