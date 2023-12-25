@@ -5,14 +5,10 @@
 }
 
 body {
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   font-weight: 400;
-  background-image: url("./Assets/Pictures/landingBackground.jpg");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
-  background-size: cover;
+  background-color: #e8ede8;
   overflow-x: hidden;
 }
 
