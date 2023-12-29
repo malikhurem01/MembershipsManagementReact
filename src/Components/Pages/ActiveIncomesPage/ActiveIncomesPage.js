@@ -430,7 +430,9 @@ const ActiveIncomesPage = () => {
                             <p className="mb-0">
                               Ukupno troškova za <strong>tekuću</strong> godinu
                             </p>
-                            <p className="mb-0">NAPRAVITI</p>
+                            <p className="mb-0">
+                              <strong>{items?.totalExpensesAmount}KM</strong>
+                            </p>
                           </li>
                         </ul>
                       </div>

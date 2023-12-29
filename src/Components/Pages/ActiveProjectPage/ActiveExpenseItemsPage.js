@@ -422,7 +422,10 @@ const ActiveExpenseItemsPage = () => {
                             <p className="mb-0">
                               Ukupno priliva za <strong>tekuću</strong> godinu
                             </p>
-                            <p className="mb-0">NAPRAVITI</p>
+                            <p className="mb-0">
+                              {' '}
+                              <strong>{items?.totalIncomeAmount}KM</strong>
+                            </p>
                           </li>
                         </ul>
                       </div>
