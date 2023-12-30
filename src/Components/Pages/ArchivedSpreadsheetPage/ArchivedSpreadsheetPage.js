@@ -14,7 +14,6 @@ const ArchivedSpreadsheetPage = () => {
     useContext(SpreadsheetContext);
 
   const tableColumns = [
-    '#',
     'Ev. broj',
     'Ime',
     'Prezime',

@@ -28,7 +28,6 @@ const ActiveSpreadsheetPage = () => {
   const [password, setPassword] = useState();
   const [spreadsheetYear, setSpreadsheetYear] = useState();
   const tableColumns = [
-    '#',
     'Ev. broj',
     'Ime',
     'Prezime',

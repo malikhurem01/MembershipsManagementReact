@@ -222,8 +222,6 @@ const Spreadsheet = ({
             {membersInfo.map((m, index) => {
               return (
                 <tr>
-                  {' '}
-                  <td>{index + 1}</td>
                   <td>
                     <strong> {m.member.evNumber}</strong>
                   </td>
