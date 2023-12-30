@@ -206,7 +206,6 @@ const Spreadsheet = ({
                   disabled
                 />
               </th>
-              {!isViewMode && <th></th>}
               <th>
                 <Button
                   onClick={handleRemoveFilters}
