@@ -2,14 +2,14 @@ import { NavLink } from 'react-router-dom';
 
 import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
 
-import createDatabase from '../../../Assets/Pictures/createDatabase.svg';
-import activeDatabase from '../../../Assets/Pictures/activeDatabase.svg';
-import archivedDatabases from '../../../Assets/Pictures/archivedDatabases.svg';
-import debtWarning from '../../../Assets/Pictures/opomenaDug.svg';
-import reportLogo from '../../../Assets/Pictures/izvjestaj.svg';
-import homeIcon from '../../../Assets/Pictures/home-icon.svg';
+import { ReactComponent as CreateDatabaseLogo } from '../../../Assets/Pictures/createDatabase.svg';
+import { ReactComponent as ActiveDatabase } from '../../../Assets/Pictures/activeDatabase.svg';
+import { ReactComponent as ArchivedDatabase } from '../../../Assets/Pictures/archivedDatabases.svg';
+import { ReactComponent as DebtWarning } from '../../../Assets/Pictures/opomenaDug.svg';
+import { ReactComponent as ReportLogo } from '../../../Assets/Pictures/izvjestaj.svg';
+import { ReactComponent as HomeLogo } from '../../../Assets/Pictures/home-icon.svg';
 
-import classes from './RegularMemberships.module.css';
+import classes from '../Main/MainPage.module.css';
 
 const RegularMemberships = () => {
   return (
@@ -19,7 +19,7 @@ const RegularMemberships = () => {
           <div className={classes.gridItem}>
             <NavLink to="/clanarine/kreiraj-bazu">
               <div>
-                <img src={createDatabase} alt="kreiraj bazu" />
+                <CreateDatabaseLogo className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Kreiraj bazu</p>
               </div>
             </NavLink>
@@ -27,7 +27,7 @@ const RegularMemberships = () => {
           <div className={classes.gridItem}>
             <NavLink to="/clanarine/aktivna-baza">
               <div>
-                <img src={activeDatabase} alt="redovne članarine" />
+                <ActiveDatabase className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Aktivna baza</p>
               </div>
             </NavLink>
@@ -35,10 +35,7 @@ const RegularMemberships = () => {
           <div className={classes.gridItem}>
             <NavLink to="/clanarine/arhiva-baza?redirectTo=spreadsheet">
               <div>
-                <img
-                  src={archivedDatabases}
-                  alt="stanje budžeta ostali prihodi"
-                />
+                <ArchivedDatabase className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Arhiva baza</p>
               </div>
             </NavLink>
@@ -48,7 +45,7 @@ const RegularMemberships = () => {
           <div className={classes.gridItem}>
             <NavLink to="/clanarine/izradi-opomene">
               <div>
-                <img src={debtWarning} alt="Odjava" />
+                <DebtWarning className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Opomena za dug</p>
               </div>
             </NavLink>
@@ -56,7 +53,7 @@ const RegularMemberships = () => {
           <div className={classes.gridItem}>
             <NavLink to="/clanarine/izradi-izvjestaj">
               <div>
-                <img src={reportLogo} alt="Odjava" />
+                <ReportLogo className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Izradi izvještaj</p>
               </div>
             </NavLink>
@@ -64,7 +61,7 @@ const RegularMemberships = () => {
           <div className={classes.gridItem}>
             <NavLink to="/naslovna">
               <div>
-                <img src={homeIcon} alt="naslovna stranica" />
+                <HomeLogo className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Naslovna stranica</p>
               </div>
             </NavLink>

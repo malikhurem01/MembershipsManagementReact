@@ -1,8 +1,8 @@
 import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
-import donation from '../../../Assets/Pictures/donation.svg';
-import archived from '../../../Assets/Pictures/archived.svg';
-import emailLogo from '../../../Assets/Pictures/emailLogo.svg';
-import homeIcon from '../../../Assets/Pictures/home-icon.svg';
+import { ReactComponent as ActiveDonation } from '../../../Assets/Pictures/donation.svg';
+import { ReactComponent as ArchivedDonation } from '../../../Assets/Pictures/archived.svg';
+import { ReactComponent as EmailLogo } from '../../../Assets/Pictures/emailLogo.svg';
+import { ReactComponent as HomeIcon } from '../../../Assets/Pictures/home-icon.svg';
 
 import classes from '../Main/MainPage.module.css';
 import { NavLink } from 'react-router-dom';
@@ -15,7 +15,7 @@ const DonationsPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="aktivne-donacije">
               <div>
-                <img src={donation} alt="stanje budžeta redovne članarine" />
+                <ActiveDonation className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Aktivne donacije</p>
               </div>
             </NavLink>
@@ -23,8 +23,7 @@ const DonationsPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="/clanarine/arhiva-baza?redirectTo=donation">
               <div>
-                {' '}
-                <img src={archived} alt="stanje budžeta donacije" />
+                <ArchivedDonation className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Arhivirane donacije</p>
               </div>
             </NavLink>
@@ -34,8 +33,7 @@ const DonationsPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="/email-zahvale">
               <div>
-                {' '}
-                <img src={emailLogo} alt="stanje budžeta donacije" />
+                <EmailLogo className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>E-mail zahvale</p>
               </div>
             </NavLink>
@@ -43,8 +41,7 @@ const DonationsPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="/naslovna">
               <div>
-                {' '}
-                <img src={homeIcon} alt="stanje budžeta ostali prihodi" />
+                <HomeIcon className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Naslovna stranica</p>
               </div>
             </NavLink>

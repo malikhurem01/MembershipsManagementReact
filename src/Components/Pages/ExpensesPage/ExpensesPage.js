@@ -1,7 +1,7 @@
 import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
-import expense from '../../../Assets/Pictures/expense.svg';
-import archived from '../../../Assets/Pictures/archived.svg';
-import homeIcon from '../../../Assets/Pictures/home-icon.svg';
+import { ReactComponent as ExpenseLogo } from '../../../Assets/Pictures/expense.svg';
+import { ReactComponent as ArchivedLogo } from '../../../Assets/Pictures/archived.svg';
+import { ReactComponent as HomeIcon } from '../../../Assets/Pictures/home-icon.svg';
 
 import classes from '../Main/MainPage.module.css';
 import { NavLink } from 'react-router-dom';
@@ -14,7 +14,7 @@ const ExpensesPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="aktivni-troskovi">
               <div>
-                <img src={expense} alt="stanje budžeta redovne članarine" />
+                <ExpenseLogo className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Aktivni troškovi</p>
               </div>
             </NavLink>
@@ -22,8 +22,7 @@ const ExpensesPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="/clanarine/arhiva-baza?redirectTo=expenses">
               <div>
-                {' '}
-                <img src={archived} alt="stanje budžeta donacije" />
+                <ArchivedLogo className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Arhivirani troškovi</p>
               </div>
             </NavLink>
@@ -33,8 +32,7 @@ const ExpensesPage = () => {
           <div className={classes.gridItem}>
             <NavLink to="/naslovna">
               <div>
-                {' '}
-                <img src={homeIcon} alt="stanje budžeta ostali prihodi" />
+                <HomeIcon className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Naslovna stranica</p>
               </div>
             </NavLink>
