@@ -8,10 +8,9 @@ import {
   FloatingLabel
 } from 'react-bootstrap';
 import classes from '../Pages/ActiveSpreadsheet/ActiveSpreadsheetPage.module.css';
-import { Link, useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
 import SpreadsheetContext from '../../Store/spreadsheet-context';
-import { Line } from '@react-pdf/renderer';
 import AuthContext from '../../Store/auth-context-api';
 import NavBar from '../NavBar/NavBar';
 
@@ -28,16 +27,55 @@ const Spreadsheet = ({
     handleSetSearchFirstName,
     handleSetSearchLastName,
     handleSetSearchFathersName,
-    handleRemoveFilters,
     handleSetPageNumber,
     handleSetPageSize,
     pageInfo,
     pageSize,
-    membersInfo,
-    searchFirstName,
-    searchLastName,
-    searchFathersName
+    membersInfo
   } = useContext(SpreadsheetContext);
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [fathersName, setFathersName] = useState('');
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      handleSetSearchFirstName(firstName);
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [firstName, handleSetSearchFirstName]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      handleSetSearchLastName(lastName);
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [lastName, handleSetSearchLastName]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      handleSetSearchFathersName(fathersName);
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [fathersName, handleSetSearchFathersName]);
+
+  const handleUpdateSearchFirstName = ev => {
+    setFirstName(ev.target.value);
+  };
+  const handleUpdateSearchLastName = ev => {
+    setLastName(ev.target.value);
+  };
+
+  const handleUpdateSearchFathersName = ev => {
+    setFathersName(ev.target.value);
+  };
+
+  const removeFilters = () => {
+    handleSetPageNumber(1);
+    setFirstName('');
+    setLastName('');
+    setFathersName('');
+  };
 
   const { userDataState } = useContext(AuthContext);
 
@@ -152,8 +190,8 @@ const Spreadsheet = ({
                   name="firstName"
                   type="text"
                   placeholder="Ime člana"
-                  value={searchFirstName}
-                  onChange={handleSetSearchFirstName}
+                  value={firstName}
+                  onChange={handleUpdateSearchFirstName}
                 />
               </th>
               <th>
@@ -162,8 +200,8 @@ const Spreadsheet = ({
                   name="lastName"
                   type="text"
                   placeholder="Prezime"
-                  value={searchLastName}
-                  onChange={handleSetSearchLastName}
+                  value={lastName}
+                  onChange={handleUpdateSearchLastName}
                 />
               </th>
               <th>
@@ -172,8 +210,8 @@ const Spreadsheet = ({
                   name="lastName"
                   type="text"
                   placeholder="Ime oca"
-                  value={searchFathersName}
-                  onChange={handleSetSearchFathersName}
+                  value={fathersName}
+                  onChange={handleUpdateSearchFathersName}
                 />
               </th>
               <th>
@@ -207,11 +245,7 @@ const Spreadsheet = ({
               </th>
               {!isViewMode && <th></th>}
               <th>
-                <Button
-                  onClick={handleRemoveFilters}
-                  variant="danger"
-                  size="sm"
-                >
+                <Button onClick={removeFilters} variant="danger" size="sm">
                   <strong>Bez filtera</strong>
                 </Button>
               </th>

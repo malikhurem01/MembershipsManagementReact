@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import spreadsheetService from '../Services/spreadsheetService';
 import memberService from '../Services/memberService';
 
@@ -46,6 +46,8 @@ export const SpreadsheetContextProvider = ({ children }) => {
     loading: false
   });
 
+  useEffect(() => {}, []);
+
   const handleSetSpreadsheet = useCallback(data => {
     setSpreadsheet(data);
   }, []);
@@ -62,17 +64,20 @@ export const SpreadsheetContextProvider = ({ children }) => {
     setSelectedMember(data);
   }, []);
 
-  const handleSetSearchFirstName = ev => {
-    setSearchFirstName(ev.target.value);
-  };
+  const handleSetSearchFirstName = useCallback(value => {
+    handleSetPageNumber(1);
+    setSearchFirstName(value);
+  }, []);
 
-  const handleSetSearchLastName = ev => {
-    setSearchLastName(ev.target.value);
-  };
+  const handleSetSearchLastName = useCallback(value => {
+    handleSetPageNumber(1);
+    setSearchLastName(value);
+  }, []);
 
-  const handleSetSearchFathersName = ev => {
-    setSearchFathersName(ev.target.value);
-  };
+  const handleSetSearchFathersName = useCallback(value => {
+    handleSetPageNumber(1);
+    setSearchFathersName(value);
+  }, []);
 
   const handleRemoveFilters = () => {
     setSearchFirstName('');
