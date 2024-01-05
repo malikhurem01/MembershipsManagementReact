@@ -31,7 +31,7 @@ const PageWrapperComponent = ({ returnArrow, children }) => {
     } else {
       if (title === 'medzlis') {
         if (userDataState.position === 5) return userDataState.medzlis.name;
-        else if (userDataState.position < 5 && userDataState > 0) {
+        else if (userDataState.position < 5 && userDataState.position > 0) {
           return userDataState.dzemat.medzlis.name;
         }
       } else if (title === 'dzemat') {
