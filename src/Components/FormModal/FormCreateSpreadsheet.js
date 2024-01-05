@@ -12,10 +12,12 @@ import {
   Container
 } from 'react-bootstrap';
 
-import loadingSvg from '../../Assets/Pictures/loadingSvg.svg';
-import creationFailed from '../../Assets/Pictures/creationFailed.svg';
-import creationSuccess from '../../Assets/Pictures/creationSuccess.svg';
+import { ReactComponent as LoadingSvg } from '../../Assets/Pictures/loadingSvg.svg';
+import { ReactComponent as CreationFailed } from '../../Assets/Pictures/creationFailed.svg';
+import { ReactComponent as CreationSuccess } from '../../Assets/Pictures/creationSuccess.svg';
 import AuthContext from '../../Store/auth-context-api';
+
+import classes from './FormModal.module.css';
 
 const FormCreateSpreadsheet = ({
   handleCreateDatabase,
@@ -69,30 +71,14 @@ const FormCreateSpreadsheet = ({
               {waitingResponse && (
                 <React.Fragment>
                   <div className="d-flex flex-column align-items-center">
-                    {' '}
                     {response.statusCode == null && (
-                      <img
-                        width={150}
-                        height={150}
-                        src={loadingSvg}
-                        alt="učitavam kreiranje baze"
-                      />
+                      <LoadingSvg className={classes.loadingSvg} />
                     )}
                     {response.statusCode === 200 && (
-                      <img
-                        width={150}
-                        height={150}
-                        src={creationSuccess}
-                        alt="baza uspješno kreirana"
-                      />
+                      <CreationSuccess className={classes.loadingSvg} />
                     )}
                     {response.statusCode >= 400 && (
-                      <img
-                        width={150}
-                        height={150}
-                        src={creationFailed}
-                        alt="greška pri kreiranju baze"
-                      />
+                      <CreationFailed className={classes.loadingSvg} />
                     )}
                     <h5 className="mt-4">{response.message}</h5>
                   </div>

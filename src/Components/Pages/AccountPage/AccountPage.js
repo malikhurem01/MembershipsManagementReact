@@ -1,16 +1,13 @@
-import { Col, Container, Row, Form, Button } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
 
 import classes from './AccountPage.module.css';
 import { useContext, useState } from 'react';
 import AuthContext from '../../../Store/auth-context-api';
-import loadingSvg from '../../../Assets/Pictures/loadingSvg.svg';
-import editIcon from '../../../Assets/Pictures/editIcon.png';
 
 import profilePicture from '../../../Assets/Pictures/profilePicture.png';
 
 import userService from '../../../Services/userService';
-import { Link } from 'react-router-dom';
 import NavBar from '../../NavBar/NavBar';
 
 const AccountPage = () => {

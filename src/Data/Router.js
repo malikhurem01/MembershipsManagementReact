@@ -22,6 +22,7 @@ import ActiveDonationsPage from '../Components/Pages/ActiveDonationsPage/ActiveD
 import IncomesPage from '../Components/Pages/IncomesPage/IncomesPage';
 import ActiveIncomesPage from '../Components/Pages/ActiveIncomesPage/ActiveIncomesPage';
 import ArchivedFinance from '../Components/Pages/ArchivedFinance/ArchivedFinance';
+import GlavniImamPage from '../Components/Pages/GlavniImamPage/GlavniImamPage';
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +49,7 @@ export const router = createBrowserRouter([
   { path: '/logout', element: <LogoutPage /> },
   { path: '/email', element: <EmailPage /> },
   { path: '/naslovna', element: <MainPage /> },
+  { path: '/naslovna/glavni-imam', element: <GlavniImamPage /> },
   { path: '/clanarine', element: <RegularMemberships /> },
   { path: '/clanarine/kreiraj-bazu', element: <CreateSpreadsheetPage /> },
   { path: '/clanarine/aktivna-baza', element: <ActiveSpreadsheetPage /> },

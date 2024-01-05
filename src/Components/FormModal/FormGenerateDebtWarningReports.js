@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Form, Button } from 'react-bootstrap';
 
-import loadingSvg from '../../Assets/Pictures/loadingSvg.svg';
-import creationFailed from '../../Assets/Pictures/creationFailed.svg';
-import creationSuccess from '../../Assets/Pictures/creationSuccess.svg';
+import { ReactComponent as LoadingSvg } from '../../Assets/Pictures/loadingSvg.svg';
+import { ReactComponent as CreationFailed } from '../../Assets/Pictures/creationFailed.svg';
+import { ReactComponent as CreationSuccess } from '../../Assets/Pictures/creationSuccess.svg';
 
 import classes from './FormModal.module.css';
 import { useNavigate } from 'react-router-dom';
@@ -60,13 +60,13 @@ const FormGenerateDebtWarningReports = ({
           {waitingResponse && (
             <div className={classes.responseModal}>
               {response.statusCode == null && (
-                <img src={loadingSvg} alt="učitavam kreiranje baze" />
+                <LoadingSvg className={classes.loadingSvg} />
               )}
               {response.statusCode === 200 && (
-                <img src={creationSuccess} alt="baza uspješno kreirana" />
+                <CreationSuccess className={classes.loadingSvg} />
               )}
               {response.statusCode >= 400 && (
-                <img src={creationFailed} alt="greška pri kreiranju baze" />
+                <CreationFailed className={classes.loadingSvg} />
               )}
               <p>{response.message}</p>
             </div>

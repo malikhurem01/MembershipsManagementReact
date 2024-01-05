@@ -1,1 +1,1 @@
-const ProtectedRoute = ({ chidren }) => {};
+const ProtectedRoute = ({ children }) => {};

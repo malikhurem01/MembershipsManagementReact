@@ -8,9 +8,14 @@ body {
   font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   font-weight: 400;
-  background-image: url('./Assets/Pictures/landingBackground.jpg');
+  background: linear-gradient(
+      179.92deg,
+      rgba(28, 153, 63, 0.45) 49.95%,
+      rgba(28, 153, 63, 0) 99.93%
+    ),
+    url('./Assets/Pictures/landingBackground.png');
   background-size: cover;
-  overflow-x: hidden;
+  background-repeat: no-repeat;
 }
 
 a {

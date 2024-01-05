@@ -25,12 +25,15 @@ const PageWrapperComponent = ({ returnArrow, children }) => {
       });
   }, [handleSetUser]);
 
-  const handleSetDzematInfo = title => {
+  const handleSetInstitutionInfo = title => {
     if (!userDataState) {
       return navigate('/login/korisnik');
     } else {
       if (title === 'medzlis') {
-        return userDataState.dzemat.medzlis.name;
+        if (userDataState.position === 5) return userDataState.medzlis.name;
+        else if (userDataState.position < 5 && userDataState > 0) {
+          return userDataState.dzemat.medzlis.name;
+        }
       } else if (title === 'dzemat') {
         return userDataState.dzemat.name;
       }
@@ -56,9 +59,14 @@ const PageWrapperComponent = ({ returnArrow, children }) => {
                   Program za praćenje i upravljanje budžetom
                 </span>
                 <br />
-                Medžlis islamske zajednice {`${handleSetDzematInfo('medzlis')}`}
-                <br />
-                {`Džemat ${handleSetDzematInfo('dzemat')}`}
+                Medžlis islamske zajednice{' '}
+                {`${handleSetInstitutionInfo('medzlis')}`}
+                {userDataState.position < 5 && (
+                  <React.Fragment>
+                    <br />
+                    {`Džemat ${handleSetInstitutionInfo('dzemat')}`}
+                  </React.Fragment>
+                )}
               </p>
             </div>
           </div>

@@ -10,14 +10,14 @@ import AuthContext from '../../../Store/auth-context-api';
 
 const LoginFormComponent = ({ onFormSubmit, loginStage }) => {
   const [username, setUsername] = useState('');
-  const [dzematUserName, setDzematUserName] = useState('');
+  const [institutionUserName, setInstitutionUserName] = useState('');
   const [password, setPassword] = useState('');
 
   const { response } = useContext(AuthContext);
 
   const handleFormSubmit = ev => {
     ev.preventDefault();
-    onFormSubmit(username, dzematUserName, password);
+    onFormSubmit(username, institutionUserName, password);
   };
 
   return (
@@ -51,8 +51,8 @@ const LoginFormComponent = ({ onFormSubmit, loginStage }) => {
           className="mb-3"
         >
           <Form.Control
-            value={dzematUserName}
-            onChange={ev => setDzematUserName(ev.target.value)}
+            value={institutionUserName}
+            onChange={ev => setInstitutionUserName(ev.target.value)}
             type="text"
             placeholder="Korisničko ime"
           />
