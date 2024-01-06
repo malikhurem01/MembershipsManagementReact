@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
 import SpreadsheetContext from '../../../Store/spreadsheet-context';
 
 import styles from '../../FormModal/FormModal.module.css';
 
-import noSpreadsheetLogo from '../../../Assets/Pictures/creationFailed.svg';
+import { ReactComponent as NoSpreadsheetLogo } from '../../../Assets/Pictures/creationFailed.svg';
 
 import { Button, Col, Form, Row } from 'react-bootstrap';
 
@@ -20,25 +20,41 @@ import paymentService from '../../../Services/paymentService';
 import AuthContext from '../../../Store/auth-context-api';
 import Spreadsheet from '../../Spreadsheet/Spreadsheet';
 
-const ActiveSpreadsheetPage = () => {
+const ActiveSpreadsheetPage = ({ supervisorView }) => {
   const [showAddMember, setShowAddMember] = useState(false);
   const [showAddPayment, setShowAddPayment] = useState(false);
   const [showViewMember, setShowViewMember] = useState(false);
   const [sureArchiveSpreadsheet, setSureArchiveSpreadsheet] = useState(false);
   const [password, setPassword] = useState();
   const [spreadsheetYear, setSpreadsheetYear] = useState();
-  const tableColumns = [
-    'Ev. broj',
-    'Ime',
-    'Prezime',
-    'Ime oca',
-    'Status',
-    'Članarina',
-    'Uplaćeno',
-    'Dug',
-    'Zadnja uplata',
-    'Postavke'
-  ];
+  let tableColumns;
+
+  if (supervisorView) {
+    tableColumns = [
+      'Ev. broj',
+      'Ime',
+      'Prezime',
+      'Ime oca',
+      'Status',
+      'Članarina',
+      'Uplaćeno',
+      'Zadnja uplata',
+      'Filter'
+    ];
+  } else {
+    tableColumns = [
+      'Ev. broj',
+      'Ime',
+      'Prezime',
+      'Ime oca',
+      'Status',
+      'Članarina',
+      'Uplaćeno',
+      'Dug',
+      'Zadnja uplata',
+      'Postavke'
+    ];
+  }
 
   const {
     handleFilterSpreadsheetMembers,
@@ -53,11 +69,13 @@ const ActiveSpreadsheetPage = () => {
 
   const ctx = useContext(AuthContext);
 
+  const { dzematId } = useParams();
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    handleFetchSpreadsheet();
-  }, [handleFetchSpreadsheet]);
+    handleFetchSpreadsheet(dzematId);
+  }, [handleFetchSpreadsheet, dzematId]);
 
   useEffect(() => {
     handleFilterSpreadsheetMembers();
@@ -73,7 +91,7 @@ const ActiveSpreadsheetPage = () => {
     memberService
       .addMember(token, data)
       .then(res => {
-        handleUpdateSpreadsheet();
+        handleUpdateSpreadsheet(dzematId);
         handleSetResponse({
           message: res.data.message,
           statusCode: res.status,
@@ -110,7 +128,7 @@ const ActiveSpreadsheetPage = () => {
           prevState.member = res.data.data;
           return prevState;
         });
-        handleUpdateSpreadsheet();
+        handleUpdateSpreadsheet(dzematId);
         setShowAddMember(false);
         handleSetResponse({
           message: res.data.message,
@@ -185,11 +203,12 @@ const ActiveSpreadsheetPage = () => {
       spreadsheetId: spreadsheet.id,
       memberId: selectedMember.member.id
     };
+    console.log(payloadData.spreadsheetId);
     const token = JSON.parse(localStorage.getItem('user_jwt'));
     paymentService
       .addPayment(token, payloadData)
       .then(res => {
-        handleUpdateSpreadsheet();
+        handleUpdateSpreadsheet(dzematId);
         handleSetResponse({
           message: res.data.message,
           statusCode: res.status,
@@ -357,7 +376,7 @@ const ActiveSpreadsheetPage = () => {
       )}
       {spreadsheet === null && !response.loading && (
         <div className={styles.responseModalAbsolute}>
-          <img src={noSpreadsheetLogo} alt="ne postoji aktivna baza" />
+          <NoSpreadsheetLogo />
           <p>Aktivna baza ne postoji. Molimo kreirajte bazu.</p>
           <Button
             onClick={handleNavigateToCreateSpreadsheet}
@@ -378,7 +397,9 @@ const ActiveSpreadsheetPage = () => {
       )}
       {spreadsheet && !response.loading && (
         <Spreadsheet
-          isViewMode={false}
+          supervisorView={supervisorView}
+          dzematIdParam={dzematId}
+          isViewMode={supervisorView ? supervisorView : false}
           tableColumns={tableColumns}
           spreadsheet={spreadsheet}
           handleShowAddPayment={handleShowAddPayment}

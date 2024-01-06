@@ -1,5 +1,10 @@
 import { useState, useEffect, useCallback, useContext } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams
+} from 'react-router-dom';
 
 import { Button, Container } from 'react-bootstrap';
 
@@ -10,8 +15,10 @@ import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
 import styles from '../../FormModal/FormModal.module.css';
 import AuthContext from '../../../Store/auth-context-api';
 
-const ArchiveSpreadsheets = () => {
+const ArchiveSpreadsheets = ({ supervisorView }) => {
   const [spreadsheets, setSpreadsheets] = useState([]);
+
+  const { dzematId } = useParams();
 
   const [params] = useSearchParams();
 
@@ -23,7 +30,10 @@ const ArchiveSpreadsheets = () => {
 
   const handleFetchSpreadsheets = useCallback(() => {
     spreadsheetService
-      .getAllSpreadsheets(token, ctx.userDataState.dzematId)
+      .getAllSpreadsheets(
+        token,
+        supervisorView ? dzematId : ctx.userDataState.dzematId
+      )
       .then(res => {
         console.log(res);
         setSpreadsheets(res.data.data['$values']);
@@ -31,7 +41,7 @@ const ArchiveSpreadsheets = () => {
       .catch(err => {
         console.log(err);
       });
-  }, [token, ctx.userDataState.dzematId]);
+  }, [token, ctx.userDataState.dzematId, dzematId, supervisorView]);
 
   useEffect(() => {
     handleFetchSpreadsheets();
@@ -95,7 +105,11 @@ const ArchiveSpreadsheets = () => {
                           to={
                             redirectTo === 'spreadsheet'
                               ? s.archived
-                                ? `pregled/${s.id}`
+                                ? ctx.userDataState.position === 5
+                                  ? `/pregled/lista/dzemata/clanarine/arhiva-baza/pregled/${dzematId}/${s.id}`
+                                  : `pregled/${s.id}`
+                                : ctx.userDataState.position === 5
+                                ? `/pregled/lista/dzemata/clanarine/aktivna-baza/${dzematId}`
                                 : '/clanarine/aktivna-baza'
                               : redirectTo === 'donation'
                               ? s.archived

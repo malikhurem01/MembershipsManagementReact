@@ -15,6 +15,8 @@ import AuthContext from '../../Store/auth-context-api';
 import NavBar from '../NavBar/NavBar';
 
 const Spreadsheet = ({
+  supervisorView,
+  dzematIdParam,
   isViewMode,
   tableColumns,
   handleShowAddPayment,
@@ -85,11 +87,18 @@ const Spreadsheet = ({
       <Container fluid="md">
         <NavBar
           routes={[
-            { route: '/clanarine', name: 'Redovne članarine' },
             {
-              route: `/clanarine/${
-                isViewMode ? 'arhiva-baza' : 'aktivna-baza'
-              }`,
+              route: supervisorView
+                ? '/pregled/lista/dzemata/clanarine/' + dzematIdParam
+                : '/clanarine',
+              name: 'Redovne članarine'
+            },
+            {
+              route: supervisorView
+                ? `/pregled/lista/dzemata/clanarine/${
+                    isViewMode ? 'arhiva-baza' : 'aktivna-baza'
+                  }/${dzematIdParam}`
+                : `/clanarine/${isViewMode ? 'arhiva-baza' : 'aktivna-baza'}`,
               name: `${isViewMode ? 'Arhiva baza' : 'Aktivna baza'}`
             }
           ]}
@@ -252,7 +261,7 @@ const Spreadsheet = ({
             </tr>
           </thead>
           <tbody>
-            {membersInfo.map((m, index) => {
+            {membersInfo.map(m => {
               return (
                 <tr>
                   <td>
@@ -312,7 +321,13 @@ const Spreadsheet = ({
                           handleShowAddPayment(m);
                         }}
                         size="sm"
-                        variant={`${isViewMode ? 'danger' : 'warning'}`}
+                        variant={`${
+                          isViewMode
+                            ? m.totalAmountPayed >= m.membershipFee
+                              ? 'success'
+                              : 'danger'
+                            : 'warning'
+                        }`}
                         disabled={isViewMode}
                       >
                         <strong>

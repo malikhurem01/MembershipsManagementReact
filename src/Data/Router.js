@@ -52,15 +52,42 @@ export const router = createBrowserRouter([
   { path: '/naslovna', element: <MainPage /> },
   { path: '/naslovna/glavni-imam', element: <GlavniImamPage /> },
   { path: '/pregled/lista/dzemata', element: <ListDzemataPage /> },
+  {
+    path: '/pregled/lista/dzemata/:dzematId',
+    element: <MainPage supervisorView={true} />
+  },
+  {
+    path: '/pregled/lista/dzemata/clanarine/:dzematId',
+    element: <RegularMemberships supervisorView={true} />
+  },
   { path: '/clanarine', element: <RegularMemberships /> },
   { path: '/clanarine/kreiraj-bazu', element: <CreateSpreadsheetPage /> },
+  {
+    path: '/pregled/lista/dzemata/clanarine/aktivna-baza/:dzematId',
+    element: <ActiveSpreadsheetPage supervisorView={true} />
+  },
   { path: '/clanarine/aktivna-baza', element: <ActiveSpreadsheetPage /> },
 
+  {
+    path: '/pregled/lista/dzemata/clanarine/arhiva-baza/:dzematId',
+    element: <ArchiveSpreadsheets supervisorView={true} />
+  },
   { path: '/clanarine/arhiva-baza', element: <ArchiveSpreadsheets /> },
+
+  {
+    path: '/pregled/lista/dzemata/clanarine/arhiva-baza/pregled/:dzematId/:spreadsheetId',
+    element: <ArchivedSpreadsheetPage supervisorView={true} />
+  },
   {
     path: '/clanarine/arhiva-baza/pregled/:spreadsheetId',
     element: <ArchivedSpreadsheetPage />
   },
+
+  {
+    path: '/pregled/lista/dzemata/clanarine/izradi-izvjestaj/:dzematId',
+    element: <GenerateReportPage supervisorView={true} />
+  },
+
   { path: '/clanarine/izradi-izvjestaj', element: <GenerateReportPage /> },
   { path: '/clanarine/izradi-opomene', element: <GenerateDebtWarningPage /> },
   { path: '/troskovi', element: <ExpensesPage /> },

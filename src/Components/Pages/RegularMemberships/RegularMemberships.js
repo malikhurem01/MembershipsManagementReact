@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 
 import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
 
@@ -11,21 +11,31 @@ import { ReactComponent as HomeLogo } from '../../../Assets/Pictures/home-icon.s
 
 import classes from '../Main/MainPage.module.css';
 
-const RegularMemberships = () => {
+const RegularMemberships = ({ supervisorView }) => {
+  const { dzematId } = useParams();
   return (
     <PageWrapperComponent removeShadow={true} returnArrow={true}>
       <div className={classes.container}>
         <div className={classes.gridRow}>
+          {!supervisorView && (
+            <div className={classes.gridItem}>
+              <NavLink to="/clanarine/kreiraj-bazu">
+                <div>
+                  <CreateDatabaseLogo className={classes.gridItemLogo} />
+                  <p className={classes.menuOptionText}>Kreiraj bazu</p>
+                </div>
+              </NavLink>
+            </div>
+          )}
           <div className={classes.gridItem}>
-            <NavLink to="/clanarine/kreiraj-bazu">
-              <div>
-                <CreateDatabaseLogo className={classes.gridItemLogo} />
-                <p className={classes.menuOptionText}>Kreiraj bazu</p>
-              </div>
-            </NavLink>
-          </div>
-          <div className={classes.gridItem}>
-            <NavLink to="/clanarine/aktivna-baza">
+            <NavLink
+              to={
+                supervisorView
+                  ? `/pregled/lista/dzemata/clanarine/aktivna-baza/${dzematId}`
+                  : '/clanarine/aktivna-baza'
+              }
+            >
+              {' '}
               <div>
                 <ActiveDatabase className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Aktivna baza</p>
@@ -33,7 +43,13 @@ const RegularMemberships = () => {
             </NavLink>
           </div>
           <div className={classes.gridItem}>
-            <NavLink to="/clanarine/arhiva-baza?redirectTo=spreadsheet">
+            <NavLink
+              to={
+                supervisorView
+                  ? `/pregled/lista/dzemata/clanarine/arhiva-baza/${dzematId}?redirectTo=spreadsheet`
+                  : '/clanarine/arhiva-baza?redirectTo=spreadsheet'
+              }
+            >
               <div>
                 <ArchivedDatabase className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Arhiva baza</p>
@@ -42,16 +58,25 @@ const RegularMemberships = () => {
           </div>
         </div>
         <div className={classes.gridRow}>
+          {!supervisorView && (
+            <div className={classes.gridItem}>
+              <NavLink to="/clanarine/izradi-opomene">
+                <div>
+                  <DebtWarning className={classes.gridItemLogo} />
+                  <p className={classes.menuOptionText}>Opomena za dug</p>
+                </div>
+              </NavLink>
+            </div>
+          )}
           <div className={classes.gridItem}>
-            <NavLink to="/clanarine/izradi-opomene">
-              <div>
-                <DebtWarning className={classes.gridItemLogo} />
-                <p className={classes.menuOptionText}>Opomena za dug</p>
-              </div>
-            </NavLink>
-          </div>
-          <div className={classes.gridItem}>
-            <NavLink to="/clanarine/izradi-izvjestaj">
+            <NavLink
+              to={
+                supervisorView
+                  ? `/pregled/lista/dzemata/clanarine/izradi-izvjestaj/${dzematId}`
+                  : '/clanarine/izradi-izvjestaj'
+              }
+            >
+              {' '}
               <div>
                 <ReportLogo className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Izradi izvještaj</p>
@@ -59,7 +84,13 @@ const RegularMemberships = () => {
             </NavLink>
           </div>
           <div className={classes.gridItem}>
-            <NavLink to="/naslovna">
+            <NavLink
+              to={
+                supervisorView
+                  ? '/pregled/lista/dzemata/' + dzematId
+                  : '/naslovna'
+              }
+            >
               <div>
                 <HomeLogo className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Naslovna stranica</p>

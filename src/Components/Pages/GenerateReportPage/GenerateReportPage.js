@@ -2,10 +2,10 @@ import { useContext, useState, useEffect, useCallback } from 'react';
 import FormGenerateReport from '../../FormModal/FormGenerateReport';
 import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
 import spreadsheetService from '../../../Services/spreadsheetService';
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import AuthContext from '../../../Store/auth-context-api';
 
-const GenerateReportPage = () => {
+const GenerateReportPage = ({ supervisorView }) => {
   const [response, setResponse] = useState();
   const [waitingResponse, setWaitingResponse] = useState(false);
   const [reportData, setReportData] = useState();
@@ -14,11 +14,13 @@ const GenerateReportPage = () => {
 
   const [searchParams] = useSearchParams();
 
+  const { dzematId } = useParams();
+
   const handleGenerateReport = (token, spreadsheetYear) => {
     setResponse({ message: 'Izrađujem...', statusCode: null });
     setWaitingResponse(true);
     spreadsheetService
-      .getSpreadsheetReport(token, spreadsheetYear)
+      .getSpreadsheetReport(token, spreadsheetYear, dzematId)
       .then(res => {
         setReportData(res.data.data);
         setResponse({ message: res.data.message, statusCode: res.status });
@@ -37,7 +39,10 @@ const GenerateReportPage = () => {
 
   const handleFetchSpreadsheets = useCallback(() => {
     spreadsheetService
-      .getAllSpreadsheets(token, ctx.userDataState.dzematId)
+      .getAllSpreadsheets(
+        token,
+        supervisorView ? dzematId : ctx.userDataState.dzematId
+      )
       .then(res => {
         console.log(res);
         setSpreadsheets(res.data.data['$values']);
@@ -45,7 +50,7 @@ const GenerateReportPage = () => {
       .catch(err => {
         console.log(err);
       });
-  }, [token, ctx.userDataState.dzematId]);
+  }, [token, ctx.userDataState.dzematId, dzematId, supervisorView]);
 
   useEffect(() => {
     handleFetchSpreadsheets();

@@ -5,7 +5,7 @@ import SpreadsheetContext from '../../../Store/spreadsheet-context';
 import Spreadsheet from '../../Spreadsheet/Spreadsheet';
 import spreadsheetService from '../../../Services/spreadsheetService';
 
-const ArchivedSpreadsheetPage = () => {
+const ArchivedSpreadsheetPage = ({ supervisorView }) => {
   const [showViewMember, setShowViewMember] = useState(false);
   const [spreadsheet, setSpreadsheet] = useState();
   const [error, setError] = useState(false);
@@ -60,6 +60,7 @@ const ArchivedSpreadsheetPage = () => {
     <PageWrapperComponent>
       {spreadsheet?.archived && !error && (
         <Spreadsheet
+          supervisorView={supervisorView}
           isViewMode={true}
           tableColumns={tableColumns}
           spreadsheet={spreadsheet}

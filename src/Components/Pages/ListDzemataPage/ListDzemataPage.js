@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import medzlisService from '../../../Services/medzlisService';
-import { Container, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Button, Container, ListGroup, ListGroupItem } from 'react-bootstrap';
 import AuthContext from '../../../Store/auth-context-api';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
 import NavBar from '../../NavBar/NavBar';
 
@@ -44,6 +44,9 @@ const ListDzemataPage = () => {
               return (
                 <ListGroupItem style={{ textAlign: 'center' }}>
                   <h5>{el.name}</h5>
+                  <Link to={`/pregled/lista/dzemata/${el.id}`}>
+                    <Button variant="primary">Pregled</Button>
+                  </Link>
                 </ListGroupItem>
               );
             })}

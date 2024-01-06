@@ -98,13 +98,17 @@ export const SpreadsheetContextProvider = ({ children }) => {
     setResponse(data);
   }, []);
 
-  const handleUpdateSpreadsheet = () => {
+  const handleUpdateSpreadsheet = dzematId => {
     const token = JSON.parse(localStorage.getItem('user_jwt'));
     spreadsheetService
-      .getActiveSpreadsheet(token)
+      .getActiveSpreadsheet(token, dzematId)
       .then(res => {
         const responseParsed = JSON.parse(res.data.data);
-        handleSetSpreadsheet(responseParsed.spreadsheet);
+        if (dzematId) {
+          handleSetSpreadsheet(responseParsed.spreadsheet.spreadsheet[0]);
+        } else {
+          handleSetSpreadsheet(responseParsed.spreadsheet.spreadsheet);
+        }
         handleFilterSpreadsheetMembers();
       })
       .catch(() => {
@@ -151,33 +155,43 @@ export const SpreadsheetContextProvider = ({ children }) => {
     ]
   );
 
-  const handleFetchSpreadsheet = useCallback(() => {
-    handleSetResponse({
-      message: 'Učitavam bazu',
-      statusCode: null,
-      loading: true
-    });
-    const token = JSON.parse(localStorage.getItem('user_jwt'));
-    spreadsheetService
-      .getActiveSpreadsheet(token)
-      .then(res => {
-        const responseParsed = JSON.parse(res.data.data);
-        handleSetSpreadsheet(responseParsed.spreadsheet);
-        handleSetResponse({
-          message: 'Učitano...',
-          statusCode: null,
-          loading: false
-        });
-      })
-      .catch(() => {
-        handleSetSpreadsheet(null);
-        handleSetResponse({
-          message: 'Greška...',
-          statusCode: null,
-          loading: false
-        });
+  const handleFetchSpreadsheet = useCallback(
+    dzematId => {
+      handleSetResponse({
+        message: 'Učitavam bazu',
+        statusCode: null,
+        loading: true
       });
-  }, [handleSetSpreadsheet, handleSetResponse]);
+      const token = JSON.parse(localStorage.getItem('user_jwt'));
+      spreadsheetService
+        .getActiveSpreadsheet(token, dzematId)
+        .then(res => {
+          //TREBA POPRAVITI NA BACK ENDU ACTIVE SPREADSHEET KAD SE DOHVACA DA BUDE JASNO DEFINISAN OBJEKAT... A NE JSON SERIALIZER...
+          const responseParsed = JSON.parse(res.data.data);
+          if (dzematId) {
+            handleSetSpreadsheet(responseParsed.spreadsheet.spreadsheet[0]);
+            console.log(responseParsed.spreadsheet.spreadsheet[0]);
+          } else {
+            handleSetSpreadsheet(responseParsed.spreadsheet.spreadsheet);
+            console.log(responseParsed.spreadsheet.spreadsheet);
+          }
+          handleSetResponse({
+            message: 'Učitano...',
+            statusCode: null,
+            loading: false
+          });
+        })
+        .catch(() => {
+          handleSetSpreadsheet(null);
+          handleSetResponse({
+            message: 'Greška...',
+            statusCode: null,
+            loading: false
+          });
+        });
+    },
+    [handleSetSpreadsheet, handleSetResponse]
+  );
 
   return (
     <SpreadsheetContext.Provider

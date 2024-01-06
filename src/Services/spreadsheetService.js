@@ -25,13 +25,14 @@ const getAllSpreadsheets = (token, dzematId) => {
   );
 };
 
-const getSpreadsheetReport = (token, spreadsheetYear) => {
-  return axios.get(
-    `${serverURL}${routes.getSpreadsheetReport}?spreadsheetYear=${spreadsheetYear}`,
-    {
-      headers: { Authorization: 'Bearer ' + token }
-    }
-  );
+const getSpreadsheetReport = (token, spreadsheetYear, dzematId) => {
+  let requestUrl = `${serverURL}${routes.getSpreadsheetReport}?spreadsheetYear=${spreadsheetYear}`;
+  if (dzematId) {
+    requestUrl = `${serverURL}${routes.getSpreadsheetReport}?spreadsheetYear=${spreadsheetYear}&dzematId=${dzematId}`;
+  }
+  return axios.get(requestUrl, {
+    headers: { Authorization: 'Bearer ' + token }
+  });
 };
 
 const getDebtWarningReports = token => {
@@ -40,8 +41,12 @@ const getDebtWarningReports = token => {
   });
 };
 
-const getActiveSpreadsheet = token => {
-  return axios.get(`${serverURL}${routes.getActiveSpreadsheet}`, {
+const getActiveSpreadsheet = (token, dzematId) => {
+  let requestUrl = `${serverURL}${routes.getActiveSpreadsheet}`;
+  if (dzematId) {
+    requestUrl = `${serverURL}${routes.getActiveSpreadsheet}?dzematId=${dzematId}`;
+  }
+  return axios.get(requestUrl, {
     headers: { Authorization: 'Bearer ' + token }
   });
 };
