@@ -4,9 +4,11 @@ import userService from '../../../Services/userService';
 
 import LoginFormComponent from '../LoginFormComponent/LoginFormComponent';
 import AuthContext from '../../../Store/auth-context-api';
+import { useNavigate } from 'react-router-dom';
 
 const LoginUserPage = () => {
   const { handleSetResponse } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleFormSubmit = (email, institutionUserName, password) => {
     handleSetResponse({ loading: true, success: false });

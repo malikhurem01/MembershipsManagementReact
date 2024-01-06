@@ -2,7 +2,7 @@ import { Form, Button } from 'react-bootstrap';
 import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
 
 import classes from './AccountPage.module.css';
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import AuthContext from '../../../Store/auth-context-api';
 
 import profilePicture from '../../../Assets/Pictures/profilePicture.png';
@@ -130,6 +130,8 @@ const AccountPage = () => {
                           ? 'Blagajnik'
                           : userDataState.position === 3
                           ? 'Mutevelija'
+                          : userDataState.position === 5
+                          ? 'Glavni imam'
                           : ''}
                       </strong>
                     </p>
@@ -157,31 +159,60 @@ const AccountPage = () => {
                       <li className="list-group-item d-flex justify-content-between align-items-center p-3">
                         <p className="mb-0">Medžlis</p>
                         <p className="mb-0">
-                          {userDataState.dzemat.medzlis.name}
+                          {userDataState.position < 5
+                            ? userDataState.dzemat.medzlis.name
+                            : userDataState.medzlis.name}
                         </p>{' '}
                       </li>
-                      <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                        <p className="mb-0">Džemat</p>
-                        <p className="mb-0">{userDataState.dzemat.name}</p>
-                      </li>
-                      <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                        <p className="mb-0">Adresa (Džemat)</p>
-                        <p className="mb-0">
-                          {userDataState.dzemat.address}
-                        </p>{' '}
-                      </li>
-                      <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                        <p className="mb-0">Lokacija (Džemat)</p>
-                        <p className="mb-0">
-                          {userDataState.dzemat.location}
-                        </p>{' '}
-                      </li>
-                      <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                        <p className="mb-0">Broj pošte (Džemat)</p>
-                        <p className="mb-0">
-                          {userDataState.dzemat.zipCode}
-                        </p>{' '}
-                      </li>
+                      {userDataState.position < 5 && (
+                        <React.Fragment>
+                          <li className="list-group-item d-flex justify-content-between align-items-center p-3">
+                            <p className="mb-0">Džemat</p>
+                            <p className="mb-0">{userDataState.dzemat.name}</p>
+                          </li>
+
+                          <li className="list-group-item d-flex justify-content-between align-items-center p-3">
+                            <p className="mb-0">Adresa (Džemat)</p>
+                            <p className="mb-0">
+                              {userDataState.dzemat.address}
+                            </p>{' '}
+                          </li>
+                          <li className="list-group-item d-flex justify-content-between align-items-center p-3">
+                            <p className="mb-0">Lokacija (Džemat)</p>
+                            <p className="mb-0">
+                              {userDataState.dzemat.location}
+                            </p>{' '}
+                          </li>
+                          <li className="list-group-item d-flex justify-content-between align-items-center p-3">
+                            <p className="mb-0">Broj pošte (Džemat)</p>
+                            <p className="mb-0">
+                              {userDataState.dzemat.zipCode}
+                            </p>{' '}
+                          </li>
+                        </React.Fragment>
+                      )}
+                      {userDataState.position === 5 && (
+                        <React.Fragment>
+                          <li className="list-group-item d-flex justify-content-between align-items-center p-3">
+                            <p className="mb-0">Adresa (Medžlis)</p>
+                            <p className="mb-0">
+                              {userDataState.medzlis.address}
+                            </p>{' '}
+                          </li>
+                          <li className="list-group-item d-flex justify-content-between align-items-center p-3">
+                            <p className="mb-0">Lokacija (Medžlis)</p>
+                            <p className="mb-0">
+                              {userDataState.medzlis.location}
+                            </p>{' '}
+                          </li>
+                          <li className="list-group-item d-flex justify-content-between align-items-center p-3">
+                            <p className="mb-0">Broj pošte (Medžlis)</p>
+                            <p className="mb-0">
+                              {userDataState.medzlis.zipCode}
+                            </p>{' '}
+                          </li>
+                        </React.Fragment>
+                      )}
                     </ul>
                   </div>
                 </div>

@@ -36,7 +36,8 @@ const routes = {
   addIncome: 'IncomeItem/add/income',
   deleteIncome: 'IncomeItem/delete/income',
   addDonator: 'IncomeItem/donator',
-  getDonators: 'IncomeItem/donators'
+  getDonators: 'IncomeItem/donators',
+  dzematList: 'Dzemat/get/medzlis'
 };
 
 module.exports = { serverURL, routes };

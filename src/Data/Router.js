@@ -23,6 +23,7 @@ import IncomesPage from '../Components/Pages/IncomesPage/IncomesPage';
 import ActiveIncomesPage from '../Components/Pages/ActiveIncomesPage/ActiveIncomesPage';
 import ArchivedFinance from '../Components/Pages/ArchivedFinance/ArchivedFinance';
 import GlavniImamPage from '../Components/Pages/GlavniImamPage/GlavniImamPage';
+import ListDzemataPage from '../Components/Pages/ListDzemataPage/ListDzemataPage';
 
 export const router = createBrowserRouter([
   {
@@ -50,6 +51,7 @@ export const router = createBrowserRouter([
   { path: '/email', element: <EmailPage /> },
   { path: '/naslovna', element: <MainPage /> },
   { path: '/naslovna/glavni-imam', element: <GlavniImamPage /> },
+  { path: '/pregled/lista/dzemata', element: <ListDzemataPage /> },
   { path: '/clanarine', element: <RegularMemberships /> },
   { path: '/clanarine/kreiraj-bazu', element: <CreateSpreadsheetPage /> },
   { path: '/clanarine/aktivna-baza', element: <ActiveSpreadsheetPage /> },

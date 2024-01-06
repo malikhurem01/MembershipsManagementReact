@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import AuthContext from '../../Store/auth-context-api';
 
 const NavBar = ({ routes }) => {
+  const { userDataState } = useContext(AuthContext);
+
   return (
     <div className="row font-weight-bold mt-3">
       <div className="col">
@@ -12,7 +15,12 @@ const NavBar = ({ routes }) => {
         >
           <ol className="breadcrumb mb-0">
             <li>
-              <Link to="/naslovna">Naslovna stranica</Link>
+              {userDataState.position !== 5 && (
+                <Link to="/naslovna">Naslovna stranica</Link>
+              )}
+              {userDataState.position === 5 && (
+                <Link to="/naslovna/glavni-imam">Naslovna stranica</Link>
+              )}
             </li>
             {routes.map(el => {
               return (

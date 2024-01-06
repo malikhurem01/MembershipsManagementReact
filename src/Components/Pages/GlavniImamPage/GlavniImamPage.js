@@ -15,7 +15,7 @@ const GlavniImamPage = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (userDataState.position !== 5) {
-      navigate('/logout');
+      return navigate('/logout');
     }
   }, [userDataState.position, navigate]);
   return (
@@ -23,7 +23,7 @@ const GlavniImamPage = () => {
       <div className={classes.container}>
         <div className={classes.gridRow}>
           <div className={classes.gridItem}>
-            <NavLink to="aktivne-donacije">
+            <NavLink to="/pregled/lista/dzemata">
               <div>
                 <ListLogo className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Popis džemata medžlisa</p>
@@ -50,7 +50,7 @@ const GlavniImamPage = () => {
         <div className={classes.gridRow}></div>
         <div className={classes.gridRow}>
           <div className={classes.gridItem}>
-            <NavLink to="/email-zahvale">
+            <NavLink to={`/racun/${userDataState.id}`}>
               <div>
                 <AccountLogo className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Moj račun</p>
@@ -58,7 +58,7 @@ const GlavniImamPage = () => {
             </NavLink>
           </div>
           <div className={classes.gridItem}>
-            <NavLink to="/email-zahvale">
+            <NavLink to="/logout">
               <div>
                 <LogoutLogo className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Odjava</p>
