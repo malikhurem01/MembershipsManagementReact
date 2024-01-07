@@ -56,7 +56,7 @@ const ArchiveSpreadsheets = ({ supervisorView }) => {
             : '/donacije'
           : redirectTo === 'expenses'
           ? ctx.userDataState.position === 5
-            ? ''
+            ? `/pregled/lista/dzemata/troskovi/${dzematId}`
             : '/troskovi'
           : redirectTo === 'incomes'
           ? ctx.userDataState.position === 5
@@ -121,16 +121,28 @@ const ArchiveSpreadsheets = ({ supervisorView }) => {
                                 : '/clanarine/aktivna-baza'
                               : redirectTo === 'donation'
                               ? s.archived
-                                ? `/donacije/arhivirane-donacije/${s.id}?archiveType=donation`
+                                ? ctx.userDataState.position === 5
+                                  ? `/pregled/lista/dzemata/donacije/arhivirane-donacije/pregled/${dzematId}/${s.id}?archiveType=donation`
+                                  : `/donacije/arhivirane-donacije/${s.id}?archiveType=donation`
+                                : ctx.userDataState.position === 5
+                                ? `/pregled/lista/dzemata/donacije/aktivne-donacije/${dzematId}`
                                 : '/donacije/aktivne-donacije'
                               : redirectTo === 'expenses'
                               ? s.archived
-                                ? `/troskovi/arhivirani-troskovi/${s.id}?archiveType=expenses`
-                                : `/troskovi/aktivni-troskovi`
+                                ? ctx.userDataState.position === 5
+                                  ? `/pregled/lista/dzemata/troskovi/arhivirani-troskovi/pregled/${dzematId}/${s.id}?archiveType=expenses`
+                                  : `/troskovi/arhivirani-troskovi/${s.id}?archiveType=expenses`
+                                : ctx.userDataState.position === 5
+                                ? `/pregled/lista/dzemata/troskovi/aktivni-troskovi/${dzematId}`
+                                : '/troskovi/aktivni-troskovi'
                               : redirectTo === 'incomes'
                               ? s.archived
-                                ? `/prihodi/arhivirani-prihodi/${s.id}?archiveType=incomes`
-                                : `/prihodi/aktivni-prihodi`
+                                ? ctx.userDataState.position === 5
+                                  ? `/pregled/lista/dzemata/prihodi/arhivirani-prihodi/pregled/${dzematId}/${s.id}?archiveType=incomes`
+                                  : `/prihodi/arhivirani-prihodi/${s.id}?archiveType=incomes`
+                                : ctx.userDataState.position === 5
+                                ? `/pregled/lista/dzemata/prihodi/aktivni-prihodi/${dzematId}`
+                                : '/prihodi/aktivni-prihodi'
                               : '/not-found'
                           }
                         >

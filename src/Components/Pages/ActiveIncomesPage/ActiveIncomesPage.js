@@ -17,9 +17,9 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import incomeItemsService from '../../../Services/incomeItemsService';
 import AuthContext from '../../../Store/auth-context-api';
 import { factorDate } from '../../../Utils/factorDate';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const ActiveIncomesPage = () => {
+const ActiveIncomesPage = ({ supervisorView }) => {
   const [items, setItems] = useState();
   const [showAddIncome, setShowAddIncome] = useState(false);
   const [showAddIncomeItem, setShowAddIncomeItem] = useState(false);
@@ -35,6 +35,8 @@ const ActiveIncomesPage = () => {
   const navigate = useNavigate();
 
   const { userDataState } = useContext(AuthContext);
+
+  const { dzematId } = useParams();
 
   const handleShowAddIncome = () => {
     setShowAddIncome(prevState => !prevState);
@@ -56,7 +58,7 @@ const ActiveIncomesPage = () => {
     setIsLoading(true);
     const token = JSON.parse(localStorage.getItem('user_jwt'));
     incomeItemsService
-      .getActiveIncomeItems(token)
+      .getActiveIncomeItems(token, dzematId)
       .then(res => {
         setItems(res.data.data);
         setIsLoading(false);
@@ -65,7 +67,7 @@ const ActiveIncomesPage = () => {
         setItems(null);
         setIsLoading(false);
       });
-  }, []);
+  }, [dzematId]);
 
   useEffect(() => {
     handleFetchActiveIncomeItems();
@@ -399,15 +401,17 @@ const ActiveIncomesPage = () => {
                           <strong>{items?.spreadsheetYear}</strong>
                         </p>
                         <div className="d-flex justify-content-center mb-2">
-                          <Button
-                            style={{ marginRight: '15px' }}
-                            size="sm"
-                            type="button"
-                            variant="primary"
-                            onClick={handleShowAddIncomeItem}
-                          >
-                            Kreiraj stavku
-                          </Button>
+                          {!supervisorView && (
+                            <Button
+                              style={{ marginRight: '15px' }}
+                              size="sm"
+                              type="button"
+                              variant="primary"
+                              onClick={handleShowAddIncomeItem}
+                            >
+                              Kreiraj stavku
+                            </Button>
+                          )}
 
                           <Button size="sm" type="button" variant="warning">
                             Arhiva
@@ -473,21 +477,23 @@ const ActiveIncomesPage = () => {
                                               <strong>{exp.amount}KM</strong>
                                             </p>
                                           </div>
-                                          <div className="col-sm-4">
-                                            <Button
-                                              variant="dark"
-                                              size="sm"
-                                              onClick={() => {
-                                                setSelected({
-                                                  id: exp.id,
-                                                  incomeItemId: el.id
-                                                });
-                                                handleShowDeleteIncome();
-                                              }}
-                                            >
-                                              Ukloni
-                                            </Button>
-                                          </div>
+                                          {!supervisorView && (
+                                            <div className="col-sm-4">
+                                              <Button
+                                                variant="dark"
+                                                size="sm"
+                                                onClick={() => {
+                                                  setSelected({
+                                                    id: exp.id,
+                                                    incomeItemId: el.id
+                                                  });
+                                                  handleShowDeleteIncome();
+                                                }}
+                                              >
+                                                Ukloni
+                                              </Button>
+                                            </div>
+                                          )}
                                         </li>
                                       );
                                     })}
@@ -508,28 +514,30 @@ const ActiveIncomesPage = () => {
                                     <li className="list-group-item d-flex justify-content-between align-items-center p-1"></li>
                                   </ul>
                                 )}
-                                <div className="d-flex justify-content-between align-items-center">
-                                  <Button
-                                    variant="success"
-                                    size="sm"
-                                    onClick={() => {
-                                      handleShowAddIncome();
-                                      setSelected(el);
-                                    }}
-                                  >
-                                    Dodaj prihod
-                                  </Button>
-                                  <Button
-                                    variant="dark"
-                                    size="sm"
-                                    onClick={() => {
-                                      handleShowDeleteIncomeItem();
-                                      setSelected(el);
-                                    }}
-                                  >
-                                    Ukloni stavku
-                                  </Button>
-                                </div>
+                                {!supervisorView && (
+                                  <div className="d-flex justify-content-between align-items-center">
+                                    <Button
+                                      variant="success"
+                                      size="sm"
+                                      onClick={() => {
+                                        handleShowAddIncome();
+                                        setSelected(el);
+                                      }}
+                                    >
+                                      Dodaj prihod
+                                    </Button>
+                                    <Button
+                                      variant="dark"
+                                      size="sm"
+                                      onClick={() => {
+                                        handleShowDeleteIncomeItem();
+                                        setSelected(el);
+                                      }}
+                                    >
+                                      Ukloni stavku
+                                    </Button>
+                                  </div>
+                                )}
                               </div>
                             </Accordion.Body>
                           </Accordion.Item>

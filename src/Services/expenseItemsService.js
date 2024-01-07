@@ -1,19 +1,24 @@
 import axios from 'axios';
 import { routes, serverURL } from '../Data/serverRoutes';
 
-const getActiveExpenseItems = token => {
-  return axios.get(`${serverURL}${routes.getActiveExpenseItems}`, {
+const getActiveExpenseItems = (token, dzematId) => {
+  let requestUrl = `${serverURL}${routes.getActiveExpenseItems}`;
+  if (dzematId) {
+    requestUrl = `${serverURL}${routes.getActiveExpenseItems}?dzematId=${dzematId}`;
+  }
+  return axios.get(requestUrl, {
     headers: { Authorization: 'Bearer ' + token }
   });
 };
 
-const getArchivedExpenseItems = (token, spreadsheetId) => {
-  return axios.get(
-    `${serverURL}${routes.getArchivedExpenseItems}?spreadsheetId=${spreadsheetId}`,
-    {
-      headers: { Authorization: 'Bearer ' + token }
-    }
-  );
+const getArchivedExpenseItems = (token, spreadsheetId, dzematId) => {
+  let requestUrl = `${serverURL}${routes.getArchivedExpenseItems}?spreadsheetId=${spreadsheetId}`;
+  if (dzematId) {
+    requestUrl = `${serverURL}${routes.getArchivedExpenseItems}?spreadsheetId=${spreadsheetId}&dzematId=${dzematId}`;
+  }
+  return axios.get(requestUrl, {
+    headers: { Authorization: 'Bearer ' + token }
+  });
 };
 
 const createExpenseItem = (token, data) => {

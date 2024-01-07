@@ -4,15 +4,22 @@ import { ReactComponent as ArchivedIncome } from '../../../Assets/Pictures/archi
 import { ReactComponent as HomeIcon } from '../../../Assets/Pictures/home-icon.svg';
 
 import classes from '../Main/MainPage.module.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 
-const IncomesPage = () => {
+const IncomesPage = ({ supervisorView }) => {
+  const { dzematId } = useParams();
   return (
     <PageWrapperComponent>
       <div className={classes.container}>
         <div className={classes.gridRow}>
           <div className={classes.gridItem}>
-            <NavLink to="aktivni-prihodi">
+            <NavLink
+              to={
+                supervisorView
+                  ? `/pregled/lista/dzemata/prihodi/aktivni-prihodi/${dzematId}`
+                  : 'aktivni-prihodi'
+              }
+            >
               <div>
                 <ActiveIncome className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Aktivni prihodi</p>
@@ -20,7 +27,14 @@ const IncomesPage = () => {
             </NavLink>
           </div>
           <div className={classes.gridItem}>
-            <NavLink to="/clanarine/arhiva-baza?redirectTo=incomes">
+            <NavLink
+              to={
+                supervisorView
+                  ? `/pregled/lista/dzemata/clanarine/arhiva-baza/${dzematId}?redirectTo=incomes`
+                  : '/clanarine/arhiva-baza?redirectTo=incomes'
+              }
+            >
+              {' '}
               <div>
                 <ArchivedIncome className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Arhivirani prihodi</p>
@@ -30,7 +44,13 @@ const IncomesPage = () => {
         </div>
         <div className={classes.gridRow}>
           <div className={classes.gridItem}>
-            <NavLink to="/naslovna">
+            <NavLink
+              to={
+                supervisorView
+                  ? '/pregled/lista/dzemata/' + dzematId
+                  : '/naslovna'
+              }
+            >
               <div>
                 <HomeIcon className={classes.gridItemLogo} />
                 <p className={classes.menuOptionText}>Naslovna stranica</p>

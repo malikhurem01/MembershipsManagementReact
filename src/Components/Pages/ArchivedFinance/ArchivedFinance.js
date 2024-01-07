@@ -1,14 +1,4 @@
-import {
-  Accordion,
-  Button,
-  Col,
-  Container,
-  FloatingLabel,
-  Form,
-  Modal,
-  Row,
-  Table
-} from 'react-bootstrap';
+import { Accordion, Button, Container, Modal, Table } from 'react-bootstrap';
 import NavBar from '../../NavBar/NavBar';
 
 import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
@@ -20,12 +10,12 @@ import expenseItemsService from '../../../Services/expenseItemsService';
 import { factorDate } from '../../../Utils/factorDate';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
-const ArchivedFinance = () => {
+const ArchivedFinance = ({ supervisorView }) => {
   const [items, setItems] = useState();
   const [isLoading, setIsLoading] = useState();
   const [params] = useSearchParams();
 
-  const { spreadsheetId } = useParams();
+  const { dzematId, spreadsheetId } = useParams();
   const archiveType = params.get('archiveType');
 
   const navigate = useNavigate();
@@ -36,7 +26,7 @@ const ArchivedFinance = () => {
     const token = JSON.parse(localStorage.getItem('user_jwt'));
     if (archiveType === 'incomes') {
       incomeItemsService
-        .getArchivedIncomeItems(token, spreadsheetId)
+        .getArchivedIncomeItems(token, spreadsheetId, dzematId)
         .then(res => {
           setItems(res.data.data);
           setIsLoading(false);
@@ -47,7 +37,7 @@ const ArchivedFinance = () => {
         });
     } else if (archiveType === 'donation') {
       incomeItemsService
-        .getArchivedDonationIncomeItems(token, spreadsheetId)
+        .getArchivedDonationIncomeItems(token, spreadsheetId, dzematId)
         .then(res => {
           setItems(res.data.data);
           setIsLoading(false);
@@ -58,7 +48,7 @@ const ArchivedFinance = () => {
         });
     } else if (archiveType === 'expenses') {
       expenseItemsService
-        .getArchivedExpenseItems(token, spreadsheetId)
+        .getArchivedExpenseItems(token, spreadsheetId, dzematId)
         .then(res => {
           setItems(res.data.data);
           setIsLoading(false);
@@ -68,7 +58,7 @@ const ArchivedFinance = () => {
           setIsLoading(false);
         });
     }
-  }, [spreadsheetId, archiveType]);
+  }, [spreadsheetId, archiveType, dzematId]);
 
   useEffect(() => {
     handleFetchArchivedItems();
@@ -102,7 +92,11 @@ const ArchivedFinance = () => {
             <Button
               variant="danger"
               onClick={() => {
-                navigate('/prihodi');
+                navigate(
+                  supervisorView
+                    ? '/pregled/lista/dzemata/clanarine/' + dzematId
+                    : '/prihodi'
+                );
               }}
             >
               Nazad
@@ -305,7 +299,6 @@ const ArchivedFinance = () => {
                             </Accordion.Item>
                           );
                         })}
-
                       {archiveType === 'donation' &&
                         items?.incomeItems['$values']?.map((el, index) => {
                           return (

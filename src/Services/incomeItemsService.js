@@ -1,34 +1,44 @@
 import axios from 'axios';
 import { routes, serverURL } from '../Data/serverRoutes';
 
-const getActiveDonationIncomeItems = token => {
-  return axios.get(`${serverURL}${routes.getActiveDonationIncomeItems}`, {
+const getActiveDonationIncomeItems = (token, dzematId) => {
+  let requestUrl = `${serverURL}${routes.getActiveDonationIncomeItems}`;
+  if (dzematId) {
+    requestUrl = `${serverURL}${routes.getActiveDonationIncomeItems}?dzematId=${dzematId}`;
+  }
+  return axios.get(requestUrl, {
     headers: { Authorization: 'Bearer ' + token }
   });
 };
 
-const getArchivedDonationIncomeItems = (token, spreadsheetId) => {
-  return axios.get(
-    `${serverURL}${routes.getArchivedDonationIncomeItems}?spreadsheetId=${spreadsheetId}`,
-    {
-      headers: { Authorization: 'Bearer ' + token }
-    }
-  );
-};
-
-const getActiveIncomeItems = token => {
-  return axios.get(`${serverURL}${routes.getActiveIncomeItems}`, {
+const getArchivedDonationIncomeItems = (token, spreadsheetId, dzematId) => {
+  let requestUrl = `${serverURL}${routes.getArchivedDonationIncomeItems}?spreadsheetId=${spreadsheetId}`;
+  if (dzematId) {
+    requestUrl = `${serverURL}${routes.getArchivedDonationIncomeItems}?spreadsheetId=${spreadsheetId}&dzematId=${dzematId}`;
+  }
+  return axios.get(requestUrl, {
     headers: { Authorization: 'Bearer ' + token }
   });
 };
 
-const getArchivedIncomeItems = (token, spreadsheetId) => {
-  return axios.get(
-    `${serverURL}${routes.getArchivedIncomeItems}?spreadsheetId=${spreadsheetId}`,
-    {
-      headers: { Authorization: 'Bearer ' + token }
-    }
-  );
+const getActiveIncomeItems = (token, dzematId) => {
+  let requestUrl = `${serverURL}${routes.getActiveIncomeItems}`;
+  if (dzematId) {
+    requestUrl = `${serverURL}${routes.getActiveIncomeItems}?dzematId=${dzematId}`;
+  }
+  return axios.get(requestUrl, {
+    headers: { Authorization: 'Bearer ' + token }
+  });
+};
+
+const getArchivedIncomeItems = (token, spreadsheetId, dzematId) => {
+  let requestUrl = `${serverURL}${routes.getArchivedIncomeItems}?spreadsheetId=${spreadsheetId}`;
+  if (dzematId) {
+    requestUrl = `${serverURL}${routes.getArchivedIncomeItems}?spreadsheetId=${spreadsheetId}&dzematId=${dzematId}`;
+  }
+  return axios.get(requestUrl, {
+    headers: { Authorization: 'Bearer ' + token }
+  });
 };
 
 const createIncomeItem = (token, data) => {

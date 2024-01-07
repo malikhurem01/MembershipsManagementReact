@@ -18,9 +18,9 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import incomeItemsService from '../../../Services/incomeItemsService';
 import AuthContext from '../../../Store/auth-context-api';
 import { factorDate } from '../../../Utils/factorDate';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const ActiveDonationsPage = () => {
+const ActiveDonationsPage = ({ supervisorView }) => {
   const [items, setItems] = useState();
   const [showAddIncome, setShowAddIncome] = useState(false);
   const [showAddIncomeItem, setShowAddIncomeItem] = useState(false);
@@ -46,6 +46,8 @@ const ActiveDonationsPage = () => {
 
   const { userDataState } = useContext(AuthContext);
 
+  const { dzematId } = useParams();
+
   const handleShowAddIncome = () => {
     setShowAddIncome(prevState => !prevState);
   };
@@ -70,7 +72,7 @@ const ActiveDonationsPage = () => {
     setIsLoading(true);
     const token = JSON.parse(localStorage.getItem('user_jwt'));
     incomeItemsService
-      .getActiveDonationIncomeItems(token)
+      .getActiveDonationIncomeItems(token, dzematId)
       .then(res => {
         setItems(res.data.data);
         setIsLoading(false);
@@ -79,7 +81,7 @@ const ActiveDonationsPage = () => {
         setItems(null);
         setIsLoading(false);
       });
-  }, []);
+  }, [dzematId]);
 
   const handleFetchDonators = useCallback(() => {
     setIsLoading(true);
@@ -625,25 +627,29 @@ const ActiveDonationsPage = () => {
                           <strong>{items?.spreadsheetYear}</strong>
                         </p>
                         <div className="d-flex justify-content-center mb-2">
-                          <Button
-                            style={{ marginRight: '15px' }}
-                            size="sm"
-                            type="button"
-                            variant="primary"
-                            onClick={handleShowAddIncomeItem}
-                          >
-                            Kreiraj stavku
-                          </Button>
+                          {!supervisorView && (
+                            <React.Fragment>
+                              <Button
+                                style={{ marginRight: '15px' }}
+                                size="sm"
+                                type="button"
+                                variant="primary"
+                                onClick={handleShowAddIncomeItem}
+                              >
+                                Kreiraj stavku
+                              </Button>
 
-                          <Button
-                            style={{ marginRight: '15px' }}
-                            size="sm"
-                            type="button"
-                            variant="primary"
-                            onClick={handleShowAddDonator}
-                          >
-                            Dodaj donatora
-                          </Button>
+                              <Button
+                                style={{ marginRight: '15px' }}
+                                size="sm"
+                                type="button"
+                                variant="primary"
+                                onClick={handleShowAddDonator}
+                              >
+                                Dodaj donatora
+                              </Button>
+                            </React.Fragment>
+                          )}
                           <Button size="sm" type="button" variant="warning">
                             Arhiva
                           </Button>
@@ -699,7 +705,7 @@ const ActiveDonationsPage = () => {
                                         <th>Donator</th>
                                         <th>Iznos</th>
                                         <th>Datum</th>
-                                        <th>Opcije</th>
+                                        {!supervisorView && <th>Opcije</th>}
                                       </tr>
                                     </thead>
                                     <tbody>
@@ -713,24 +719,27 @@ const ActiveDonationsPage = () => {
                                               <td className="col-sm-3">
                                                 {factorDate(inc.date)}
                                               </td>
-                                              <td
-                                                style={{ textAlign: 'center' }}
-                                              >
-                                                {' '}
-                                                <Button
-                                                  variant="dark"
-                                                  size="sm"
-                                                  onClick={() => {
-                                                    setSelected({
-                                                      id: inc.id,
-                                                      incomeItemId: el.id
-                                                    });
-                                                    handleShowDeleteIncome();
+                                              {!supervisorView && (
+                                                <td
+                                                  style={{
+                                                    textAlign: 'center'
                                                   }}
                                                 >
-                                                  Ukloni
-                                                </Button>
-                                              </td>
+                                                  <Button
+                                                    variant="dark"
+                                                    size="sm"
+                                                    onClick={() => {
+                                                      setSelected({
+                                                        id: inc.id,
+                                                        incomeItemId: el.id
+                                                      });
+                                                      handleShowDeleteIncome();
+                                                    }}
+                                                  >
+                                                    Ukloni
+                                                  </Button>
+                                                </td>
+                                              )}
                                             </tr>
                                           );
                                         }
@@ -746,28 +755,30 @@ const ActiveDonationsPage = () => {
                                   </Button>
                                 </div>
                                 <hr />
-                                <div className="d-flex justify-content-between align-items-center">
-                                  <Button
-                                    variant="success"
-                                    size="sm"
-                                    onClick={() => {
-                                      handleShowAddIncome();
-                                      setSelected(el);
-                                    }}
-                                  >
-                                    Dodaj donaciju
-                                  </Button>
-                                  <Button
-                                    variant="dark"
-                                    size="sm"
-                                    onClick={() => {
-                                      handleShowDeleteIncomeItem();
-                                      setSelected(el);
-                                    }}
-                                  >
-                                    Ukloni stavku
-                                  </Button>
-                                </div>
+                                {!supervisorView && (
+                                  <div className="d-flex justify-content-between align-items-center">
+                                    <Button
+                                      variant="success"
+                                      size="sm"
+                                      onClick={() => {
+                                        handleShowAddIncome();
+                                        setSelected(el);
+                                      }}
+                                    >
+                                      Dodaj donaciju
+                                    </Button>
+                                    <Button
+                                      variant="dark"
+                                      size="sm"
+                                      onClick={() => {
+                                        handleShowDeleteIncomeItem();
+                                        setSelected(el);
+                                      }}
+                                    >
+                                      Ukloni stavku
+                                    </Button>
+                                  </div>
+                                )}
                               </div>
                             </Accordion.Body>
                           </Accordion.Item>

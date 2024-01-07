@@ -193,6 +193,14 @@ export const router = createBrowserRouter([
     )
   },
   {
+    path: '/pregled/lista/dzemata/troskovi/:dzematId',
+    element: (
+      <ProtectedRoute minPosition={5} maxPosition={5}>
+        <ExpensesPage supervisorView={true} />
+      </ProtectedRoute>
+    )
+  },
+  {
     path: '/troskovi',
     element: (
       <ProtectedRoute minPosition={1} maxPosition={4}>
@@ -201,10 +209,27 @@ export const router = createBrowserRouter([
     )
   },
   {
+    path: '/pregled/lista/dzemata/troskovi/aktivni-troskovi/:dzematId',
+    element: (
+      <ProtectedRoute minPosition={5} maxPosition={5}>
+        <ActiveExpenseItemsPage supervisorView={true} />
+      </ProtectedRoute>
+    )
+  },
+  {
     path: '/troskovi/aktivni-troskovi',
     element: (
       <ProtectedRoute minPosition={1} maxPosition={4}>
         <ActiveExpenseItemsPage />{' '}
+      </ProtectedRoute>
+    )
+  },
+
+  {
+    path: '/pregled/lista/dzemata/troskovi/arhivirani-troskovi/pregled/:dzematId/:spreadsheetId',
+    element: (
+      <ProtectedRoute minPosition={5} maxPosition={5}>
+        <ArchivedFinance supervisorView={true} />
       </ProtectedRoute>
     )
   },
@@ -217,10 +242,26 @@ export const router = createBrowserRouter([
     )
   },
   {
+    path: '/pregled/lista/dzemata/donacije/:dzematId',
+    element: (
+      <ProtectedRoute minPosition={5} maxPosition={5}>
+        <DonationsPage supervisorView={true} />
+      </ProtectedRoute>
+    )
+  },
+  {
     path: '/donacije',
     element: (
       <ProtectedRoute minPosition={1} maxPosition={4}>
         <DonationsPage />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/pregled/lista/dzemata/donacije/aktivne-donacije/:dzematId',
+    element: (
+      <ProtectedRoute minPosition={5} maxPosition={5}>
+        <ActiveDonationsPage supervisorView={true} />
       </ProtectedRoute>
     )
   },
@@ -233,10 +274,26 @@ export const router = createBrowserRouter([
     )
   },
   {
+    path: '/pregled/lista/dzemata/donacije/arhivirane-donacije/pregled/:dzematId/:spreadsheetId',
+    element: (
+      <ProtectedRoute minPosition={5} maxPosition={5}>
+        <ArchivedFinance supervisorView={true} />
+      </ProtectedRoute>
+    )
+  },
+  {
     path: '/donacije/arhivirane-donacije/:spreadsheetId',
     element: (
       <ProtectedRoute minPosition={1} maxPosition={4}>
         <ArchivedFinance />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/pregled/lista/dzemata/prihodi/:dzematId',
+    element: (
+      <ProtectedRoute minPosition={5} maxPosition={5}>
+        <IncomesPage supervisorView={true} />
       </ProtectedRoute>
     )
   },
@@ -249,10 +306,26 @@ export const router = createBrowserRouter([
     )
   },
   {
+    path: '/pregled/lista/dzemata/prihodi/aktivni-prihodi/:dzematId',
+    element: (
+      <ProtectedRoute minPosition={5} maxPosition={5}>
+        <ActiveIncomesPage supervisorView={true} />
+      </ProtectedRoute>
+    )
+  },
+  {
     path: '/prihodi/aktivni-prihodi',
     element: (
       <ProtectedRoute minPosition={1} maxPosition={4}>
         <ActiveIncomesPage />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/pregled/lista/dzemata/prihodi/arhivirani-prihodi/pregled/:dzematId/:spreadsheetId',
+    element: (
+      <ProtectedRoute minPosition={5} maxPosition={5}>
+        <ArchivedFinance supervisorView={true} />
       </ProtectedRoute>
     )
   },

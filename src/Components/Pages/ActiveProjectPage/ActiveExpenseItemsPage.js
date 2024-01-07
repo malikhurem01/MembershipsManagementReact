@@ -17,9 +17,9 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import expenseItemsService from '../../../Services/expenseItemsService';
 import AuthContext from '../../../Store/auth-context-api';
 import { factorDate } from '../../../Utils/factorDate';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 
-const ActiveExpenseItemsPage = () => {
+const ActiveExpenseItemsPage = ({ supervisorView }) => {
   const [items, setItems] = useState();
   const [showAddExpense, setShowAddExpense] = useState(false);
   const [showAddExpenseItem, setShowAddExpenseItem] = useState(false);
@@ -35,6 +35,8 @@ const ActiveExpenseItemsPage = () => {
   const navigate = useNavigate();
 
   const { userDataState } = useContext(AuthContext);
+
+  const { dzematId } = useParams();
 
   const handleShowAddExpense = () => {
     setShowAddExpense(prevState => !prevState);
@@ -56,7 +58,7 @@ const ActiveExpenseItemsPage = () => {
     setIsLoading(true);
     const token = JSON.parse(localStorage.getItem('user_jwt'));
     expenseItemsService
-      .getActiveExpenseItems(token)
+      .getActiveExpenseItems(token, dzematId)
       .then(res => {
         setItems(res.data.data);
         setIsLoading(false);
@@ -65,7 +67,7 @@ const ActiveExpenseItemsPage = () => {
         setItems(null);
         setIsLoading(false);
       });
-  }, []);
+  }, [dzematId]);
 
   useEffect(() => {
     handleFetchActiveExpenseItems();
@@ -392,18 +394,29 @@ const ActiveExpenseItemsPage = () => {
                           <strong>{items?.spreadsheetYear}</strong>
                         </p>
                         <div className="d-flex justify-content-center mb-2">
-                          <Button
-                            style={{ marginRight: '15px' }}
-                            size="sm"
-                            type="button"
-                            variant="primary"
-                            onClick={handleShowAddExpenseItem}
+                          {!supervisorView && (
+                            <Button
+                              style={{ marginRight: '15px' }}
+                              size="sm"
+                              type="button"
+                              variant="primary"
+                              onClick={handleShowAddExpenseItem}
+                            >
+                              Kreiraj stavku
+                            </Button>
+                          )}
+                          <NavLink
+                            to={
+                              supervisorView
+                                ? `/pregled/lista/dzemata/clanarine/arhiva-baza/${dzematId}?redirectTo=expenses`
+                                : '/clanarine/arhiva-baza?redirectTo=expenses'
+                            }
                           >
-                            Kreiraj stavku
-                          </Button>
-                          <Button size="sm" type="button" variant="warning">
-                            Arhiva
-                          </Button>
+                            {' '}
+                            <Button size="sm" type="button" variant="warning">
+                              Arhiva
+                            </Button>
+                          </NavLink>
                         </div>
                       </div>
                     </div>
@@ -466,21 +479,23 @@ const ActiveExpenseItemsPage = () => {
                                               <strong>{exp.amount}KM</strong>
                                             </p>
                                           </div>
-                                          <div className="col-sm-4">
-                                            <Button
-                                              variant="dark"
-                                              size="sm"
-                                              onClick={() => {
-                                                setSelected({
-                                                  id: exp.id,
-                                                  expenseItemId: el.id
-                                                });
-                                                handleShowDeleteExpense();
-                                              }}
-                                            >
-                                              Ukloni
-                                            </Button>
-                                          </div>
+                                          {!supervisorView && (
+                                            <div className="col-sm-4">
+                                              <Button
+                                                variant="dark"
+                                                size="sm"
+                                                onClick={() => {
+                                                  setSelected({
+                                                    id: exp.id,
+                                                    expenseItemId: el.id
+                                                  });
+                                                  handleShowDeleteExpense();
+                                                }}
+                                              >
+                                                Ukloni
+                                              </Button>
+                                            </div>
+                                          )}
                                         </li>
                                       );
                                     })}
@@ -501,28 +516,30 @@ const ActiveExpenseItemsPage = () => {
                                     <li className="list-group-item d-flex justify-content-between align-items-center p-1"></li>
                                   </ul>
                                 )}
-                                <div className="d-flex justify-content-between align-items-center">
-                                  <Button
-                                    variant="danger"
-                                    size="sm"
-                                    onClick={() => {
-                                      handleShowAddExpense();
-                                      setSelected(el);
-                                    }}
-                                  >
-                                    Dodaj trošak
-                                  </Button>
-                                  <Button
-                                    variant="dark"
-                                    size="sm"
-                                    onClick={() => {
-                                      handleShowDeleteExpenseItem();
-                                      setSelected(el);
-                                    }}
-                                  >
-                                    Ukloni stavku
-                                  </Button>
-                                </div>
+                                {!supervisorView && (
+                                  <div className="d-flex justify-content-between align-items-center">
+                                    <Button
+                                      variant="danger"
+                                      size="sm"
+                                      onClick={() => {
+                                        handleShowAddExpense();
+                                        setSelected(el);
+                                      }}
+                                    >
+                                      Dodaj trošak
+                                    </Button>
+                                    <Button
+                                      variant="dark"
+                                      size="sm"
+                                      onClick={() => {
+                                        handleShowDeleteExpenseItem();
+                                        setSelected(el);
+                                      }}
+                                    >
+                                      Ukloni stavku
+                                    </Button>
+                                  </div>
+                                )}
                               </div>
                             </Accordion.Body>
                           </Accordion.Item>
