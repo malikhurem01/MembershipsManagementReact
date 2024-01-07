@@ -24,6 +24,7 @@ import ActiveIncomesPage from '../Components/Pages/ActiveIncomesPage/ActiveIncom
 import ArchivedFinance from '../Components/Pages/ArchivedFinance/ArchivedFinance';
 import GlavniImamPage from '../Components/Pages/GlavniImamPage/GlavniImamPage';
 import ListDzemataPage from '../Components/Pages/ListDzemataPage/ListDzemataPage';
+import ProtectedRoute from '../Components/ProtectedRoute/ProtectedRoute';
 
 export const router = createBrowserRouter([
   {
@@ -46,67 +47,222 @@ export const router = createBrowserRouter([
       }
     ]
   },
-  { path: '/racun/:userId', element: <AccountPage /> },
+  {
+    path: '/neovlasten-pristup',
+    element: <ErrorElement type="unauthorized" />
+  },
+  {
+    path: '/racun/:userId',
+    element: (
+      <ProtectedRoute minPosition={1} maxPosition={5}>
+        <AccountPage />
+      </ProtectedRoute>
+    )
+  },
   { path: '/logout', element: <LogoutPage /> },
   { path: '/email', element: <EmailPage /> },
-  { path: '/naslovna', element: <MainPage /> },
-  { path: '/naslovna/glavni-imam', element: <GlavniImamPage /> },
-  { path: '/pregled/lista/dzemata', element: <ListDzemataPage /> },
+  {
+    path: '/naslovna',
+    element: (
+      <ProtectedRoute minPosition={1} maxPosition={4}>
+        <MainPage />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/naslovna/glavni-imam',
+    element: (
+      <ProtectedRoute minPosition={5} maxPosition={5}>
+        <GlavniImamPage />{' '}
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/pregled/lista/dzemata',
+    element: (
+      <ProtectedRoute minPosition={5} maxPosition={5}>
+        <ListDzemataPage />
+      </ProtectedRoute>
+    )
+  },
   {
     path: '/pregled/lista/dzemata/:dzematId',
-    element: <MainPage supervisorView={true} />
+    element: (
+      <ProtectedRoute minPosition={5} maxPosition={5}>
+        <MainPage supervisorView={true} />
+      </ProtectedRoute>
+    )
   },
   {
     path: '/pregled/lista/dzemata/clanarine/:dzematId',
-    element: <RegularMemberships supervisorView={true} />
+    element: (
+      <ProtectedRoute minPosition={5} maxPosition={5}>
+        <RegularMemberships supervisorView={true} />
+      </ProtectedRoute>
+    )
   },
-  { path: '/clanarine', element: <RegularMemberships /> },
-  { path: '/clanarine/kreiraj-bazu', element: <CreateSpreadsheetPage /> },
+  {
+    path: '/clanarine',
+    element: (
+      <ProtectedRoute minPosition={1} maxPosition={4}>
+        <RegularMemberships />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/clanarine/kreiraj-bazu',
+    element: (
+      <ProtectedRoute minPosition={1} maxPosition={4}>
+        <CreateSpreadsheetPage />
+      </ProtectedRoute>
+    )
+  },
   {
     path: '/pregled/lista/dzemata/clanarine/aktivna-baza/:dzematId',
-    element: <ActiveSpreadsheetPage supervisorView={true} />
+    element: (
+      <ProtectedRoute minPosition={5} maxPosition={5}>
+        <ActiveSpreadsheetPage supervisorView={true} />
+      </ProtectedRoute>
+    )
   },
-  { path: '/clanarine/aktivna-baza', element: <ActiveSpreadsheetPage /> },
+  {
+    path: '/clanarine/aktivna-baza',
+    element: (
+      <ProtectedRoute minPosition={1} maxPosition={4}>
+        <ActiveSpreadsheetPage />
+      </ProtectedRoute>
+    )
+  },
 
   {
     path: '/pregled/lista/dzemata/clanarine/arhiva-baza/:dzematId',
-    element: <ArchiveSpreadsheets supervisorView={true} />
+    element: (
+      <ProtectedRoute minPosition={5} maxPosition={5}>
+        <ArchiveSpreadsheets supervisorView={true} />
+      </ProtectedRoute>
+    )
   },
-  { path: '/clanarine/arhiva-baza', element: <ArchiveSpreadsheets /> },
-
+  {
+    path: '/clanarine/arhiva-baza',
+    element: (
+      <ProtectedRoute minPosition={1} maxPosition={4}>
+        <ArchiveSpreadsheets />
+      </ProtectedRoute>
+    )
+  },
   {
     path: '/pregled/lista/dzemata/clanarine/arhiva-baza/pregled/:dzematId/:spreadsheetId',
-    element: <ArchivedSpreadsheetPage supervisorView={true} />
+    element: (
+      <ProtectedRoute minPosition={5} maxPosition={5}>
+        <ArchivedSpreadsheetPage supervisorView={true} />
+      </ProtectedRoute>
+    )
   },
   {
     path: '/clanarine/arhiva-baza/pregled/:spreadsheetId',
-    element: <ArchivedSpreadsheetPage />
+    element: (
+      <ProtectedRoute minPosition={1} maxPosition={4}>
+        <ArchivedSpreadsheetPage />
+      </ProtectedRoute>
+    )
   },
 
   {
     path: '/pregled/lista/dzemata/clanarine/izradi-izvjestaj/:dzematId',
-    element: <GenerateReportPage supervisorView={true} />
+    element: (
+      <ProtectedRoute minPosition={5} maxPosition={5}>
+        <GenerateReportPage supervisorView={true} />
+      </ProtectedRoute>
+    )
   },
 
-  { path: '/clanarine/izradi-izvjestaj', element: <GenerateReportPage /> },
-  { path: '/clanarine/izradi-opomene', element: <GenerateDebtWarningPage /> },
-  { path: '/troskovi', element: <ExpensesPage /> },
-  { path: '/troskovi/aktivni-troskovi', element: <ActiveExpenseItemsPage /> },
+  {
+    path: '/clanarine/izradi-izvjestaj',
+    element: (
+      <ProtectedRoute minPosition={1} maxPosition={4}>
+        <GenerateReportPage />{' '}
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/clanarine/izradi-opomene',
+    element: (
+      <ProtectedRoute minPosition={1} maxPosition={4}>
+        <GenerateDebtWarningPage />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/troskovi',
+    element: (
+      <ProtectedRoute minPosition={1} maxPosition={4}>
+        <ExpensesPage />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/troskovi/aktivni-troskovi',
+    element: (
+      <ProtectedRoute minPosition={1} maxPosition={4}>
+        <ActiveExpenseItemsPage />{' '}
+      </ProtectedRoute>
+    )
+  },
   {
     path: '/troskovi/arhivirani-troskovi/:spreadsheetId',
-    element: <ArchivedFinance />
+    element: (
+      <ProtectedRoute minPosition={1} maxPosition={4}>
+        <ArchivedFinance />
+      </ProtectedRoute>
+    )
   },
-  { path: '/donacije', element: <DonationsPage /> },
-  { path: '/donacije/aktivne-donacije', element: <ActiveDonationsPage /> },
+  {
+    path: '/donacije',
+    element: (
+      <ProtectedRoute minPosition={1} maxPosition={4}>
+        <DonationsPage />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/donacije/aktivne-donacije',
+    element: (
+      <ProtectedRoute minPosition={1} maxPosition={4}>
+        <ActiveDonationsPage />
+      </ProtectedRoute>
+    )
+  },
   {
     path: '/donacije/arhivirane-donacije/:spreadsheetId',
-    element: <ArchivedFinance />
+    element: (
+      <ProtectedRoute minPosition={1} maxPosition={4}>
+        <ArchivedFinance />
+      </ProtectedRoute>
+    )
   },
-  { path: '/prihodi', element: <IncomesPage /> },
-  { path: '/prihodi/aktivni-prihodi', element: <ActiveIncomesPage /> },
+  {
+    path: '/prihodi',
+    element: (
+      <ProtectedRoute minPosition={1} maxPosition={4}>
+        <IncomesPage />{' '}
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/prihodi/aktivni-prihodi',
+    element: (
+      <ProtectedRoute minPosition={1} maxPosition={4}>
+        <ActiveIncomesPage />
+      </ProtectedRoute>
+    )
+  },
   {
     path: '/prihodi/arhivirani-prihodi/:spreadsheetId',
-    element: <ArchivedFinance />
+    element: (
+      <ProtectedRoute minPosition={1} maxPosition={4}>
+        <ArchivedFinance />
+      </ProtectedRoute>
+    )
   },
   { path: '/email-zahvale', element: <EmailPage /> }
 ]);

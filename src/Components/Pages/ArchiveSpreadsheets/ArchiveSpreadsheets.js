@@ -51,13 +51,21 @@ const ArchiveSpreadsheets = ({ supervisorView }) => {
     navigate(
       `${
         redirectTo === 'donation'
-          ? '/donacije'
+          ? ctx.userDataState.position === 5
+            ? ''
+            : '/donacije'
           : redirectTo === 'expenses'
-          ? '/troskovi'
+          ? ctx.userDataState.position === 5
+            ? ''
+            : '/troskovi'
           : redirectTo === 'incomes'
-          ? '/prihodi'
+          ? ctx.userDataState.position === 5
+            ? ''
+            : '/prihodi'
           : redirectTo === 'spreadsheet'
-          ? '/clanarine'
+          ? ctx.userDataState.position === 5
+            ? `/pregled/lista/dzemata/clanarine/${dzematId}`
+            : '/clanarine'
           : '/not-found'
       }`
     );

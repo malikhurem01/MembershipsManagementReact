@@ -6,18 +6,13 @@ import { ReactComponent as AccountLogo } from '../../../Assets/Pictures/accountL
 import { ReactComponent as LogoutLogo } from '../../../Assets/Pictures/odjavaLogo.svg';
 
 import classes from '../Main/MainPage.module.css';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
+import { useContext } from 'react';
 import AuthContext from '../../../Store/auth-context-api';
 
 const GlavniImamPage = () => {
   const { userDataState } = useContext(AuthContext);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (userDataState.position !== 5) {
-      return navigate('/logout');
-    }
-  }, [userDataState.position, navigate]);
+
   return (
     <PageWrapperComponent>
       <div className={classes.container}>
