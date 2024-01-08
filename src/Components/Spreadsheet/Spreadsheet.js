@@ -97,9 +97,15 @@ const Spreadsheet = ({
               route: supervisorView
                 ? `/pregled/lista/dzemata/clanarine/${
                     isViewMode ? 'arhiva-baza' : 'aktivna-baza'
-                  }/${dzematIdParam}`
+                  }/${dzematIdParam}?redirectTo=spreadsheet`
                 : `/clanarine/${isViewMode ? 'arhiva-baza' : 'aktivna-baza'}`,
-              name: `${isViewMode ? 'Arhiva baza' : 'Aktivna baza'}`
+              name: `${
+                supervisorView
+                  ? 'Pregled baza'
+                  : isViewMode
+                  ? 'Arhiva baza'
+                  : 'Aktivna baza'
+              }`
             }
           ]}
         />

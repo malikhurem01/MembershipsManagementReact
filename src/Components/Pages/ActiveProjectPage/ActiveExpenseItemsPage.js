@@ -160,7 +160,7 @@ const ActiveExpenseItemsPage = ({ supervisorView }) => {
 
   return (
     <React.Fragment>
-      {!items && (
+      {!items && !isLoading && (
         <Modal show={true} backdrop="static" keyboard={false} centered>
           {' '}
           <Modal.Header closeButton>

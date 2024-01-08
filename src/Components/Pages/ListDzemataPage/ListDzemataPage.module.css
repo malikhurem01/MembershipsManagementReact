@@ -1,0 +1,18 @@
+.dzematListItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: baseline;
+  padding: 10px 50px;
+}
+
+.dzematListItem .listItemName {
+  flex: 70%;
+}
+
+.dzematListItem .listItemName p {
+  flex: 30%;
+  font-size: 27px;
+  text-transform: uppercase;
+  font-weight: 500;
+}

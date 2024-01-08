@@ -21,7 +21,6 @@ const ArchivedFinance = ({ supervisorView }) => {
   const navigate = useNavigate();
 
   const handleFetchArchivedItems = useCallback(() => {
-    console.log(archiveType);
     setIsLoading(true);
     const token = JSON.parse(localStorage.getItem('user_jwt'));
     if (archiveType === 'incomes') {
@@ -66,7 +65,7 @@ const ArchivedFinance = ({ supervisorView }) => {
 
   return (
     <React.Fragment>
-      {!items && (
+      {!items && !isLoading && (
         <Modal show={true} backdrop="static" keyboard={false} centered>
           {' '}
           <Modal.Header closeButton>

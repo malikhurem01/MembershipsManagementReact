@@ -136,7 +136,9 @@ const AccountPage = () => {
                       </strong>
                     </p>
                     <p className="text-muted mb-4">
-                      {userDataState.address}, {userDataState.zipCode}
+                      {userDataState.address ? userDataState.address : ''}
+                      {userDataState.address && userDataState.zipCode && ', '}
+                      {userDataState.zipCode ? userDataState.zipCode : ''}
                     </p>
                     <div className="d-flex justify-content-center mb-2">
                       <Button

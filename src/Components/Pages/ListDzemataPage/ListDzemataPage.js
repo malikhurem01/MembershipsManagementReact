@@ -6,6 +6,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import PageWrapperComponent from '../../PageWrapper/PageWrapperComponent';
 import NavBar from '../../NavBar/NavBar';
 
+import classes from './ListDzemataPage.module.css';
+
 const ListDzemataPage = () => {
   const [list, setList] = useState();
 
@@ -28,12 +30,10 @@ const ListDzemataPage = () => {
 
   return (
     <PageWrapperComponent>
-      <Container>
+      <Container style={{ paddingTop: '15px' }}>
         <NavBar
           style={{ marginBottom: '-55px' }}
-          routes={[
-            { route: `/pregled/medzlis/dzemati`, name: 'Popis džemata' }
-          ]}
+          routes={[{ route: `/pregled/lista/dzemata`, name: 'Popis džemata' }]}
         />
         {list && (
           <ListGroup>
@@ -42,11 +42,15 @@ const ListDzemataPage = () => {
             </ListGroupItem>
             {list.map(el => {
               return (
-                <ListGroupItem style={{ textAlign: 'center' }}>
-                  <h5>{el.name}</h5>
-                  <Link to={`/pregled/lista/dzemata/${el.id}`}>
-                    <Button variant="primary">Pregled</Button>
-                  </Link>
+                <ListGroupItem className={classes.dzematListItem}>
+                  <div className={classes.listItemName}>
+                    <p>{el.name}</p>
+                  </div>
+                  <div className={classes.listItemAction}>
+                    <Link to={`/pregled/lista/dzemata/${el.id}`}>
+                      <Button variant="primary">Pregled</Button>
+                    </Link>
+                  </div>
                 </ListGroupItem>
               );
             })}
