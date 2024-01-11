@@ -8,7 +8,7 @@ import loadingSvg from '../../../Assets/Pictures/loadingSvg.svg';
 import classes from './LoginFormComponent.module.css';
 import AuthContext from '../../../Store/auth-context-api';
 
-const LoginFormComponent = ({ onFormSubmit, loginStage }) => {
+const LoginFormComponent = ({ onFormSubmit }) => {
   const [username, setUsername] = useState('');
   const [institutionUserName, setInstitutionUserName] = useState('');
   const [password, setPassword] = useState('');

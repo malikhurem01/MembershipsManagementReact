@@ -25,6 +25,7 @@ const FormAddMember = ({
   const [status, setStatus] = useState('');
   const [note, setNote] = useState('');
   const [debt, setDebt] = useState(0);
+  const [isActive, setIsActive] = useState();
   const [editMode, setEditMode] = useState(false);
   const [familyMembers, setFamilyMembers] = useState([]);
   const [showFamilyMembersForm, setShowFamilyMembersForm] = useState(false);
@@ -55,6 +56,7 @@ const FormAddMember = ({
     setStatus(memberInfo.member.status);
     setNote(memberInfo.member.note);
     setFamilyMembers(memberInfo.member.familyMembers['$values']);
+    setIsActive(memberInfo.member.active);
   };
 
   const tableColumns = ['#', 'Datum uplate', 'Iznos', 'Nadležni'];
@@ -76,7 +78,7 @@ const FormAddMember = ({
       note,
       familyMembers,
       debt,
-      active: true,
+      active: isActive === 'true' ? true : false,
       addToSpreadsheet: true,
       dzematId: ctx.userDataState.dzematId
     };
@@ -463,6 +465,30 @@ const FormAddMember = ({
                       />
                     </FloatingLabel>
                   </Col>
+
+                  {(editMode || viewMode) && (
+                    <Col lg={4} md="auto" sm={8}>
+                      <FloatingLabel
+                        controlId="floatingIsActive"
+                        label="Član aktivan?"
+                      >
+                        <Form.Select
+                          onChange={ev => setIsActive(ev.target.value)}
+                          aria-label="MemberIsActive"
+                          disabled={viewMode && !editMode}
+                          value={
+                            !viewMode || editMode
+                              ? isActive
+                              : memberInfo.member.active
+                          }
+                        >
+                          <option>Status člana</option>
+                          <option value={true}>Aktivan</option>
+                          <option value={false}>Nije aktivan</option>
+                        </Form.Select>
+                      </FloatingLabel>
+                    </Col>
+                  )}
                 </Row>
 
                 {(!viewMode || editMode) && (
@@ -609,6 +635,11 @@ const FormAddMember = ({
                       </Button>
                     </div>
                   </React.Fragment>
+                )}
+                {!viewMode && !editMode && (
+                  <h6 style={{ fontStyle: 'italic', marginBottom: '20px' }}>
+                    *Član će se dodati u aktivnu bazu
+                  </h6>
                 )}
                 {(!viewMode || editMode) && (
                   <Button

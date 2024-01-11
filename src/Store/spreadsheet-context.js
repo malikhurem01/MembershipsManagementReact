@@ -10,6 +10,7 @@ const SpreadsheetContext = React.createContext({
   searchFirstName: null,
   searchLastName: null,
   searchFathersName: null,
+  searchHasPayed: null,
   pageInfo: {},
   pageSize: null,
   handleSetPageInfo: () => {},
@@ -20,6 +21,7 @@ const SpreadsheetContext = React.createContext({
   handleSetSearchFirstName: () => {},
   handleSetSearchLastName: () => {},
   handleSetSearchFathersName: () => {},
+  handleSetSearchHasPayed: () => {},
   handleRemoveFilters: () => {},
   handleSetPageSize: () => {},
   handleSetPageNumber: () => {},
@@ -38,6 +40,7 @@ export const SpreadsheetContextProvider = ({ children }) => {
   const [searchFirstName, setSearchFirstName] = useState('');
   const [searchLastName, setSearchLastName] = useState('');
   const [searchFathersName, setSearchFathersName] = useState('');
+  const [searchHasPayed, setSearchHasPayed] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [response, setResponse] = useState({
@@ -77,6 +80,11 @@ export const SpreadsheetContextProvider = ({ children }) => {
   const handleSetSearchFathersName = useCallback(value => {
     handleSetPageNumber(1);
     setSearchFathersName(value);
+  }, []);
+
+  const handleSetSearchHasPayed = useCallback(value => {
+    handleSetPageNumber(1);
+    setSearchHasPayed(value);
   }, []);
 
   const handleRemoveFilters = () => {
@@ -126,6 +134,7 @@ export const SpreadsheetContextProvider = ({ children }) => {
           searchFirstName,
           searchLastName,
           searchFathersName,
+          searchHasPayed,
           pageNumber,
           pageSize,
           archivedSpreadsheetId ? archivedSpreadsheetId : spreadsheet.id
@@ -141,7 +150,9 @@ export const SpreadsheetContextProvider = ({ children }) => {
           handleSetPageInfo(pageInformation);
           handleSetMembersInfo(res.data.data.items['$values']);
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          console.log(err);
+        });
     },
     [
       handleSetMembersInfo,
@@ -149,6 +160,7 @@ export const SpreadsheetContextProvider = ({ children }) => {
       searchFirstName,
       searchLastName,
       searchFathersName,
+      searchHasPayed,
       pageNumber,
       pageSize,
       spreadsheet
@@ -202,6 +214,7 @@ export const SpreadsheetContextProvider = ({ children }) => {
         searchFirstName,
         searchLastName,
         searchFathersName,
+        searchHasPayed,
         response,
         pageInfo,
         pageSize,
@@ -214,6 +227,7 @@ export const SpreadsheetContextProvider = ({ children }) => {
         handleSetSearchFirstName,
         handleSetSearchLastName,
         handleSetSearchFathersName,
+        handleSetSearchHasPayed,
         handleRemoveFilters,
         handleSetPageNumber,
         handleSetResponse,

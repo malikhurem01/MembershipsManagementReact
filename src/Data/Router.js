@@ -26,6 +26,17 @@ import GlavniImamPage from '../Components/Pages/GlavniImamPage/GlavniImamPage';
 import ListDzemataPage from '../Components/Pages/ListDzemataPage/ListDzemataPage';
 import ProtectedRoute from '../Components/ProtectedRoute/ProtectedRoute';
 
+/*
+ *minPosition and maxPosition props on ProtectedRoute component represent USER ROLES defined in the back-end of the application
+ *1 - Imam
+ *2 - Blagajnik
+ *3 - Mutevelija
+ *4 - Dzematski Odbor
+ *5 - Glavni Imam
+
+ *users from minPosition to maxPosition are authorized to use the route
+ */
+
 export const router = createBrowserRouter([
   {
     path: '/',

@@ -29,6 +29,7 @@ const Spreadsheet = ({
     handleSetSearchFirstName,
     handleSetSearchLastName,
     handleSetSearchFathersName,
+    handleSetSearchHasPayed,
     handleSetPageNumber,
     handleSetPageSize,
     pageInfo,
@@ -36,9 +37,11 @@ const Spreadsheet = ({
     membersInfo
   } = useContext(SpreadsheetContext);
 
+  //Property search states
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [fathersName, setFathersName] = useState('');
+  const [hasPayed, setHasPayed] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -61,6 +64,13 @@ const Spreadsheet = ({
     return () => clearTimeout(timeout);
   }, [fathersName, handleSetSearchFathersName]);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      handleSetSearchHasPayed(hasPayed);
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [hasPayed, handleSetSearchHasPayed]);
+
   const handleUpdateSearchFirstName = ev => {
     setFirstName(ev.target.value);
   };
@@ -72,11 +82,16 @@ const Spreadsheet = ({
     setFathersName(ev.target.value);
   };
 
+  const handleUpdateHasPayed = ev => {
+    setHasPayed(ev.target.checked);
+  };
+
   const removeFilters = () => {
     handleSetPageNumber(1);
     setFirstName('');
     setLastName('');
     setFathersName('');
+    setHasPayed(false);
   };
 
   const { userDataState } = useContext(AuthContext);
@@ -241,12 +256,12 @@ const Spreadsheet = ({
 
               <th></th>
               <th>
-                <Form.Control
-                  size="sm"
-                  name="firstName"
-                  type="text"
-                  placeholder="Filter"
-                  disabled
+                <Form.Check
+                  checked={hasPayed}
+                  onChange={handleUpdateHasPayed}
+                  name="hasPayed"
+                  type="switch"
+                  label="Uplaćeno?"
                 />
               </th>
               <th>

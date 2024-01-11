@@ -9,7 +9,7 @@ const ErrorElement = ({ type }) => {
         <div className="text-center">
           <h1 className="display-1 fw-bold">401</h1>
           <p className="fs-3">
-            <span className="text-danger">!!!</span> Neovlašten pristup.
+            <span className="text-danger">!!!Neovlašten pristup!!!</span>
           </p>
           <p className="lead">
             Vaš korisnički nalog nema pristup ovom resursu. Podrška može biti

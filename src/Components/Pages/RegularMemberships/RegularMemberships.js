@@ -8,6 +8,7 @@ import { ReactComponent as ArchivedDatabase } from '../../../Assets/Pictures/arc
 import { ReactComponent as DebtWarning } from '../../../Assets/Pictures/opomenaDug.svg';
 import { ReactComponent as ReportLogo } from '../../../Assets/Pictures/izvjestaj.svg';
 import { ReactComponent as HomeLogo } from '../../../Assets/Pictures/home-icon.svg';
+import { ReactComponent as MembersLogo } from '../../../Assets/Pictures/membersLogo.svg';
 
 import classes from '../Main/MainPage.module.css';
 
@@ -83,6 +84,24 @@ const RegularMemberships = ({ supervisorView }) => {
               </div>
             </NavLink>
           </div>
+          <div className={classes.gridItem}>
+            <NavLink
+              to={
+                supervisorView
+                  ? '/pregled/lista/dzemata/' + dzematId
+                  : '/naslovna'
+              }
+            >
+              <div>
+                <MembersLogo className={classes.gridItemLogo} />
+                <p className={classes.menuOptionText}>
+                  {supervisorView ? 'Pregled članova' : 'Upravljanje članovima'}
+                </p>
+              </div>
+            </NavLink>
+          </div>
+        </div>
+        <div className={classes.gridRow}>
           <div className={classes.gridItem}>
             <NavLink
               to={
