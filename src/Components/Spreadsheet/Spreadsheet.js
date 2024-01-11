@@ -226,6 +226,7 @@ const Spreadsheet = ({
                   name="evNumber"
                   type="number"
                   placeholder="Ev. broj"
+                  value={evNumber}
                   onChange={handleUpdateSearchEvNumber}
                 />
               </th>
