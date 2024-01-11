@@ -337,6 +337,7 @@ const Spreadsheet = ({
                       </Button>
                     ) : (
                       <Button
+                        disabled={isViewMode || !m.member.active}
                         style={{ minWidth: '140px' }}
                         onClick={() => {
                           handleShowAddPayment(m);
@@ -349,11 +350,12 @@ const Spreadsheet = ({
                               : 'danger'
                             : 'warning'
                         }`}
-                        disabled={isViewMode}
                       >
                         <strong>
                           {m.totalAmountPayed}
-                          {`KM${!isViewMode ? ' | Uplati ' : ''}`}
+                          {`KM${
+                            !isViewMode && m.member.active ? ' | Uplati ' : ''
+                          }`}
                         </strong>
                       </Button>
                     )}
