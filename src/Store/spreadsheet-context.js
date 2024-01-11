@@ -7,6 +7,7 @@ const SpreadsheetContext = React.createContext({
   membersInfo: [],
   selectedMember: null,
   response: null,
+  evNumber: null,
   searchFirstName: null,
   searchLastName: null,
   searchFathersName: null,
@@ -18,6 +19,7 @@ const SpreadsheetContext = React.createContext({
   handleSetSelectedMember: () => {},
   handleSetSpreadsheet: () => {},
   handleFetchSpreadsheet: () => {},
+  handleSetSearchEvNumber: () => {},
   handleSetSearchFirstName: () => {},
   handleSetSearchLastName: () => {},
   handleSetSearchFathersName: () => {},
@@ -37,6 +39,7 @@ export const SpreadsheetContextProvider = ({ children }) => {
   const [membersInfo, setMembersInfo] = useState([]);
   const [pageInfo, setPageInfo] = useState('');
   const [selectedMember, setSelectedMember] = useState(null);
+  const [searchEvNumber, setSearchEvNumber] = useState('');
   const [searchFirstName, setSearchFirstName] = useState('');
   const [searchLastName, setSearchLastName] = useState('');
   const [searchFathersName, setSearchFathersName] = useState('');
@@ -67,6 +70,11 @@ export const SpreadsheetContextProvider = ({ children }) => {
     setSelectedMember(data);
   }, []);
 
+  const handleSetSearchEvNumber = useCallback(value => {
+    handleSetPageNumber(1);
+    setSearchEvNumber(value);
+  }, []);
+
   const handleSetSearchFirstName = useCallback(value => {
     handleSetPageNumber(1);
     setSearchFirstName(value);
@@ -88,9 +96,11 @@ export const SpreadsheetContextProvider = ({ children }) => {
   }, []);
 
   const handleRemoveFilters = () => {
+    setSearchEvNumber('');
     setSearchFirstName('');
     setSearchLastName('');
     setSearchFathersName('');
+    setSearchHasPayed(false);
   };
 
   const handleSetPageNumber = number => {
@@ -131,6 +141,7 @@ export const SpreadsheetContextProvider = ({ children }) => {
       memberService
         .filterMembers(
           token,
+          searchEvNumber,
           searchFirstName,
           searchLastName,
           searchFathersName,
@@ -157,6 +168,7 @@ export const SpreadsheetContextProvider = ({ children }) => {
     [
       handleSetMembersInfo,
       handleSetPageInfo,
+      searchEvNumber,
       searchFirstName,
       searchLastName,
       searchFathersName,
@@ -211,6 +223,7 @@ export const SpreadsheetContextProvider = ({ children }) => {
         spreadsheet,
         membersInfo,
         selectedMember,
+        searchEvNumber,
         searchFirstName,
         searchLastName,
         searchFathersName,
@@ -224,6 +237,7 @@ export const SpreadsheetContextProvider = ({ children }) => {
         handleSetSelectedMember,
         handleSetSpreadsheet,
         handleFetchSpreadsheet,
+        handleSetSearchEvNumber,
         handleSetSearchFirstName,
         handleSetSearchLastName,
         handleSetSearchFathersName,

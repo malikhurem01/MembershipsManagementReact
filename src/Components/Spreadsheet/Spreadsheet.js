@@ -26,6 +26,7 @@ const Spreadsheet = ({
   handleAddMemberClick
 }) => {
   const {
+    handleSetSearchEvNumber,
     handleSetSearchFirstName,
     handleSetSearchLastName,
     handleSetSearchFathersName,
@@ -38,10 +39,18 @@ const Spreadsheet = ({
   } = useContext(SpreadsheetContext);
 
   //Property search states
+  const [evNumber, setEvNumber] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [fathersName, setFathersName] = useState('');
   const [hasPayed, setHasPayed] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      handleSetSearchEvNumber(evNumber);
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [evNumber, handleSetSearchEvNumber]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -71,6 +80,10 @@ const Spreadsheet = ({
     return () => clearTimeout(timeout);
   }, [hasPayed, handleSetSearchHasPayed]);
 
+  const handleUpdateSearchEvNumber = ev => {
+    setEvNumber(ev.target.value);
+  };
+
   const handleUpdateSearchFirstName = ev => {
     setFirstName(ev.target.value);
   };
@@ -79,6 +92,7 @@ const Spreadsheet = ({
   };
 
   const handleUpdateSearchFathersName = ev => {
+    console.log(ev.target.value);
     setFathersName(ev.target.value);
   };
 
@@ -88,6 +102,7 @@ const Spreadsheet = ({
 
   const removeFilters = () => {
     handleSetPageNumber(1);
+    setEvNumber('');
     setFirstName('');
     setLastName('');
     setFathersName('');
@@ -208,10 +223,10 @@ const Spreadsheet = ({
               <th>
                 <Form.Control
                   size="sm"
-                  name="firstName"
-                  type="text"
-                  placeholder="Filter"
-                  disabled
+                  name="evNumber"
+                  type="number"
+                  placeholder="Ev. broj"
+                  onChange={handleUpdateSearchEvNumber}
                 />
               </th>
               <th>
@@ -244,17 +259,15 @@ const Spreadsheet = ({
                   onChange={handleUpdateSearchFathersName}
                 />
               </th>
-              <th>
+              <th colSpan={2}>
                 <Form.Control
                   size="sm"
-                  name="firstName"
+                  name="membershipStatus"
                   type="text"
-                  placeholder="Filter"
+                  placeholder="Vrsta članarine"
                   disabled
                 />
               </th>
-
-              <th></th>
               <th>
                 <Form.Check
                   checked={hasPayed}
@@ -264,15 +277,7 @@ const Spreadsheet = ({
                   label="Uplaćeno?"
                 />
               </th>
-              <th>
-                <Form.Control
-                  size="sm"
-                  name="firstName"
-                  type="text"
-                  placeholder="Filter"
-                  disabled
-                />
-              </th>
+              <th></th>
               {!isViewMode && <th></th>}
               <th>
                 <Button onClick={removeFilters} variant="danger" size="sm">

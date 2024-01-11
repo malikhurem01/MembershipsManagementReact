@@ -15,6 +15,7 @@ const modifyMember = (token, member) => {
 
 const filterMembers = (
   token,
+  evNumber,
   firstName,
   lastName,
   fathersName,
@@ -24,7 +25,7 @@ const filterMembers = (
   spreadsheetId
 ) => {
   return axios.get(
-    `${serverURL}${routes.filterMembers}?spreadsheetId=${spreadsheetId}&firstName=${firstName}&lastName=${lastName}&fathersName=${fathersName}&hasPayed=${hasPayed}&pageNumber=${pageNumber}&pageSize=${pageSize}`,
+    `${serverURL}${routes.filterMembers}?spreadsheetId=${spreadsheetId}&evNumber=${evNumber}&firstName=${firstName}&lastName=${lastName}&fathersName=${fathersName}&hasPayed=${hasPayed}&pageNumber=${pageNumber}&pageSize=${pageSize}`,
     {
       headers: { Authorization: 'Bearer ' + token }
     }

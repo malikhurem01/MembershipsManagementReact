@@ -20,6 +20,7 @@ const initialize = async () => {
       response = await userService.currentUser(token);
       user = response.data.data;
     } catch (err) {
+      window.location.replace('/login/korisnik');
       localStorage.removeItem('user_jwt');
     }
   } else {

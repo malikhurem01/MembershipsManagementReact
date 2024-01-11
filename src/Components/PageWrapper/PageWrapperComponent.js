@@ -8,7 +8,7 @@ import logoIZ from '../../Assets/Pictures/logoIZ.png';
 import classes from './PageWrapperComponent.module.css';
 import userService from '../../Services/userService';
 
-const PageWrapperComponent = ({ returnArrow, children }) => {
+const PageWrapperComponent = ({ children }) => {
   const navigate = useNavigate();
 
   const { userDataState, handleSetUser } = useContext(AuthContext);
@@ -39,14 +39,7 @@ const PageWrapperComponent = ({ returnArrow, children }) => {
       }
     }
   };
-  /*
-  {returnArrow && (
-      <div className={classes.backArrow}>
-        <NavLink to="/naslovna">
-           <img src={leftArrow} alt="strelica nazad" />
-              </NavLink>
-            </div>
-          )} */
+
   return (
     <React.Fragment>
       <header className={classes.header}>

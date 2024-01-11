@@ -13,10 +13,14 @@ const ProtectedRoute = ({ minPosition, maxPosition, children }) => {
   );
 
   useEffect(() => {
-    if (isNotAuthorized(userDataState)) {
-      return window.location.replace('/neovlasten-pristup');
+    if (userDataState) {
+      if (isNotAuthorized(userDataState)) {
+        return window.location.replace('/neovlasten-pristup');
+      } else {
+        setIsAuthorized(true);
+      }
     } else {
-      setIsAuthorized(true);
+      return window.location.replace('/login/korisnik');
     }
   }, [isNotAuthorized, userDataState]);
 
