@@ -1,3 +1,29 @@
+@keyframes loadLoginContainer {
+  0% {
+    opacity: 0;
+    top: 42%;
+  }
+  100% {
+    opacity: 1;
+    top: 50%;
+  }
+}
+
+@keyframes scaleLogo {
+  50% {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+  90% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .loginContainer {
   padding-top: 45px;
   padding-bottom: 15px;
@@ -8,8 +34,9 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  animation-name: loadLoginContainer;
+  animation-duration: 1s;
 }
-
 .formContainer label {
   color: rgb(139, 135, 135) !important;
   font-weight: 600;
@@ -34,6 +61,8 @@
   padding: 15px;
   width: 150px;
   height: auto;
+  animation-name: scaleLogo;
+  animation-duration: 1s;
 }
 
 @media only screen and (max-width: 600px) {

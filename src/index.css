@@ -13,10 +13,6 @@ body {
   font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   font-weight: 400;
-}
-
-#appContainer {
-  z-index: -5;
   background: url('./Assets/Pictures/landingBackground2.jpg');
   background-repeat: no-repeat;
   background-position: center center;

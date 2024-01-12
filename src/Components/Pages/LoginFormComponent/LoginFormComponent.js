@@ -43,6 +43,7 @@ const LoginFormComponent = ({ onFormSubmit }) => {
             type="text"
             placeholder="Email (Nadležni)"
             required
+            autoFocus
           />
         </FloatingLabel>
         <FloatingLabel
