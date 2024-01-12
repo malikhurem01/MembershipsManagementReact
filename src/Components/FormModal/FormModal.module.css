@@ -21,9 +21,6 @@
   max-height: 80vh;
 }
 
-.loadingSvg {
-}
-
 @media (max-width: 1073px) {
   .modal {
     width: 80%;

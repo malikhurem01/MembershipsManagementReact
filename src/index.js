@@ -35,7 +35,9 @@ const startApplication = user => {
     <React.StrictMode>
       <AuthContextProvider userData={user}>
         <SpreadsheetContextProvider>
-          <RouterProvider router={router} />
+          <div id="appContainer">
+            <RouterProvider router={router} />
+          </div>
         </SpreadsheetContextProvider>
       </AuthContextProvider>
     </React.StrictMode>
