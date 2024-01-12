@@ -15,7 +15,6 @@ body {
     ),
     url('./Assets/Pictures/landingBackground.png');
   background-size: cover;
-  background-repeat: no-repeat;
 }
 
 a {
