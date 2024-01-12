@@ -17,6 +17,7 @@ import AuthContext from '../../../Store/auth-context-api';
 
 const ArchiveSpreadsheets = ({ supervisorView }) => {
   const [spreadsheets, setSpreadsheets] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { dzematId } = useParams();
 
@@ -29,17 +30,18 @@ const ArchiveSpreadsheets = ({ supervisorView }) => {
   const token = JSON.parse(localStorage.getItem('user_jwt'));
 
   const handleFetchSpreadsheets = useCallback(() => {
+    setIsLoading(true);
     spreadsheetService
       .getAllSpreadsheets(
         token,
         supervisorView ? dzematId : ctx.userDataState.dzematId
       )
       .then(res => {
-        console.log(res);
+        setIsLoading(false);
         setSpreadsheets(res.data.data['$values']);
       })
       .catch(err => {
-        console.log(err);
+        setIsLoading(false);
       });
   }, [token, ctx.userDataState.dzematId, dzematId, supervisorView]);
 
@@ -73,99 +75,103 @@ const ArchiveSpreadsheets = ({ supervisorView }) => {
 
   return (
     <PageWrapperComponent>
-      <Container>
-        <div className={styles.modal} style={{ minWidth: '20%' }}>
-          <h4
-            style={{
-              borderBottom: '1px solid #cecece',
-              marginBottom: '15px',
-              paddingBottom: '5px'
-            }}
-          >
-            {spreadsheets.length < 1
-              ? 'Nema kreiranih baza'
-              : `Lista baza ${
-                  redirectTo === 'donation'
-                    ? '(Donacije)'
-                    : redirectTo === 'expenses'
-                    ? '(Troškovi)'
-                    : redirectTo === 'incomes'
-                    ? '(Prihodi)'
-                    : ''
-                }`}
-          </h4>
-          {spreadsheets.map((s, i) => {
-            return (
-              <div className="card mb-4 mb-lg-0">
-                <div className="card-body p-0">
-                  <ul className="list-group list-group-flush rounded-3">
-                    <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                      <p className="mb-0">
-                        <Button
-                          variant={s.archived ? 'dark' : 'primary'}
-                          disabled
-                        >
-                          {s.year} - {s.archived ? 'Arhiva' : 'Aktivna'}
-                        </Button>
-                      </p>
-                      <p className="mb-0">
-                        <Link
-                          to={
-                            redirectTo === 'spreadsheet'
-                              ? s.archived
-                                ? ctx.userDataState.position === 5
-                                  ? `/pregled/lista/dzemata/clanarine/arhiva-baza/pregled/${dzematId}/${s.id}`
-                                  : `pregled/${s.id}`
-                                : ctx.userDataState.position === 5
-                                ? `/pregled/lista/dzemata/clanarine/aktivna-baza/${dzematId}`
-                                : '/clanarine/aktivna-baza'
-                              : redirectTo === 'donation'
-                              ? s.archived
-                                ? ctx.userDataState.position === 5
-                                  ? `/pregled/lista/dzemata/donacije/arhivirane-donacije/pregled/${dzematId}/${s.id}?archiveType=donation`
-                                  : `/donacije/arhivirane-donacije/${s.id}?archiveType=donation`
-                                : ctx.userDataState.position === 5
-                                ? `/pregled/lista/dzemata/donacije/aktivne-donacije/${dzematId}`
-                                : '/donacije/aktivne-donacije'
-                              : redirectTo === 'expenses'
-                              ? s.archived
-                                ? ctx.userDataState.position === 5
-                                  ? `/pregled/lista/dzemata/troskovi/arhivirani-troskovi/pregled/${dzematId}/${s.id}?archiveType=expenses`
-                                  : `/troskovi/arhivirani-troskovi/${s.id}?archiveType=expenses`
-                                : ctx.userDataState.position === 5
-                                ? `/pregled/lista/dzemata/troskovi/aktivni-troskovi/${dzematId}`
-                                : '/troskovi/aktivni-troskovi'
-                              : redirectTo === 'incomes'
-                              ? s.archived
-                                ? ctx.userDataState.position === 5
-                                  ? `/pregled/lista/dzemata/prihodi/arhivirani-prihodi/pregled/${dzematId}/${s.id}?archiveType=incomes`
-                                  : `/prihodi/arhivirani-prihodi/${s.id}?archiveType=incomes`
-                                : ctx.userDataState.position === 5
-                                ? `/pregled/lista/dzemata/prihodi/aktivni-prihodi/${dzematId}`
-                                : '/prihodi/aktivni-prihodi'
-                              : '/not-found'
-                          }
-                        >
-                          <Button variant={s.archived ? 'success' : 'primary'}>
-                            Pregled
+      {!isLoading && (
+        <Container>
+          <div className={styles.modal} style={{ minWidth: '20%' }}>
+            <h4
+              style={{
+                borderBottom: '1px solid #cecece',
+                marginBottom: '15px',
+                paddingBottom: '5px'
+              }}
+            >
+              {spreadsheets.length < 1
+                ? 'Nema kreiranih baza'
+                : `Lista baza ${
+                    redirectTo === 'donation'
+                      ? '(Donacije)'
+                      : redirectTo === 'expenses'
+                      ? '(Troškovi)'
+                      : redirectTo === 'incomes'
+                      ? '(Prihodi)'
+                      : ''
+                  }`}
+            </h4>
+            {spreadsheets.map((s, i) => {
+              return (
+                <div className="card mb-4 mb-lg-0">
+                  <div className="card-body p-0">
+                    <ul className="list-group list-group-flush rounded-3">
+                      <li className="list-group-item d-flex justify-content-between align-items-center p-3">
+                        <p className="mb-0">
+                          <Button
+                            variant={s.archived ? 'dark' : 'primary'}
+                            disabled
+                          >
+                            {s.year} - {s.archived ? 'Arhiva' : 'Aktivna'}
                           </Button>
-                        </Link>
-                      </p>
-                    </li>
-                  </ul>
+                        </p>
+                        <p className="mb-0">
+                          <Link
+                            to={
+                              redirectTo === 'spreadsheet'
+                                ? s.archived
+                                  ? ctx.userDataState.position === 5
+                                    ? `/pregled/lista/dzemata/clanarine/arhiva-baza/pregled/${dzematId}/${s.id}`
+                                    : `pregled/${s.id}`
+                                  : ctx.userDataState.position === 5
+                                  ? `/pregled/lista/dzemata/clanarine/aktivna-baza/${dzematId}`
+                                  : '/clanarine/aktivna-baza'
+                                : redirectTo === 'donation'
+                                ? s.archived
+                                  ? ctx.userDataState.position === 5
+                                    ? `/pregled/lista/dzemata/donacije/arhivirane-donacije/pregled/${dzematId}/${s.id}?archiveType=donation`
+                                    : `/donacije/arhivirane-donacije/${s.id}?archiveType=donation`
+                                  : ctx.userDataState.position === 5
+                                  ? `/pregled/lista/dzemata/donacije/aktivne-donacije/${dzematId}`
+                                  : '/donacije/aktivne-donacije'
+                                : redirectTo === 'expenses'
+                                ? s.archived
+                                  ? ctx.userDataState.position === 5
+                                    ? `/pregled/lista/dzemata/troskovi/arhivirani-troskovi/pregled/${dzematId}/${s.id}?archiveType=expenses`
+                                    : `/troskovi/arhivirani-troskovi/${s.id}?archiveType=expenses`
+                                  : ctx.userDataState.position === 5
+                                  ? `/pregled/lista/dzemata/troskovi/aktivni-troskovi/${dzematId}`
+                                  : '/troskovi/aktivni-troskovi'
+                                : redirectTo === 'incomes'
+                                ? s.archived
+                                  ? ctx.userDataState.position === 5
+                                    ? `/pregled/lista/dzemata/prihodi/arhivirani-prihodi/pregled/${dzematId}/${s.id}?archiveType=incomes`
+                                    : `/prihodi/arhivirani-prihodi/${s.id}?archiveType=incomes`
+                                  : ctx.userDataState.position === 5
+                                  ? `/pregled/lista/dzemata/prihodi/aktivni-prihodi/${dzematId}`
+                                  : '/prihodi/aktivni-prihodi'
+                                : '/not-found'
+                            }
+                          >
+                            <Button
+                              variant={s.archived ? 'success' : 'primary'}
+                            >
+                              Pregled
+                            </Button>
+                          </Link>
+                        </p>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-          <Button
-            onClick={handleNavigate}
-            style={{ margin: '15px 0', width: '100%' }}
-            variant="danger"
-          >
-            Nazad
-          </Button>
-        </div>
-      </Container>
+              );
+            })}
+            <Button
+              onClick={handleNavigate}
+              style={{ margin: '15px 0', width: '100%' }}
+              variant="danger"
+            >
+              Nazad
+            </Button>
+          </div>
+        </Container>
+      )}
     </PageWrapperComponent>
   );
 };
