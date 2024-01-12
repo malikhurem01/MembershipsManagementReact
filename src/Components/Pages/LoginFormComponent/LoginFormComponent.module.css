@@ -2,7 +2,7 @@
   padding-top: 45px;
   padding-bottom: 15px;
   width: 430px;
-  background-color: #b5f5d2;
+  background-color: #a8ebc6;
   border-radius: 10px;
   position: absolute;
   top: 50%;
@@ -17,8 +17,12 @@
 }
 
 .formContainer input {
-  font-weight: 600;
+  font-weight: 600 !important;
   opacity: 1;
+}
+
+.formContainer input::placeholder {
+  font-weight: 600 !important;
 }
 
 .formContainer button {
