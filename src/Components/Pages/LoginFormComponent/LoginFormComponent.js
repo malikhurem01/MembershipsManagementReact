@@ -42,6 +42,7 @@ const LoginFormComponent = ({ onFormSubmit }) => {
             onChange={ev => setUsername(ev.target.value)}
             type="text"
             placeholder="Email (Nadležni)"
+            required
           />
         </FloatingLabel>
         <FloatingLabel
@@ -54,6 +55,7 @@ const LoginFormComponent = ({ onFormSubmit }) => {
             onChange={ev => setInstitutionUserName(ev.target.value)}
             type="text"
             placeholder="Korisničko ime"
+            required
           />
         </FloatingLabel>
         <FloatingLabel
@@ -67,6 +69,7 @@ const LoginFormComponent = ({ onFormSubmit }) => {
             onChange={ev => setPassword(ev.target.value)}
             type="password"
             placeholder="Lozinka"
+            required
           />
         </FloatingLabel>
         <Button className={classes.submitButton} variant="light" type="submit">
