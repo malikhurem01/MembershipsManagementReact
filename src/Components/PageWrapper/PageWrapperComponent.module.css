@@ -17,12 +17,13 @@
   flex: 90%;
   width: 80%;
   align-items: center;
+  padding: 15px;
 }
 
 .titleContainer img {
-  height: 130px;
-  width: auto;
-  margin-right: 10px;
+  width: 100px;
+  height: auto;
+  margin-right: 15px;
 }
 
 .titleText {
@@ -70,9 +71,9 @@
     align-items: center;
   }
   .titleContainer img {
-    height: 80px;
+    height: 60px;
     width: auto;
-    margin-left: 0;
+    margin-left: 15px;
   }
   .backArrow {
     flex: 10%;

@@ -25,8 +25,7 @@ const LoginFormComponent = ({ onFormSubmit }) => {
       <div className={classes.loginContainerHeader}>
         <div>
           <img
-            width={170}
-            height={170}
+            className={classes.logoImg}
             src={thriveSyncLogo}
             alt="Islamska zajednica u Bosni i Hercegovini"
           />
