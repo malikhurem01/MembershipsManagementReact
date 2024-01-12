@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 
 import { FloatingLabel, Form, Button } from 'react-bootstrap';
 
-import logoIZ from '../../../Assets/Pictures/logoIZ.png';
+import thriveSyncLogo from '../../../Assets/Pictures/thriveSyncLogo.png';
 import loadingSvg from '../../../Assets/Pictures/loadingSvg.svg';
 
 import classes from './LoginFormComponent.module.css';
@@ -24,7 +24,12 @@ const LoginFormComponent = ({ onFormSubmit }) => {
     <div className={classes.loginContainer}>
       <div className={classes.loginContainerHeader}>
         <div>
-          <img src={logoIZ} alt="Islamska zajednica u Bosni i Hercegovini" />
+          <img
+            width={170}
+            height={170}
+            src={thriveSyncLogo}
+            alt="Islamska zajednica u Bosni i Hercegovini"
+          />
         </div>
         <div className={classes.loginContainerHeaderTitleContainer}>
           <div className={classes.loginContainerHeaderTitleBold}>

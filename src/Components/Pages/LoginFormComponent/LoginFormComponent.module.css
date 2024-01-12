@@ -37,6 +37,7 @@
 }
 
 .loginContainerHeader div:first-child {
+  margin-top: -20px;
   margin-bottom: 15px;
 }
 

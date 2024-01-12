@@ -3,7 +3,7 @@ import AuthContext from '../../Store/auth-context-api';
 
 import { useNavigate } from 'react-router-dom';
 
-import logoIZ from '../../Assets/Pictures/logoIZ.png';
+import thriveSyncLogo from '../../Assets/Pictures/thriveSyncLogo.png';
 
 import classes from './PageWrapperComponent.module.css';
 import userService from '../../Services/userService';
@@ -45,7 +45,7 @@ const PageWrapperComponent = ({ children }) => {
       <header className={classes.header}>
         <div className={classes.container}>
           <div className={classes.titleContainer}>
-            <img src={logoIZ} alt="logo islamske zajednice" />
+            <img src={thriveSyncLogo} alt="logo thrive sync" />
             <div className={classes.titleText}>
               <p>
                 <span className={classes.titleTextBold}>
