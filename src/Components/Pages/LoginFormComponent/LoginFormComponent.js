@@ -33,7 +33,7 @@ const LoginFormComponent = ({ onFormSubmit }) => {
       </div>
       <Form className={classes.formContainer} onSubmit={handleFormSubmit}>
         <FloatingLabel
-          controlId="floatingEmail"
+          controlId="floatingUsername"
           label="Email (Nadležni)"
           className="mb-3"
         >
