@@ -1,8 +1,8 @@
 .loginContainer {
-  padding-top: 25px;
+  padding-top: 45px;
   padding-bottom: 15px;
   width: 430px;
-  background-color: #ffffff;
+  background-color: #b5f5d2;
   border-radius: 10px;
   position: absolute;
   top: 50%;
@@ -10,9 +10,24 @@
   transform: translate(-50%, -50%);
 }
 
+.formContainer label {
+  color: rgb(139, 135, 135) !important;
+  font-weight: 600;
+  opacity: 1;
+}
+
+.formContainer input {
+  font-weight: 600;
+  opacity: 1;
+}
+
+.formContainer button {
+  font-weight: 600;
+  opacity: 1;
+}
+
 .logoImg {
   padding: 15px;
-  margin: 15px 0;
   width: 150px;
   height: auto;
 }

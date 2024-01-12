@@ -30,15 +30,10 @@ const LoginFormComponent = ({ onFormSubmit }) => {
             alt="Islamska zajednica u Bosni i Hercegovini"
           />
         </div>
-        <div className={classes.loginContainerHeaderTitleContainer}>
-          <div className={classes.loginContainerHeaderTitleBold}>
-            Program za praćenje i upravljanje budžetom
-          </div>
-        </div>
       </div>
       <Form className={classes.formContainer} onSubmit={handleFormSubmit}>
         <FloatingLabel
-          controlId="floatingUsername"
+          controlId="floatingEmail"
           label="Email (Nadležni)"
           className="mb-3"
         >
@@ -74,7 +69,7 @@ const LoginFormComponent = ({ onFormSubmit }) => {
             placeholder="Lozinka"
           />
         </FloatingLabel>
-        <Button className={classes.submitButton} variant="dark" type="submit">
+        <Button className={classes.submitButton} variant="light" type="submit">
           {!response.loading || response.loading === 'done' ? (
             'PRIJAVA'
           ) : (
