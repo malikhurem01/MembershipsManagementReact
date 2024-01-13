@@ -18,7 +18,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import incomeItemsService from '../../../Services/incomeItemsService';
 import AuthContext from '../../../Store/auth-context-api';
 import { factorDate } from '../../../Utils/factorDate';
-import { useNavigate, useParams } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 
 const ActiveDonationsPage = ({ supervisorView }) => {
   const [items, setItems] = useState();
@@ -650,9 +650,18 @@ const ActiveDonationsPage = ({ supervisorView }) => {
                               </Button>
                             </React.Fragment>
                           )}
-                          <Button size="sm" type="button" variant="warning">
-                            Arhiva
-                          </Button>
+                          <NavLink
+                            to={
+                              supervisorView
+                                ? `/pregled/lista/dzemata/clanarine/arhiva-baza/${dzematId}?redirectTo=donation`
+                                : '/clanarine/arhiva-baza?redirectTo=donation'
+                            }
+                          >
+                            {' '}
+                            <Button size="sm" type="button" variant="warning">
+                              Arhiva
+                            </Button>
+                          </NavLink>
                         </div>
                       </div>
                     </div>

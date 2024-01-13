@@ -17,7 +17,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import incomeItemsService from '../../../Services/incomeItemsService';
 import AuthContext from '../../../Store/auth-context-api';
 import { factorDate } from '../../../Utils/factorDate';
-import { useNavigate, useParams } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 
 const ActiveIncomesPage = ({ supervisorView }) => {
   const [items, setItems] = useState();
@@ -412,10 +412,18 @@ const ActiveIncomesPage = ({ supervisorView }) => {
                               Kreiraj stavku
                             </Button>
                           )}
-
-                          <Button size="sm" type="button" variant="warning">
-                            Arhiva
-                          </Button>
+                          <NavLink
+                            to={
+                              supervisorView
+                                ? `/pregled/lista/dzemata/clanarine/arhiva-baza/${dzematId}?redirectTo=incomes`
+                                : '/clanarine/arhiva-baza?redirectTo=incomes'
+                            }
+                          >
+                            {' '}
+                            <Button size="sm" type="button" variant="warning">
+                              Arhiva
+                            </Button>
+                          </NavLink>
                         </div>
                       </div>
                     </div>

@@ -31,7 +31,7 @@
 
 .gridItem:hover {
   cursor: pointer;
-  transform: translateY(-5px);
+  transform: scale(1.05);
 }
 
 .gridItem div {
