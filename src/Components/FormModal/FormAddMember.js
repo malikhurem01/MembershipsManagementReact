@@ -22,7 +22,7 @@ const FormAddMember = ({
   const [phoneNumber, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState(0);
   const [note, setNote] = useState('');
   const [debt, setDebt] = useState(0);
   const [isActive, setIsActive] = useState();
@@ -438,14 +438,12 @@ const FormAddMember = ({
                         aria-label="MemberStatus"
                         required
                         disabled={viewMode && !editMode}
-                        defaultValue={'0'}
                         value={
                           !viewMode || editMode
                             ? status
                             : memberInfo.member.status
                         }
                       >
-                        <option>Status člana</option>
                         <option value="0">Brak</option>
                         <option value="1">Udovac/Udovica</option>
                         <option value="2">Granična dob</option>
