@@ -25,7 +25,7 @@ const FormAddMember = ({
   const [status, setStatus] = useState(0);
   const [note, setNote] = useState('');
   const [debt, setDebt] = useState(0);
-  const [isActive, setIsActive] = useState();
+  const [isActive, setIsActive] = useState('');
   const [editMode, setEditMode] = useState(false);
   const [familyMembers, setFamilyMembers] = useState([]);
   const [showFamilyMembersForm, setShowFamilyMembersForm] = useState(false);
@@ -78,10 +78,11 @@ const FormAddMember = ({
       note,
       familyMembers,
       debt,
-      active: isActive === 'true' ? true : false,
+      active: Boolean(isActive),
       addToSpreadsheet: true,
       dzematId: ctx.userDataState.dzematId
     };
+    console.log(member);
     const token = JSON.parse(localStorage.getItem('user_jwt'));
     handleFormSubmit(token, member);
   };
@@ -415,18 +416,20 @@ const FormAddMember = ({
                 <h4>Tehnički podaci</h4>
 
                 <Row className="g-2" style={{ marginBottom: '16px' }}>
-                  <Col lg={2} md="auto" sm={8}>
-                    <FloatingLabel controlId="floatingDebt" label="Dug">
-                      <Form.Control
-                        value={!viewMode || editMode ? debt : memberInfo.debt}
-                        onChange={ev => setDebt(ev.target.value)}
-                        type="number"
-                        placeholder="Dug"
-                        required
-                        disabled={viewMode || editMode}
-                      />
-                    </FloatingLabel>
-                  </Col>
+                  {!editMode && !viewMode && (
+                    <Col lg={2} md="auto" sm={8}>
+                      <FloatingLabel controlId="floatingDebt" label="Dug">
+                        <Form.Control
+                          value={!viewMode || editMode ? debt : memberInfo.debt}
+                          onChange={ev => setDebt(ev.target.value)}
+                          type="number"
+                          placeholder="Dug"
+                          required
+                          disabled={viewMode || editMode}
+                        />
+                      </FloatingLabel>
+                    </Col>
+                  )}
 
                   <Col lg={4} md="auto" sm={8}>
                     <FloatingLabel
@@ -438,15 +441,16 @@ const FormAddMember = ({
                         aria-label="MemberStatus"
                         required
                         disabled={viewMode && !editMode}
+                        defaultValue={0}
                         value={
                           !viewMode || editMode
                             ? status
                             : memberInfo.member.status
                         }
                       >
-                        <option value="0">Brak</option>
-                        <option value="1">Udovac/Udovica</option>
-                        <option value="2">Granična dob</option>
+                        <option value={0}>Brak</option>
+                        <option value={1}>Udovac/Udovica</option>
+                        <option value={2}>Granična dob</option>
                       </Form.Select>
                     </FloatingLabel>
                   </Col>
@@ -463,32 +467,25 @@ const FormAddMember = ({
                       />
                     </FloatingLabel>
                   </Col>
-
+                </Row>
+                <Row>
                   {(editMode || viewMode) && (
                     <Col lg={4} md="auto" sm={8}>
-                      <FloatingLabel
-                        controlId="floatingIsActive"
-                        label="Član aktivan?"
-                      >
-                        <Form.Select
-                          onChange={ev => setIsActive(ev.target.value)}
-                          aria-label="MemberIsActive"
-                          disabled={viewMode && !editMode}
-                          value={
-                            !viewMode || editMode
-                              ? isActive
-                              : memberInfo.member.active
-                          }
-                        >
-                          <option>Status člana</option>
-                          <option value={true}>Aktivan</option>
-                          <option value={false}>Nije aktivan</option>
-                        </Form.Select>
-                      </FloatingLabel>
+                      <Form.Check
+                        disabled={viewMode && !editMode}
+                        checked={
+                          !viewMode || editMode
+                            ? isActive
+                            : memberInfo.member.active
+                        }
+                        onChange={ev => setIsActive(ev.target.checked)}
+                        name="isActive"
+                        type="switch"
+                        label="Aktivan član?"
+                      />
                     </Col>
                   )}
                 </Row>
-
                 {(!viewMode || editMode) && (
                   <div style={{ marginBottom: '20px' }}>
                     <Button
